@@ -1,10 +1,18 @@
 import { Router } from 'express';
-import { showLogin } from '../controllers/loginController.js';
+import { showLogin, login } from '../controllers/loginController.js';
 import checkUser from '../middleware/checkUser.js';
 const router = Router();
 
 router.get('/login', checkUser, (req, res) => {
   showLogin(req, res);
 });
+
+router.post('/login', checkUser, async (req, res) => {
+  if(req.isUser){
+    res.redirect('/')
+  } else {
+    login(req, res)
+  }
+})
 
 export default router;

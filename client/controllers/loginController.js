@@ -9,3 +9,14 @@ export function showLogin(req, res) {
         res.status(505).send('Internal Client Error');
     }
 }
+
+export async function login(req, res){
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+        console.log('email : ' + email);
+    } catch (err) {
+        console.error(err);
+        res.status(505).send('Internal Client Error');
+    }
+}
