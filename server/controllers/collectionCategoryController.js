@@ -4,11 +4,16 @@ const type = 'collection-categories'
 
 async function fetchAllData(req, res){
     try {
-        const categories = await firebaseManager.fetchAllData(type)
-        if(!categories){
+        const userId = req.session.userId;
+        const data = await firebaseManager.fetchAllData(`${type}::${userId}`)
+        if(!data){
             res.send([])
         } else {
-            res.send(categories)
+            const categories = [];
+            data.forEach(object => {
+                categories.push(collectionCategoryModel(object.data, object.id));
+            })
+            res.send(categories);
         }
     } catch (err) {
         console.error(err);

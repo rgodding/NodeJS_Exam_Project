@@ -13,6 +13,7 @@ async function fetchAllData(req, res){
             data.forEach(object => {
                 collections.push(imageModel(object.data, object.id));
             })
+            res.send(collections);
         }
     } catch (err) {
         console.error(err);

@@ -2,7 +2,6 @@ import firebaseManager from "../databases/firebase/firebaseManager.js";
 import collectionModel from "../models/collectionModel.js";
 const type = 'collections'
 
-
 async function fetchAllData(req, res){
     try {
         const userId = req.session.userId;
@@ -14,6 +13,7 @@ async function fetchAllData(req, res){
             data.forEach(object => {
                 collections.push(collectionModel(object.data, object.id));
             })
+            res.send(collections);
         }
     } catch (err) {
         console.error(err);
