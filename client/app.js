@@ -71,18 +71,19 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 import http from "http";
 import { Server } from "socket.io";
-import socketIo from "./middleware/socketIo.js";
 const server = http.createServer(app);
-const io = new Server(server);
-
-socketIo(io)
+export const io = new Server(server);
 
 import frontpageRouter from "./routers/frontpageRouter.js"
 import documentsRouter from "./routers/documentsRouter.js"
+import socketIo from "./middleware/socketIo.js";
 const routers = [
     frontpageRouter,
     documentsRouter,
 ]
+
+socketIo(io)
+
 app.use(routers);
 const PORT = process.env.PORT || 8075;
 server.listen(PORT, () => console.log("Server is running on port", PORT));
