@@ -3,11 +3,11 @@
         <form method="POST">
             <h1 class="mb-3">Please sign in</h1>
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
                 <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                 <label for="password">Password</label>
             </div>
             <button class="w-100 btn btn-lg btn-primary" type="submit" onclick="signIn()">Sign in</button>
@@ -15,6 +15,7 @@
     </div>
 </div>
 <script src="/js/login.js"></script>
+
 <style>
     #login-form-container {
         margin-top: 10vh;

@@ -1,4 +1,8 @@
 export default function checkUser(req, res, next){
-    req.isUser = true;
+    if(req.session.userId === undefined){
+        req.isUSer = false;
+    } else {
+        req.isUser = true;
+    }
     next();
 }

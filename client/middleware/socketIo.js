@@ -1,6 +1,7 @@
 export default function socketIo(io){
     io.on("connection", (socket) => {
         console.log('A client connected', socket.id)
+        loginSocket(socket, io)
         documentsSocket(socket, io);
         imagesSocket(socket, io);
         adminSocket(socket, io);
