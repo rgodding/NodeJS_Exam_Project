@@ -1,0 +1,30 @@
+<div id="document-page-field" class="container-fluid">
+    <div class="row">
+        <div class="col col-2 ps-0 pe-0">
+            <div class="row">
+                <div id="documents-table-field"
+                    class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white border border-right-0">
+                    <a id="documents-table-name-field"
+                        class="d-flex align-items-center flex-shrink-0 p-2 link-dark text-decoration-none border-bottom">
+                        <div id="document-table-name">
+                            <h5>Documents</h5>
+                        </div>
+                        <div id="current-collection">
+                        </div>
+                        <button id="document-create-button" type="button" class="btn btn-primary ms-auto disabled" onclick="pickCreateDocument()">Create</button>
+                    </a>
+                    <div id="documents-table-items-field"
+                        class="list-group list-group-flush border-bottom scrollarea document-table-content">
+                    </div>
+                </div>
+            </div>
+            <div id="document-menu" class="row row-cols-2 ms-auto me-auto ">
+                $DOCUMENT_MENU
+            </div>
+        </div>
+        <div class="col col-10 ps-0 pe-0">
+            <div id="documents-content-field" class="card rounded-0">
+            </div>
+        </div>
+    </div>
+    <script src="/js/documents.js"></script>
