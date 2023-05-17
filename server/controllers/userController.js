@@ -3,7 +3,6 @@ const type = 'users'
 
 function fetchAllData(req, res){
     try {
-
     } catch (err) {
         console.error(err);
         res.status(505).send('Internal Server Error')

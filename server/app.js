@@ -19,7 +19,9 @@ import documentRouter from "./routers/documentRouter.js"
 import collectionRouter from "./routers/collectionRouter.js"
 import collectionCategoryRouter from "./routers/collectionCategoryRouter.js"
 import imageRouter from "./routers/imageRouter.js"
+import loginRouter from "./routers/loginRouter.js";
 const routers = [
+    loginRouter,
     userRouter,
     documentRouter,
     collectionRouter,

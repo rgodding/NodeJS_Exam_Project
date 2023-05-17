@@ -1,7 +1,6 @@
 import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { database } from '../../config/firebase.js';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import firebaseTools from './firebaseTools.js';
 const auth = getAuth();
 
 async function login(email, password) {
