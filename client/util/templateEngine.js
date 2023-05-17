@@ -1,4 +1,5 @@
 import fs from 'fs';
+
 function renderPage(page, config = {}) {
   const main = getMain(config)
   .replace('$CSS_LINK', config.cssLink || '')
@@ -7,6 +8,7 @@ function renderPage(page, config = {}) {
   .replace('$PAGE_MAIN', page)
   return main;
 }
+
 function renderPageWithSocket(page, config = {}) {
   const main = getMainWithSocket(config)
   .replace('$CSS_LINK', config.cssLink || '')
@@ -15,17 +17,21 @@ function renderPageWithSocket(page, config = {}) {
   .replace('$PAGE_MAIN', page)
   return main;
 }
+
 function readPage(pagePath) {
   return fs.readFileSync(pagePath).toString();
 }
+
 function getMain(config = {}){
   const main = readPage('./views/layouts/main.html')
   return main;
 }
+
 function getMainWithSocket(config = {}) {
     const main = readPage('./views/layouts/socket.html')
     return main;
 }
+
 function getNavbar(config = {}) {
   const navbar = readPage('./views/partials/navbar/navbar.html')
   .replace('$PAGE_NAME', 'My Website')
@@ -33,6 +39,7 @@ function getNavbar(config = {}) {
   .replace('$NAVBAR_LOGIN_BUTTON', getNavbarLoginButton(config.isUser));
   return navbar;
 }
+
 function getNavbarOptions(isUser){
     if(isUser){
         return readPage('./views/partials/navbar/options.html')

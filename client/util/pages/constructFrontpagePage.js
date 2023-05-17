@@ -1,4 +1,4 @@
-import templateEngine from "../templateEngine.js";
+import templateEngine from '../templateEngine.js';
 
 export default function constructFrontpagePage(isUser) {
   const html = templateEngine.readPage('./views/pages/frontpage.html');

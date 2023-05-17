@@ -6,7 +6,8 @@ export default function socketIo(io){
         adminSocket(socket, io);
     })
 }
-
+function loginSocket(socket, io){
+}
 function documentsSocket(socket, io){
 }
 function imagesSocket(socket, io){
