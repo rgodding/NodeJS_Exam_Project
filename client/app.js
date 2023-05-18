@@ -23,12 +23,14 @@ socketIo(io)
 
 import frontpageRouter from "./routers/frontpageRouter.js"
 import loginRouter from "./routers/loginRouter.js"
+import userRouter from "./routers/userRouter.js"
 import adminRouter from "./routers/adminRouter.js"
 import documentsRouter from "./routers/documentsRouter.js"
 import imagesRouter from "./routers/imagesRouter.js"
 const routers = [
     frontpageRouter,
     loginRouter,
+    userRouter,
     adminRouter,
     documentsRouter,
     imagesRouter,

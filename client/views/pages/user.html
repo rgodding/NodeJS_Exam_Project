@@ -1,0 +1,93 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3 me-5">
+            <div class="row ms-4 mb-5 border border-4 p-2">
+                <h5>Creating Collection</h5>
+                <h3>USER ID : $USER_ID</h3>
+                <div class="row mb-3">
+                    <div class="col-8">
+                        <select name="collectioncategory" id="collectioncategory" class="form-select"
+                            aria-label="Default select example">
+                            $CREATE_COLLECTION_TYPES_OPTIONS
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <input class="form-control" id="collectionname" name="collectionname"
+                            placeholder="Collection name...">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <input class="form-control" id="collectiontype" name="collectiontype"
+                            placeholder="Collection type...">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="createCollection()">Create</button>
+            </div>
+            <div class="row ms-4 mb-5 border border-4 p-2">
+                <h5>Creating Collection Type</h5>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <input class="form-control" id="collectiontypename" name="collectiontypename"
+                            placeholder="Collection Type name...">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <input class="form-control" id="collectiontypetype" name="collectiontypetype"
+                            placeholder="Collection Type type...">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="createCollectionType()">Create</button>
+            </div>
+        </div>
+        <div class="col-8 ms-5 border">
+            <h5>Editing Collections</h5>
+            <div class="row row-cols-4">
+                $COLLECTIONS_LIST
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const socket = io();
+    const documentPicker = document.getElementById("document-picker")
+    const documentName = document.getElementById("documents-table-name")
+    function createCollectionType() {
+        const name = document.getElementById('collectiontypename').value
+        const type = document.getElementById('collectiontypetype').value
+        socket.emit("admin creates a collection type", { name: name, type: type })
+    }
+    function createCollection() {
+        const name = document.getElementById('collectionname').value
+        const type = document.getElementById('collectiontype').value
+        const category = document.getElementById('collectioncategory').value
+        socket.emit("admin creates a collection", { category: category, name: name, type: type })
+    }
+    socket.on("a collection was created", (data) => {
+        window.location.reload()
+    });
+    socket.on("a collection type was created", (data) => {
+        window.location.reload()
+    })
+    function deleteCollection(id) {
+        if (confirm('Are you sure you want to delete the collection?')) {
+            socket.emit("admin deletes a collection", { id: id });
+        }
+    }
+    function deleteCollectionType(id) {
+        if (confirm('Are you sure you want to delete the collection type?')) {
+            socket.emit("admin deletes a collection type", { id: id });
+        }
+    }
+    socket.on("a collection was deleted", (data) => {
+        window.location.reload()
+    });
+    socket.on("a collection type was deleted", (data) => {
+        window.location.reload()
+    });
+
+</script>
