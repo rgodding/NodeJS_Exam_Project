@@ -1,25 +1,25 @@
 import { Router } from "express";
-import { authenticate } from "../middleware/auth.js";
 const router = Router();
-const routerUrl = '/api/collections'
+const routerUrl = '/api/collections/:userId'
+import collectionController from "../controllers/collectionController.js";
 
-router.get(`${routerUrl}`, authenticate, authenticate, authenticate, async (req, res) => {
-    res.send({data: 'collections : get all'})
+router.get(`${routerUrl}`, async (req, res) => {
+    collectionController.fetchAllData(req, res);
 })
-router.get(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'collections : get by id'})
+router.get(`${routerUrl}/:id`, async (req, res) => {
+    collectionController.fetchDataById(req, res);
 })
-router.post(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'collections : post'})
+router.post(`${routerUrl}`, async (req, res) => {
+    collectionController.postData(req, res);
 })
-router.put(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'collections : put'})
+router.put(`${routerUrl}/:id`, async (req, res) => {
+    collectionController.putData(req, res);
 })
-router.patch(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'collections : patch'})
+router.patch(`${routerUrl}/:id`, async (req, res) => {
+    collectionController.patchData(req, res);
 })
-router.delete(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'document : delete'})
+router.delete(`${routerUrl}/:id`, async (req, res) => {
+    collectionController.deleteData(req, res);
 }) 
 
 export default router;

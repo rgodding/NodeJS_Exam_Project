@@ -1,6 +1,9 @@
+import documentManager from '../../repository/documentManager.js';
 import templateEngine from '../templateEngine.js';
 
-export default async function constructDocumentsPage(isUser) {
+export default async function constructDocumentsPage(isUser, userId) {
+    const documents = documentManager.fetchAllObjects(userId)
+    console.log('documents : ' + JSON.stringify(documents));
     const page = templateEngine.readPage('./views/pages/documents.html')
     const renderedPage = templateEngine.renderPageWithSocket(page, {
       tabTitle: 'Front Page',

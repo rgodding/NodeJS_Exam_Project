@@ -1,10 +1,7 @@
 import express from 'express';
 import session from 'express-session';
 import dotenv from 'dotenv/config';
-
 const app = express();
-
-app.use(express.json());
 
 app.use(
   session({
@@ -13,6 +10,19 @@ app.use(
     saveUninitialized: false,
   })
 );
+
+app.use(express.json());
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8075');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 
 import userRouter from "./routers/userRouter.js"
 import documentRouter from "./routers/documentRouter.js"

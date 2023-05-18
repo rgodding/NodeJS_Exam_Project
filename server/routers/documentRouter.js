@@ -1,29 +1,29 @@
 import { Router } from "express";
-import { authenticate } from "../middleware/auth.js";
 const router = Router();
-const routerUrl = '/api/documents'
+const routerUrl = '/api/documents/:userId'
+import documentController from "../controllers/documentController.js";
 
-router.get(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'documents : get all'})
+router.get(`${routerUrl}`, async (req, res) => {
+    documentController.fetchAllData(req, res)
 })
 
-router.get(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'documents : get by id'})
+router.get(`${routerUrl}/:id`, async (req, res) => {
+    documentController.fetchDataById(req, res);
 })
 
-router.post(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'documents : post'})
+router.post(`${routerUrl}`, async (req, res) => {
+    documentController.postData(req, res);
 })
 
-router.put(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'documents : put'})
+router.put(`${routerUrl}/:id`, async (req, res) => {
+    documentController.putData(req, res);
 })
 
-router.patch(`${routerUrl}`, authenticate, async (req, res) => {
-    res.send({data: 'documents : patch'})
+router.patch(`${routerUrl}/:id`, async (req, res) => {
+    documentController.deleteData(req, res);
 })
 
-router.delete(`${routerUrl}`, authenticate, async (req, res) => {
+router.delete(`${routerUrl}/:id`, async (req, res) => {
     res.send({data: 'document : delete'})
 }) 
 

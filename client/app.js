@@ -1,18 +1,18 @@
 import express from "express";
 import session from 'express-session';
+import dotenv from "dotenv/config";
 
 const app = express();
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+
 app.use(
     session({
       secret: 'secret-key',
       resave: false,
-      saveUninitialized: false,
+      saveUninitialized: true,
     })
   );
-  
-
 
 import http from "http";
 import { Server } from "socket.io";

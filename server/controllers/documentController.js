@@ -1,10 +1,10 @@
-import firebaseManager from "../databases/firebase/firebaseManager";
-import documentModel from "../models/documentModel";
+import firebaseManager from "../databases/firebase/firebaseManager.js";
+import documentModel from "../models/documentModel.js";
 const type = 'documents'
 
 async function fetchAllData(req, res){
     try {
-        const userId = req.session.userId;
+        const userId = req.params.userId;
         const data = await firebaseManager.fetchAllData(`${type}::${userId}`);
         if(!data){
             res.send([])

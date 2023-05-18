@@ -1,4 +1,4 @@
-import firebaseManager from "../databases/firebase/firebaseManager";
+import firebaseManager from "../databases/firebase/firebaseManager.js";
 const type = 'users'
 
 function fetchAllData(req, res){

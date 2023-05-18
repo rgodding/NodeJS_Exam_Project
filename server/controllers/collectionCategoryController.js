@@ -1,5 +1,5 @@
-import firebaseManager from "../databases/firebase/firebaseManager";
-import collectionCategoryModel from "../models/collectionCategoryModel";
+import firebaseManager from "../databases/firebase/firebaseManager.js";
+import collectionCategoryModel from "../models/collectionCategoryModel.js";
 const type = 'collection-categories'
 
 async function fetchAllData(req, res){
