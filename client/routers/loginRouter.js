@@ -15,4 +15,9 @@ router.post('/login', checkUser, async (req, res) => {
   }
 })
 
+router.get('/logout', async (req, res) => {
+  req.session.destroy();
+  res.redirect('/login');
+})
+
 export default router;

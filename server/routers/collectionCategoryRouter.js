@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-const routerUrl = '/api/collection-categories'
+const routerUrl = '/api/collection-categories/:userId'
 import collectionCategoryController from "../controllers/collectionCategoryController.js";
 
 router.get(`${routerUrl}`, async (req, res) => {

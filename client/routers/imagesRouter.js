@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { showImages } from '../controllers/imagesController.js';
-import checkUser from '../middleware/checkUser.js';
+import requireUser from '../middleware/requireUser.js';
 const router = Router();
 
-router.get('/images', checkUser, (req, res) => {
+router.get('/images', requireUser, (req, res) => {
   showImages(req, res);
 });
 

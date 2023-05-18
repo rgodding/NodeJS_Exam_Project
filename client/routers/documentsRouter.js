@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { showDocuments } from '../controllers/documentsController.js';
-import checkUser from '../middleware/checkUser.js';
+import requireUser from '../middleware/requireUser.js';
 const router = Router();
 
-router.get('/documents', checkUser, (req, res) => {
+router.get('/documents', requireUser, (req, res) => {
   showDocuments(req, res);
 });
 

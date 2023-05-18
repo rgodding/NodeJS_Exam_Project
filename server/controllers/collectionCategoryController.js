@@ -1,11 +1,11 @@
 import firebaseManager from "../databases/firebase/firebaseManager.js";
 import collectionCategoryModel from "../models/collectionCategoryModel.js";
-const type = 'collection-categories'
+const databaseName = 'collection-categories'
 
 async function fetchAllData(req, res){
     try {
-        const userId = req.session.userId;
-        const data = await firebaseManager.fetchAllData(`${type}::${userId}`)
+        const userId = req.params.userId;
+        const data = await firebaseManager.fetchAllData(`${databaseName}::${userId}`)
         if(!data){
             res.send([])
         } else {
@@ -20,10 +20,10 @@ async function fetchAllData(req, res){
         res.status(505).send('Internal Server Error')
     }
 }
-function fetchDataById(req, res){
+async function fetchDataById(req, res){
     try {
         const id = req.params.id;
-        const data = firebaseManager.fetchDataById(type, id);
+        const data = await firebaseManager.fetchDataById(`${databaseName}::${userId}`, id);
         if(!data){
             res.send({})
         } else {
@@ -37,13 +37,14 @@ function fetchDataById(req, res){
 }
 function postData(req, res){
     try {
+        const userId = req.params.userId;
         const name = req.body.name;
         const type = req.body.type;
         const category = collectionCategoryModel({
             name: name,
             type: type,
         })
-        firebaseManager.postData(type, category);
+        firebaseManager.postData(`${databaseName}::${userId}`, category);
         res.status(200).send('OK');
     } catch (err) {
         console.error(err);
@@ -69,13 +70,15 @@ function patchData(req, res){
 function deleteData(req, res){
     try {
         const id = req.params.id;
-        firebaseManager.deleteData(type, id);
+        const userId = req.params.userId;
+        firebaseManager.deleteData(`${databaseName}::${userId}`, id);
         res.status(200).send('OK');
     } catch (err) {
         console.error(err);
         res.status(505).send('Internal Server Error')
     }
 }
+
 
 export default {
     fetchAllData,

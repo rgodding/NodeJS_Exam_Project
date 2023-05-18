@@ -1,11 +1,11 @@
 import firebaseManager from "../databases/firebase/firebaseManager.js";
 import collectionModel from "../models/collectionModel.js";
-const type = 'collections'
+const databaseName = 'collections'
 
 async function fetchAllData(req, res){
     try {
-        const userId = req.session.userId;
-        const data = await firebaseManager.fetchAllData(`${type}::${userId}`);
+        const userId = req.params.userId;
+        const data = await firebaseManager.fetchAllData(`${databaseName}::${userId}`);
         if(!data){
             res.send([])
         } else {
@@ -24,7 +24,7 @@ async function fetchDataById(req, res){
     try {
         const id = req.params.id;
         const userId = req.session.userId;
-        const data = await firebaseManager.fetchDataById(`${type}::${userId}`, id);
+        const data = await firebaseManager.fetchDataById(`${databaseName}::${userId}`, id);
         if(!data){
             res.send({})
         } else {
@@ -40,13 +40,14 @@ function postData(req, res){
         const name = req.body.name;
         const type = req.body.type;
         const category = req.body.category;
+        const userId = req.params.userId;
         const data = {
             name: name,
             type: type,
             category: category,
         }
         const collection = collectionModel(data);
-        firebaseManager.postData(`${type}::${userId}`, collection);
+        firebaseManager.postData(`${databaseName}::${userId}`, collection);
         res.status(200).send('OK');
     } catch (err) {
         console.error(err);
@@ -70,7 +71,8 @@ function patchData(req, res){
 function deleteData(req, res){
     try {
         const id = req.params.id;
-        firebaseManager.deleteData(`${type}::${userId}`, id);
+        const userId = req.params.userId;
+        firebaseManager.deleteData(`${databaseName}::${userId}`, id);
         res.status(200).send('OK');
     } catch (err) {
         console.error(err);

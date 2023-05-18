@@ -3,7 +3,7 @@
         <div class="col-3 me-5">
             <div class="row ms-4 mb-5 border border-4 p-2">
                 <h5>Creating Collection</h5>
-                <h3>USER ID : $USER_ID</h3>
+                <input type="text" id="userid" name="userid" value="$USER_ID" style="display: none;"/>
                 <div class="row mb-3">
                     <div class="col-8">
                         <select name="collectioncategory" id="collectioncategory" class="form-select"
@@ -43,7 +43,7 @@
                 <button class="btn btn-primary" onclick="createCollectionType()">Create</button>
             </div>
         </div>
-        <div class="col-8 ms-5 border">
+        <div class="col-8 ms-5 p-4 border">
             <h5>Editing Collections</h5>
             <div class="row row-cols-4">
                 $COLLECTIONS_LIST
@@ -56,37 +56,43 @@
     const socket = io();
     const documentPicker = document.getElementById("document-picker")
     const documentName = document.getElementById("documents-table-name")
+
     function createCollectionType() {
         const name = document.getElementById('collectiontypename').value
         const type = document.getElementById('collectiontypetype').value
-        socket.emit("admin creates a collection type", { name: name, type: type })
+        const userId = document.getElementById('userid').value
+        socket.emit("a client creates a collection category", { name: name, type: type, userId: userId })
     }
     function createCollection() {
         const name = document.getElementById('collectionname').value
         const type = document.getElementById('collectiontype').value
         const category = document.getElementById('collectioncategory').value
-        socket.emit("admin creates a collection", { category: category, name: name, type: type })
+        const userId = document.getElementById('userid').value
+        socket.emit("a client creates a collection", { category: category, name: name, type: type, userId: userId })
     }
     socket.on("a collection was created", (data) => {
         window.location.reload()
     });
-    socket.on("a collection type was created", (data) => {
+    socket.on("a collection category was created", (data) => {
         window.location.reload()
     })
+    
     function deleteCollection(id) {
         if (confirm('Are you sure you want to delete the collection?')) {
-            socket.emit("admin deletes a collection", { id: id });
+            const userId = document.getElementById('userid').value;
+            socket.emit("a client deletes a collection", { id: id, userId: userId });
         }
     }
     function deleteCollectionType(id) {
-        if (confirm('Are you sure you want to delete the collection type?')) {
-            socket.emit("admin deletes a collection type", { id: id });
+        if (confirm('Are you sure you want to delete the collection category?')) {
+            const userId = document.getElementById('userid').value;
+            socket.emit("a client deletes a collection category", { id: id, userId: userId });
         }
     }
     socket.on("a collection was deleted", (data) => {
         window.location.reload()
     });
-    socket.on("a collection type was deleted", (data) => {
+    socket.on("a collection category was deleted", (data) => {
         window.location.reload()
     });
 
