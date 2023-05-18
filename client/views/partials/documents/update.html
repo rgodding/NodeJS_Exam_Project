@@ -1,0 +1,11 @@
+<div class="card-body" style="overflow-y: scroll;">
+    <div id="document-content">
+        <textarea name="documentinput" id="documentinput" class="form-control document-input"
+            placeholder="Enter Notes Here" style="height: 75vh;">$DOCUMENT_CONTENT</textarea>
+        <input id="documentid" name="documentid" value="$DOCUMENT_CONTENT_ID" style="display: none;">
+        <input id="documenttype" name="documenttype" value="$DOCUMENT_CONTENT_TYPE" style="display: none;">
+    </div>
+</div>
+<div class="card-footer">
+    <button onclick="postUpdateDocument()" class="btn btn-primary">Update</button>
+</div>

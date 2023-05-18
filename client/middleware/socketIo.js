@@ -1,5 +1,9 @@
 import collectionCategoryManager from "../repository/collectionCategoryManager.js";
 import collectionManager from "../repository/collectionManager.js";
+import documentManager from "../repository/documentManager.js";
+import constructDocumentTable from "../util/documents/constructDocumentTable.js";
+import constructCreateDocument from "../util/documents/constructCreateDocument.js";
+import constructDocumentContent from "../util/documents/constructDocumentContent.js";
 
 export default function socketIo(io){
     io.on("connection", (socket) => {
@@ -14,6 +18,38 @@ export default function socketIo(io){
 function loginSocket(socket, io){
 }
 function documentsSocket(socket, io){
+    socket.on('a client choose a collection', async (data) => {
+        const documents = await documentManager.fetchAllObjects(data.userId);
+        const table = constructDocumentTable(data.data, documents)
+        io.emit('a collection was chosen', {
+            currentCollection: `<input id="current-collection-value" name="current-collection-value" value="${data.collection}" style="display: none;">`,
+            table: table,
+            content: `<div class="container-fluid mt-3"><h3>choose a document</h3></div>`
+        })
+    })
+    socket.on('a client choose create document', (data) => {
+        const content = constructCreateDocument(data.collection);
+        io.emit('a document is to be created', {
+            content: content,
+        })
+    })
+    socket.on("a client creates a document", async (data) => {
+        await documentManager.postObject(data.collection, data.content, data.userId);
+        const documents = await documentManager.fetchAllObjects(data.userId);
+        const table = constructDocumentTable(data.data, documents);
+        io.emit("a document was created", {
+            table: table,
+            content: `<div class="container-fluid mt-3"><h3>Document was created</h3></div>`,
+        })
+    })
+    socket.on("a client choose a document", async (data) => {
+        const document = await documentManager.fetchObjectById(data.id, data.userId);
+        const content = constructDocumentContent(data.collection, data.id, document)
+        io.emit('a document was chosen', {
+            content: content,
+        })
+    })
+    //`<div class="container-fluid mt-3"><h3>Document was created</h3></div>`
 }
 function imagesSocket(socket, io){
 }

@@ -22,13 +22,14 @@ async function fetchAllData(req, res){
 }
 async function fetchDataById(req, res){
     try {
-        const userId = req.session.userId;
+        const userId = req.params.userId;
         const id = req.params.id;
         const data = await firebaseManager.fetchDataById(`${type}::${userId}`, id);
         if(!data){
             res.send({})
         } else {
-            const data = documentModel(data.data, data.id);
+            const document = documentModel(data.data, data.id);
+            res.send(document)
         }
     } catch (err) {
         console.error(err);
@@ -37,10 +38,11 @@ async function fetchDataById(req, res){
 }
 function postData(req, res){
     try {
-        const type = req.params.type;
+        const userId = req.params.userId;
+        const collection = req.body.collection;
         const content = req.body.content;
         const data = {
-            type: type,
+            collection: collection,
             content: content,
         }
         const document = documentModel(data);

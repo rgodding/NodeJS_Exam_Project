@@ -1,0 +1,45 @@
+#documents-table-field{
+    height: 45vh;
+    max-height: calc(50vh - 28px);
+    font-size: 1.25vh;
+}
+
+#document-menu {
+    max-height: 45vh;
+    max-height: calc(50vh - 28px);
+    overflow-y: scroll;
+}
+.test{
+    padding: 5px;
+}
+#document-menu button {
+    font-size: 1vw;
+}
+#document-menu::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+    background-color: transparent;
+}
+#documents-table-items-field{
+    overflow-y: scroll;
+}
+#documents-table-items-field::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+    background-color: transparent;
+}
+
+#documents-content-field{
+    height: 95vh;
+    max-height: calc(100vh - 56px);
+}
+.document-menu-field-button{
+    font-size: 1vw;
+}
+
+#documents-table-name-field button{
+    margin: 0;
+    padding: 5px 5px;
+    font-size: 0.75vw;
+    float: right;
+}

@@ -1,18 +1,45 @@
-const url = 'http://localhost:8081/api/documents'
-async function fetchAllObjects(userId) {
-  console.log('fetching');
-    return new Promise((resolve, reject) => {
-      fetch(`${url}/${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  }
+const url = 'http://localhost:8081/api/documents';
 
-  export default {
-    fetchAllObjects,
-  }
+async function fetchAllObjects(userId) {
+  return new Promise((resolve, reject) => {
+    fetch(`${url}/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+async function postObject(collection, content, userId) {
+  let response = await fetch(`${url}/${userId}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      collection: collection,
+      content: content,
+    }),
+  });
+  return response.status;
+}
+async function fetchObjectById(id, userId) {
+  return new Promise((resolve, reject) => {
+    fetch(`${url}/${userId}/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+export default {
+  fetchAllObjects,
+  fetchObjectById,
+  postObject,
+};

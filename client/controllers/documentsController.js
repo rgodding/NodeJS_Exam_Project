@@ -6,6 +6,7 @@ export async function showDocuments(req, res) {
         const page = await constructDocumentsPage(req.isUser, userId);
         res.send(page)
     } catch (err) {
+        console.error(err);
         res.status(505).send('Internal Client Error');
     }
 }

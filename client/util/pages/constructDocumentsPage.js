@@ -1,32 +1,34 @@
-import documentManager from '../../repository/documentManager.js';
+import collectionCategoryManager from '../../repository/collectionCategoryManager.js';
+import collectionManager from '../../repository/collectionManager.js';
 import templateEngine from '../templateEngine.js';
 
 export default async function constructDocumentsPage(isUser, userId) {
-    const documents = documentManager.fetchAllObjects(userId)
-    console.log('documents : ' + JSON.stringify(documents));
+    const categories = await collectionCategoryManager.fetchAllObjects(userId);
+    const collections = await collectionManager.fetchAllObjects(userId);
     const page = templateEngine.readPage('./views/pages/documents.html')
+    .replace('$USER_ID', userId)
+    .replace('$DOCUMENT_MENU', constructMenu(categories, collections))
     const renderedPage = templateEngine.renderPageWithSocket(page, {
       tabTitle: 'Front Page',
+      cssLink: `<link rel="stylesheet" href="/css/documents.css">`,
       isUser: isUser,
     });
   return renderedPage;
 }
-
-// Old Functions
-function constructDocumentsPageMenu(types, collections){
-    let html = ``
-    types.forEach(type => {
-        const id = 'document-menu-offcanvas-' + type.type
-        const typesCollection = collections.filter(object => object.category === type.type);
-        html += templateEngine.readPage('./views/partials/documents/menu.html')
-        .replace('$DOCUMENT_MENU_BUTTON_NAME', type.name)
-        .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF1', id)
-        .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF2', id)
-        .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF3', id)
-        .replace('$DOCUMENT_MENU_OFFCANVAS_NAME', type.name)
-        .replace('$DOCUMENT_MENU_OFFCANVAS_OPTIONS', constructDocumentsPageMenuOptions(typesCollection))
-    })
-    return html;
+function constructMenu(categories, collections) {
+  let html = '';
+  categories.forEach((category) => {
+    const id = 'document-menu-offcanvas-' + category.type;
+    const collection = collections.filter((object) => object.category === category.type);
+    html += templateEngine.readPage('./views/partials/documents/menu.html')
+    .replace('$DOCUMENT_MENU_BUTTON_NAME', category.name)
+    .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF1', id)
+    .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF2', id)
+    .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF3', id)
+    .replace('$DOCUMENT_MENU_OFFCANVAS_NAME', category.name)
+    .replace('$DOCUMENT_MENU_OFFCANVAS_OPTIONS', constructDocumentsPageMenuOptions(collection));
+  });
+  return html;
 }
 function constructDocumentsPageMenuOptions(collection) {
   let html = '';
@@ -39,3 +41,4 @@ function constructDocumentsPageMenuOptions(collection) {
   });
   return html;
 }
+
