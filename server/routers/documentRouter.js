@@ -20,11 +20,11 @@ router.put(`${routerUrl}/:id`, async (req, res) => {
 })
 
 router.patch(`${routerUrl}/:id`, async (req, res) => {
-    documentController.deleteData(req, res);
+    documentController.patchData(req, res);
 })
 
 router.delete(`${routerUrl}/:id`, async (req, res) => {
-    res.send({data: 'document : delete'})
+    documentController.deleteData(req, res)
 }) 
 
 export default router;

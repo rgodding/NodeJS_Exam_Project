@@ -51,3 +51,19 @@ function pickDocument(collection, id) {
 socket.on("a document was chosen", (data) => {
     documentContent.innerHTML = data.content;
 });
+function deleteDocument(id){
+    socket.emit("a client choose delete document", {
+        id: id,
+        userId: userId,
+    })
+}
+socket.on("a document was deleted", (data) => {
+    documentTable.innerHTML = data.table;
+    documentContent.innerHTML = `<div class="container-fluid mt-3"><h3>Document was deleted</h3></div>`
+})
+function updateDocument(){
+    socket.emit("a client choose update document", {
+        id: id,
+        userId: userId,
+    })
+}

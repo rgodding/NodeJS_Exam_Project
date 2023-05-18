@@ -20,7 +20,7 @@ function loginSocket(socket, io){
 function documentsSocket(socket, io){
     socket.on('a client choose a collection', async (data) => {
         const documents = await documentManager.fetchAllObjects(data.userId);
-        const table = constructDocumentTable(data.data, documents)
+        const table = constructDocumentTable(documents)
         io.emit('a collection was chosen', {
             currentCollection: `<input id="current-collection-value" name="current-collection-value" value="${data.collection}" style="display: none;">`,
             table: table,
@@ -36,7 +36,7 @@ function documentsSocket(socket, io){
     socket.on("a client creates a document", async (data) => {
         await documentManager.postObject(data.collection, data.content, data.userId);
         const documents = await documentManager.fetchAllObjects(data.userId);
-        const table = constructDocumentTable(data.data, documents);
+        const table = constructDocumentTable(documents);
         io.emit("a document was created", {
             table: table,
             content: `<div class="container-fluid mt-3"><h3>Document was created</h3></div>`,
@@ -44,10 +44,24 @@ function documentsSocket(socket, io){
     })
     socket.on("a client choose a document", async (data) => {
         const document = await documentManager.fetchObjectById(data.id, data.userId);
-        const content = constructDocumentContent(data.collection, data.id, document)
+        const content = constructDocumentContent(data.id, document)
         io.emit('a document was chosen', {
             content: content,
         })
+    })
+    socket.on("a client choose delete document", async (data) => {
+        const id = data.id;
+        const userId = data.userId;
+        await documentManager.deleteObject(id, userId)
+        const documents = await documentManager.fetchAllObjects(userId);
+        const table = constructDocumentTable(documents);
+        io.emit("a document was deleted", {
+            table: table
+        })
+    })
+    socket.on("a client choose update document", async (data) => {
+        const id = data.id;
+        const userId = data.userId;
     })
     //`<div class="container-fluid mt-3"><h3>Document was created</h3></div>`
 }

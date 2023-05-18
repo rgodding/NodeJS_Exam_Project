@@ -38,8 +38,18 @@ async function fetchObjectById(id, userId) {
       });
   });
 }
+async function deleteObject(id, userId) {
+  fetch(`${url}/${userId}/${id}`, {
+    method: 'DELETE',
+  })
+  .then((res) => {
+  })
+  .catch((error) => {
+  });
+}
 export default {
   fetchAllObjects,
   fetchObjectById,
   postObject,
+  deleteObject,
 };
