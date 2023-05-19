@@ -1,9 +1,10 @@
 import { Router } from "express";
 const router = Router();
-const routerUrl = '/api/images'
+const routerUrl = '/api/images/:userId'
+import imageController from "../controllers/imageController.js";
 
 router.get(`${routerUrl}`, async (req, res) => {
-    res.send({data: 'images : get all'})
+    imageController.fetchAllData(req, res);
 })
 
 router.get(`${routerUrl}`, async (req, res) => {
@@ -11,7 +12,7 @@ router.get(`${routerUrl}`, async (req, res) => {
 })
 
 router.post(`${routerUrl}`, async (req, res) => {
-    res.send({data: 'images : post'})
+    imageController.postData(req, res)
 })
 
 router.put(`${routerUrl}`, async (req, res) => {

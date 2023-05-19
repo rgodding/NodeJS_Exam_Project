@@ -1,0 +1,25 @@
+<div class="col card p-0">
+    <div class="card-body text-center">
+        <img class="rounded mx-auto d-block show-image-show" src="./images/uploads/$FILENAME">
+    </div>
+    <div class="card-footer">
+        <div class="row test">
+            <div class="col col-auto p-1">
+                <button class="btn btn-danger" onclick="deleteImage('$FILEID_DELETE', '$FILENAME_DELETE')">Delete</button>
+            </div>
+            <div class="col col-auto p-1">
+                <button class="btn btn-warning" onclick="copyImageUrl('$FILENAME_COPY')">Copy Path</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .test button {
+        font-size: 1vw;
+    }
+    .show-image-show {
+        width: 300px;
+        max-width: 90%;
+    }
+</style>

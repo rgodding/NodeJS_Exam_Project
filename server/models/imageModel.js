@@ -10,6 +10,7 @@ function constructImageModel(data, id){
         id: id,
         name: data.name,
         description: data.description,
+        collection: data.collection,
         fileName: data.fileName,
     }
     return image;
@@ -18,6 +19,7 @@ function constructNewImageModel(data){
     const image = {
         name: data.name,
         description: data.description,
+        collection: data.collection,
         fileName: data.fileName,
     }
     return image;
