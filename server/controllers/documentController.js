@@ -64,14 +64,12 @@ function putData(req, res){
 function patchData(req, res){
     try {
         const id = req.params.id;
-        const type = req.params.type;
+        const userId = req.params.userId;
         const content = req.body.content;
         const data = {
-            type: type,
             content: content,
         }
-        const document = constructNewDocument(data);
-        firebaseManager.updateData(`${type}::${userId}`, id, document);
+        firebaseManager.updateData(`${type}::${userId}`, id, data);
         res.status(200).send('OK')
     } catch (err) {
         console.error(err);

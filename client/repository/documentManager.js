@@ -38,6 +38,19 @@ async function fetchObjectById(id, userId) {
       });
   });
 }
+async function updateObject(id, content, userId) {
+  let response = await fetch(`${url}/${userId}/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      content: content,
+    }),
+  });
+  return (response.status);
+}
 async function deleteObject(id, userId) {
   fetch(`${url}/${userId}/${id}`, {
     method: 'DELETE',
@@ -51,5 +64,6 @@ export default {
   fetchAllObjects,
   fetchObjectById,
   postObject,
+  updateObject,
   deleteObject,
 };
