@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { showImages2, showImages, createImage } from '../controllers/imagesController.js';
 import requireUser from '../middleware/requireUser.js';
 import multer from "multer";
-import checkUser from '../middleware/checkUser.js';
 
 const router = Router();
 
@@ -35,7 +34,7 @@ router.post('/images', upload.single("file"), (req, res) => {
   createImage(req, res)
 })
 
-router.get('/show-images', checkUser, async (req, res) => {
+router.get('/show-images', requireUser, async (req, res) => {
   showImages2(req, res);
 })
 

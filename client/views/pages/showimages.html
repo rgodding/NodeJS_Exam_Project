@@ -7,7 +7,9 @@
 <script>
     const socket = io();
     function deleteImage(id, fileName) {
-        socket.emit('client deletes an image', { id: id, fileName: fileName })
+        if (confirm('Are you sure you want to delete the document')) {
+            socket.emit('client deletes an image', { id: id, fileName: fileName })
+        }
     }
     function copyImageUrl(fileName) {
         var textToCopy = '/images/uploads/' + fileName;
