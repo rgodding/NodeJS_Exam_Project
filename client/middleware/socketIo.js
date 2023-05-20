@@ -21,7 +21,8 @@ function loginSocket(socket, io) {}
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
     const documents = await documentManager.fetchAllObjects(data.userId);
-    const table = constructDocumentTable(documents);
+    const result = documents.filter(object => object.collection === data.collection);
+    const table = constructDocumentTable(result);
     io.emit('a collection was chosen', {
       currentCollection: `<input id="current-collection-value" name="current-collection-value" value="${data.collection}" style="display: none;">`,
       table: table,
@@ -37,7 +38,8 @@ function documentsSocket(socket, io) {
   socket.on('a client creates a document', async (data) => {
     await documentManager.postObject(data.collection, data.content, data.userId);
     const documents = await documentManager.fetchAllObjects(data.userId);
-    const table = constructDocumentTable(documents);
+    const result = documents.filter(object => object.collection === data.collection);
+    const table = constructDocumentTable(result);
     io.emit('a document was created', {
       table: table,
       content: `<div class="container-fluid mt-3"><h3>Document was created</h3></div>`,
@@ -54,8 +56,9 @@ function documentsSocket(socket, io) {
     const id = data.id;
     const userId = data.userId;
     await documentManager.deleteObject(id, userId);
-    const documents = await documentManager.fetchAllObjects(userId);
-    const table = constructDocumentTable(documents);
+    const documents = await documentManager.fetchAllObjects(data.userId);
+    const result = documents.filter(object => object.collection === data.collection);
+    const table = constructDocumentTable(result);
     io.emit('a document was deleted', {
       table: table,
     });

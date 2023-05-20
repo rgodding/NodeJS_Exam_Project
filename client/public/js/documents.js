@@ -50,10 +50,11 @@ function pickDocument(id) {
 socket.on('a document was chosen', (data) => {
   documentContent.innerHTML = data.content;
 });
-function deleteDocument(id) {
+function deleteDocument(collection, id) {
   if (confirm('Are you sure you want to delete the document')) {
     socket.emit('a client choose delete document', {
       id: id,
+      collection: collection,
       userId: userId,
     });
   }
@@ -66,6 +67,7 @@ function updateDocument(id) {
   socket.emit('a client choose update document', {
     id: id,
     userId: userId,
+    collection: documentCollection.value,
   });
 }
 socket.on('a document was chosen to be updated', (data) => {
