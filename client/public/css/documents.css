@@ -3,7 +3,6 @@
     max-height: calc(50vh - 28px);
     font-size: 1.25vh;
 }
-
 #document-menu {
     max-height: 45vh;
     max-height: calc(50vh - 28px);
@@ -28,15 +27,19 @@
     width: 0;
     background-color: transparent;
 }
-
 #documents-content-field{
     height: 95vh;
     max-height: calc(100vh - 56px);
+    overflow-y: scroll;
+}
+#documents-content-field::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background-color: transparent;
 }
 .document-menu-field-button{
     font-size: 1vw;
 }
-
 #documents-table-name-field button{
     margin: 0;
     padding: 5px 5px;
