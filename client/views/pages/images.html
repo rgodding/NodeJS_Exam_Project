@@ -1,38 +1,53 @@
-<div class="container-fluid">
+<div class="container-fluid row">
     <h1>Image Management</h1>
     <div class="col-3">
         <form action="/images" method="POST" enctype="multipart/form-data">
-            <div class="row row-cols-1">
-                <div class="col">
-                    <select name="type" id="type" class="form-select"
-                        aria-label="Default select example">
-                        $CREATE_IMAGES_TYPES_OPTIONS
-                    </select>
+            <div class="row row-cols-2">
+                <div class="row row-cols-1">
+                    <div class="col mb-3">
+                        <input class="form-control" name="file" type="file" accept="image/*" required>
+                    </div>
+                    <div class="col mb-3">
+                        <input class="form-control" name="name" placeholder="image name" required>
+                    </div>
+                    <div class="col mb-3">
+                        <input class="form-control" name="description" placeholder="short description" required>
+                    </div>
+                    <div class="col mb-3">
+                        <button type="submit" class="btn btn-primary" onclick="uploadImage()">Upload</button>
+                    </div>
                 </div>
-                <div class="col">
-                    <input class="form-control" name="file" type="file" accept="image/*" required>
-                </div>
-                <div class="col">
-                    <input class="form-control" name="name" placeholder="image name" required>
-                </div>
-                <div class="col">
-                    <input class="form-control" name="description" placeholder="short description" required>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-primary" onclick="uploadImage()">Upload</button>
+                <div class="row row-cols-1">
+                    <div class="col mb-3">
+                        <select name="type" id="type" class="form-select" aria-label="Default select example">
+                            $CREATE_IMAGES_TYPES_OPTIONS
+                        </select>
+                    </div>
                 </div>
             </div>
         </form>
+        <div class="row">
+            <div class="input-group">
+                <span class="input-group-text" id="image-name-description">Image Name:</span>
+                <input id="image-name" name="image-name" type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="input-group-left">
+            </div>
+        </div>
+    </div>
+    <div class="col-8 border">
+        <div class="row row-cols-2 p-3">
+            $SHOW_IMAGES_LIST
+        </div>
     </div>
 </div>
+<input type="text" id="userid" name="userid" value="$USER_ID" style="display: none;"/>
 
 <script>
     const socket = io();
+    const userId = document.getElementById('userid').value;
     function uploadImage() {
         var fileInput = document.getElementsByName("file")[0];
         var nameInput = document.getElementsByName("name")[0];
         var descriptionInput = document.getElementsByName("description")[0];
-
         if (fileInput.value === "" || nameInput.value === "" || descriptionInput.value === "") {
             alert("Please fill in all required fields.");
             return false; // Prevent form submission
@@ -40,7 +55,37 @@
             alert("Image uploaded")
             window.location.reload();
         }
-
         // Perform form submission or further processing here');
     }
+    function copyImageUrl(fileName) {
+        var textToCopy = '/images/uploads/' + fileName;
+        var tempInput = document.createElement("input");
+        tempInput.value = textToCopy;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput)
+        var alertBox = document.createElement("div");
+        alertBox.textContent = "image path copied"
+        alertBox.classList.add("notification"); // Apply the CSS class
+        document.body.appendChild(alertBox);
+        setTimeout(function () {
+            document.body.removeChild(alertBox);
+        }, 2000); // 2 seconds
+    }
+    function deleteImage(id, fileName) {
+        if (confirm('Are you sure you want to delete the document')) {
+            socket.emit('a client deletes an image', { id: id, fileName: fileName, userId: userId })
+        }
+    }
+    socket.on('an image was deleted', (data) => {
+        window.location.reload();
+    })
+</script>
+<script>
+    const imageSearcher = document.getElementById('image-name')
+    imageSearcher.addEventListener('input', e => {
+        const text = imageSearcher.value;
+        // Add show/hide function if image name matches
+    })
 </script>

@@ -5,6 +5,7 @@ import constructDocumentTable from '../util/documents/constructDocumentTable.js'
 import constructCreateDocument from '../util/documents/constructCreateDocument.js';
 import constructDocumentContent from '../util/documents/constructDocumentContent.js';
 import constructUpdateContent from '../util/documents/constructUpdateDocument.js';
+import imageManager from '../repository/imageManager.js';
 
 export default function socketIo(io) {
   io.on('connection', (socket) => {
@@ -74,7 +75,6 @@ function documentsSocket(socket, io) {
     const document = await documentManager.fetchObjectById(data.id, data.userId);
     const table = constructDocumentTable(documents);
     const content = constructDocumentContent(data.id, document);
-    console.log(content);
     io.emit('a document was updated', {
       table: table,
       content: content,
@@ -82,7 +82,13 @@ function documentsSocket(socket, io) {
   });
   //`<div class="container-fluid mt-3"><h3>Document was created</h3></div>`
 }
-function imagesSocket(socket, io) {}
+function imagesSocket(socket, io) {
+  socket.on("a client deletes an image", async (data) => {
+    await imageManager.deleteObject(data.id, data.userId);
+    await imageManager.deleteImageFile(data.fileName);
+    io.emit('an image was deleted');
+  })
+}
 function adminSocket(socket, io) {}
 function userSocket(socket, io) {
   socket.on('a client creates a collection category', (data) => {

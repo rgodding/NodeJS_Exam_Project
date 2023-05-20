@@ -67,7 +67,10 @@ function patchData(req, res){
 }
 function deleteData(req, res){
     try {
-
+        const id = req.params.id;
+        const userId = req.params.userId;
+        firebaseManager.deleteData(`${type}::${userId}`, id);
+        res.status(200).send('OK');
     } catch (err) {
         console.error(err);
         res.status(505).send('Internal Server Error')

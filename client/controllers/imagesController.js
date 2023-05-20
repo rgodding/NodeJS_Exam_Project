@@ -1,16 +1,6 @@
 import imageManager from '../repository/imageManager.js';
 import constructImagesPage from '../util/pages/constructImagesPage.js';
-import constructShowImages from '../util/pages/constructShowImages.js';
 
-export async function showImages2(req, res) {
-  try {
-    const page = await constructShowImages(req.isUser, req.session.userId);
-    res.send(page);
-  } catch (err) {
-    console.error(err);
-    res.status(505).send('Internal Client Error');
-  }
-}
 export async function showImages(req, res) {
   try {
     const page = await constructImagesPage(req.isUser, req.session.userId);

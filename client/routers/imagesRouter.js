@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { showImages2, showImages, createImage } from '../controllers/imagesController.js';
+import { showImages, createImage } from '../controllers/imagesController.js';
 import requireUser from '../middleware/requireUser.js';
 import multer from "multer";
 
@@ -32,10 +32,6 @@ const upload = multer({ storage });
 
 router.post('/images', upload.single("file"), (req, res) => {
   createImage(req, res)
-})
-
-router.get('/show-images', requireUser, async (req, res) => {
-  showImages2(req, res);
 })
 
 export default router;

@@ -31,6 +31,7 @@ function constructImageItems(images) {
   let html = '';
   if (images.length == 1) {
     html += templateEngine.readPage('./views/partials/images/imageitem.html')
+    .replace('$IMAGE_NAME1', images[0].name || 'Error?')
     .replace('$FILENAME', images[0].fileName)
     .replace('$FILEID_DELETE', images[0].fileName)
     .replace('$FILENAME_DELETE', images[0].fileName)
@@ -38,7 +39,8 @@ function constructImageItems(images) {
   } else {
     images.forEach((image) => {
       html += templateEngine.readPage('./views/partials/images/imageitem.html')
-      .replace('$FILENAME', image.fileName)
+    .replace('$IMAGE_NAME1', image.name || 'Error?')
+    .replace('$FILENAME', image.fileName)
     .replace('$FILEID_DELETE', image.fileName)
     .replace('$FILENAME_DELETE', image.fileName)
     .replace('$FILENAME_COPY', image.fileName)

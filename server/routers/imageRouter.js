@@ -23,9 +23,8 @@ router.patch(`${routerUrl}`, async (req, res) => {
     res.send({data: 'images : patch'})
 })
 
-
-router.delete(`${routerUrl}`, async (req, res) => {
-    res.send({data: 'images : delete'})
+router.delete(`${routerUrl}/:id`, async (req, res) => {
+    imageController.deleteData(req, res);
 }) 
 
 export default router;

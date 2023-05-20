@@ -31,8 +31,8 @@ async function postObject(collection, name, description, fileName, userId) {
     return (response.status);
 }
 
-async function deleteObject(id) {
-  fetch(`${imagesApiUrl}/${id}`, {
+async function deleteObject(id, userId) {
+  fetch(`${url}/${userId}/${id}`, {
     method: 'DELETE',
   })
   .then((res) => {
@@ -41,7 +41,7 @@ async function deleteObject(id) {
   });
 }
 
-async function deleteImage(fileName){
+async function deleteImageFile(fileName){
   try {
     fs.unlink(`./public/images/uploads/${fileName}`, function (err){
       if(err){
@@ -53,11 +53,11 @@ async function deleteImage(fileName){
   } catch (err) {
     console.error(err);
   }
-  
 }
+
 export default {
     fetchAllObjects,
     postObject,
     deleteObject,
-    deleteImage
+    deleteImageFile,
 }
