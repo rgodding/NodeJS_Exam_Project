@@ -52,6 +52,12 @@ function constructImageItems(images) {
     .replace('$FILEID_DELETE', images[0].id)
     .replace('$FILENAME_DELETE', images[0].fileName)
     .replace('$FILENAME_COPY', images[0].fileName)
+
+    .replace('$IMAGE_MODAL_ID_1', images[0].id)
+    .replace('$IMAGE_MODAL_ID_2', images[0].id)
+    .replace('$IMAGE_MODAL_ID_3', images[0].id)
+    .replace('$IMAGE_MODAL_ID_4', images[0].id)
+    .replace('$FILENAME_MODAL', images[0].fileName)
   } else {
     images.forEach((image) => {
     html += templateEngine.readPage('./views/partials/images/imageitem.html')
@@ -60,6 +66,13 @@ function constructImageItems(images) {
     .replace('$FILEID_DELETE', image.id)
     .replace('$FILENAME_DELETE', image.fileName)
     .replace('$FILENAME_COPY', image.fileName)
+
+    // Off cancas test
+    .replace('$IMAGE_MODAL_ID_1', image.id)
+    .replace('$IMAGE_MODAL_ID_2', image.id)
+    .replace('$IMAGE_MODAL_ID_3', image.id)
+    .replace('$IMAGE_MODAL_ID_4', image.id)
+    .replace('$FILENAME_MODAL', image.fileName)
     });
   }
   return html;

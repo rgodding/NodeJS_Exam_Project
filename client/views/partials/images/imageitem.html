@@ -7,26 +7,52 @@
         </div>
     </div>
     <div class="card-body text-center">
-        <img class="rounded mx-auto d-block image-item" src="/images/uploads/$FILENAME">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#image-$IMAGE_MODAL_ID_1">
+            <img class="rounded mx-auto d-block image-item" src="/images/uploads/$FILENAME">
+        </button>
     </div>
     <div class="card-footer">
         <div class="row row-cols-2">
             <div class="col col-auto p-1">
-                <button class="btn btn-danger image-menu-button" onclick="deleteImage('$FILEID_DELETE', '$FILENAME_DELETE')">Delete</button>
+                <button class="btn btn-danger image-menu-button"
+                    onclick="deleteImage('$FILEID_DELETE', '$FILENAME_DELETE')">Delete</button>
             </div>
             <div class="col col-auto p-1">
-                <button class="btn btn-warning image-menu-button" onclick="copyImageUrl('$FILENAME_COPY')">Copy Path</button>
+                <button class="btn btn-warning image-menu-button" onclick="copyImageUrl('$FILENAME_COPY')">Copy
+                    Path</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade left" id="image-$IMAGE_MODAL_ID_2" tabindex="-1" aria-labelledby="image-modal-$IMAGE_MODAL_ID_3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="image-modal-$IMAGE_MODAL_ID_4">Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img class="img-fluid" src="/images/uploads/$FILENAME_MODAL">
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .image-menu-button{
+    .image-menu-button {
         font-size: 10px;
     }
-    .image-item{
+
+    .image-item {
         max-width: 100%;
         max-height: 100vh;
+    }
+    .modal-content {
+        width: 175%;
+    }
+    .modal-body img {
+        max-height: 75vh;
+        padding-left: 0;
     }
 </style>
