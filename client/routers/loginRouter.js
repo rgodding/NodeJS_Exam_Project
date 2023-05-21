@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { showLogin, login } from '../controllers/loginController.js';
+import { showRegister, register } from '../controllers/loginController.js';
 import checkUser from '../middleware/checkUser.js';
 const router = Router();
 
@@ -14,7 +15,16 @@ router.post('/login', checkUser, async (req, res) => {
     login(req, res)
   }
 })
-
+router.get('/register', checkUser, async (req, res) => {
+  showRegister(req, res)
+})
+router.post('/register', checkUser, async (req, res) => {
+  if(req.isUser){
+    res.redirect('/')
+  } else {
+    register(req, res)
+  }
+})
 router.get('/logout', async (req, res) => {
   req.session.destroy();
   res.redirect('/login');

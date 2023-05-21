@@ -4,7 +4,7 @@ import checkUser from '../middleware/checkUser.js';
 import checkAdmin from '../middleware/checkAdmin.js';
 const router = Router();
 
-router.get('/admin', checkUser, checkAdmin, (req, res) => {
+router.get('/admin', checkUser, checkAdmin, async (req, res) => {
   showAdmin(req, res);
 });
 

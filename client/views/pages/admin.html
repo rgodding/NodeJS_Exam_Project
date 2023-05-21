@@ -1,23 +1,35 @@
 <div class="container-fluid">
-    <h1>Welcome to the admin</h1>
+    <h1>Admin Page</h1>
     <div class="row">
-        <div class="col-4">
-            <h5>Collection Types</h5>
-            <div class="row ms-4 mb-5 border border-4 p-2">
-                <h5>Creating Collection Type</h5>
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <input class="form-control" id="collectiontypename" name="collectiontypename"
-                            placeholder="Collection Type name...">
+        <div class="col col-2 ps-0 pe-0">
+            <div class="row">
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white border border-right-0">
+                    <a id="documents-table-name-field"
+                        class="d-flex align-items-center flex-shrink-0 p-2 link-dark text-decoration-none border-bottom">
+                        <div id="document-table-name">
+                            <h5>Users</h5>
+                        </div>
+
+                    </a>
+                    <div id="documents-table-items-field"
+                        class="list-group list-group-flush border-bottom scrollarea document-table-content">
+                        <div id="user-list">
+                            $ADMIN_PAGE_USERS
+                        </div>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <input class="form-control" id="collectiontypetype" name="collectiontypetype"
-                            placeholder="Collection Type type...">
-                    </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col col-12">
+                    <h5>User Notes</h5>
                 </div>
-                <button class="btn btn-primary" onclick="createCollectionType()">Create</button>
+            </div>
+            <div class="row">
+                <div class="col col-12">
+                    <h5>User Images</h5>
+                </div>
             </div>
         </div>
     </div>

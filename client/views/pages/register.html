@@ -1,0 +1,45 @@
+<div id="register-form-container" class="container-fluid d-flex justify-content-center">
+    <div class="p-5 border rounded">
+        <form method="POST">
+            <h1 class="mb-3">Please input information</h1>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="John">
+                        <label for="firstName">First Name</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Smith">
+                        <label for="lastName">Last Name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="...">
+                <label for="password">Password</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm"
+                    placeholder="...">
+                <label for="passwordConfirm">Confirm Password</label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+            <div class="mb-3">
+                <p>Already have an account? <a href="/login">login</a> now!</p>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/js/register.js"></script>
+
+<style>
+    #register-form-container {
+        margin-top: 10vh;
+    }
+</style>

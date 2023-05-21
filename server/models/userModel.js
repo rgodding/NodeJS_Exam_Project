@@ -8,6 +8,8 @@ export default function userModel(data, id){
 function constructUserModel(data, id){
     const user = {
         id: id,
+        userId: data.userId,
+        email: email,
         firstName: data.firstName,
         lastName: data.lastName,
     }
@@ -15,7 +17,8 @@ function constructUserModel(data, id){
 }
 function constructNewUserModel(data){
     const user = {
-        id: data.userId,
+        userId: data.userId,
+        email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
     }
