@@ -15,7 +15,9 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   userController.postData(req, res);
 });
-
+router.post('/forgot-password', async (req, res) => {
+  userController.forgotPassword(req, res)
+});
 router.post('/logout', async (req, res) => {
   req.session.destroy();
   res.status(200).send('OK');

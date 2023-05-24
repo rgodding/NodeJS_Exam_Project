@@ -88,7 +88,16 @@ function deleteData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-
+async function forgotPassword(req, res) {
+  try {
+    const email = req.body.email;
+    const result = await firebaseManager.forgotPassword(email);
+    res.send(result);
+  } catch (err) {
+    console.error(err);
+    res.status(505).send('Internal Server Error');
+  }
+}
 export default {
   fetchAllData,
   fetchDataById,
@@ -96,4 +105,5 @@ export default {
   putData,
   patchData,
   deleteData,
+  forgotPassword,
 };

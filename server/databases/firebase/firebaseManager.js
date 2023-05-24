@@ -32,6 +32,21 @@ async function register(email, password) {
       });
   });
 }
+async function forgotPassword(email) {
+  return new Promise((resolve, reject) => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        resolve(true);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+        resolve(false);
+      });
+  });
+}
 
 async function fetchAllData(type) {
   const reference = collection(database, type);
@@ -78,6 +93,7 @@ async function deleteData(type, id) {
 export default {
     login,
     register,
+    forgotPassword,
     fetchAllData,
     fetchDataById,
     postData,
