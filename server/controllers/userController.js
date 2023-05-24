@@ -5,7 +5,7 @@ const type = 'users';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllData(`${type}::${userId}`);
+    const data = await firebaseManager.fetchAllData(`${type}`);
     if (!data) {
       res.send([]);
     } else {

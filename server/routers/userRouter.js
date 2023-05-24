@@ -1,9 +1,10 @@
 import { Router } from "express";
+import userController from "../controllers/userController.js";
 const router = Router();
-const routerUrl = '/api/users'
+const routerUrl = '/api/users/:userId'
 
 router.get(`${routerUrl}`, async (req, res) => {
-    res.send({data: 'users : get all'})
+    userController.fetchAllData(req, res)
 })
 
 router.get(`${routerUrl}`, async (req, res) => {

@@ -1,13 +1,17 @@
 const url = 'http://localhost:8081/api/users';
 
 async function fetchAllObjects(userId) {
+  console.log(userId);
   return new Promise((resolve, reject) => {
     fetch(`${url}/${userId}`)
       .then((response) => response.json())
       .then((data) => {
+        console.log('here?');
+        console.log('DATA : ' + JSON.stringify(data));
         resolve(data);
       })
       .catch((error) => {
+        console.log(error);
         reject(error);
       });
   });

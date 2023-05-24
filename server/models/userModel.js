@@ -9,7 +9,7 @@ function constructUserModel(data, id){
     const user = {
         id: id,
         userId: data.userId,
-        email: email,
+        email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
     }
