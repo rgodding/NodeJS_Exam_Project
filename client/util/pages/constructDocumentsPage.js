@@ -12,10 +12,10 @@ export default async function constructDocumentsPage(isUser, userId) {
     tabTitle: 'Front Page',
     cssLink: `<link rel="stylesheet" href="/css/documents.css">`,
     isUser: isUser,
+    userId: userId,
   });
   return renderedPage;
 }
-
 function constructMenu(categories, collections) {
   let html = '';
   categories.forEach((category) => {
@@ -31,15 +31,12 @@ function constructMenu(categories, collections) {
   });
   return html;
 }
-
 function constructDocumentsPageMenuOptions(collection) {
   let html = '';
   collection.forEach((object) => {
-    html += `
-          <button class="list-group-item list-group-item-action" onclick="pickCollection('${object.type}')">
-              ${object.name}
-          </button>
-          `;
+    html += templateEngine.readPage('./views/partials/documents/menuoption.html')
+    .replace('$MENU_OPTION_CATEGORY', object.category)
+    .replace('$MENU_OPTION_NAME', object.name)
   });
   return html;
 }

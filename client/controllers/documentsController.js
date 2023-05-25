@@ -2,8 +2,7 @@ import constructDocumentsPage from '../util/pages/constructDocumentsPage.js';
 
 export async function showDocuments(req, res) {
   try {
-    const userId = req.session.userId;
-    const page = await constructDocumentsPage(req.isUser, userId);
+    const page = await constructDocumentsPage(req.isUser, req.userId);
     res.send(page);
   } catch (err) {
     console.error(err);
