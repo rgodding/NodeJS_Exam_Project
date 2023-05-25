@@ -3,18 +3,19 @@ import collectionManager from '../../repository/collectionManager.js';
 import templateEngine from '../templateEngine.js';
 
 export default async function constructDocumentsPage(isUser, userId) {
-    const categories = await collectionCategoryManager.fetchAllObjects(userId);
-    const collections = await collectionManager.fetchAllObjects(userId);
-    const page = templateEngine.readPage('./views/pages/documents.html')
-    .replace('$USER_ID', userId)
-    .replace('$DOCUMENT_MENU', constructMenu(categories, collections))
-    const renderedPage = templateEngine.renderPageWithSocket(page, {
-      tabTitle: 'Front Page',
-      cssLink: `<link rel="stylesheet" href="/css/documents.css">`,
-      isUser: isUser,
-    });
+  const categories = await collectionCategoryManager.fetchAllObjects(userId);
+  const collections = await collectionManager.fetchAllObjects(userId);
+  const page = templateEngine.readPage('./views/pages/documents.html')
+  .replace('$USER_ID', userId)
+  .replace('$DOCUMENT_MENU', constructMenu(categories, collections));
+  const renderedPage = templateEngine.renderPageWithSocket(page, {
+    tabTitle: 'Front Page',
+    cssLink: `<link rel="stylesheet" href="/css/documents.css">`,
+    isUser: isUser,
+  });
   return renderedPage;
 }
+
 function constructMenu(categories, collections) {
   let html = '';
   categories.forEach((category) => {
@@ -30,6 +31,7 @@ function constructMenu(categories, collections) {
   });
   return html;
 }
+
 function constructDocumentsPageMenuOptions(collection) {
   let html = '';
   collection.forEach((object) => {
@@ -41,4 +43,3 @@ function constructDocumentsPageMenuOptions(collection) {
   });
   return html;
 }
-

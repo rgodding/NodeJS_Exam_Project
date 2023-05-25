@@ -6,4 +6,5 @@ const router = Router();
 router.get('/user', requireUser, async (req, res) => {
   showUser(req, res);
 });
+
 export default router;

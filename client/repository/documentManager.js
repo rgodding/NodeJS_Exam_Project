@@ -12,6 +12,7 @@ async function fetchAllObjects(userId) {
       });
   });
 }
+
 async function postObject(collection, content, userId) {
   let response = await fetch(`${url}/${userId}`, {
     method: 'POST',
@@ -26,6 +27,7 @@ async function postObject(collection, content, userId) {
   });
   return response.status;
 }
+
 async function fetchObjectById(id, userId) {
   return new Promise((resolve, reject) => {
     fetch(`${url}/${userId}/${id}`)
@@ -38,6 +40,7 @@ async function fetchObjectById(id, userId) {
       });
   });
 }
+
 async function updateObject(id, content, userId) {
   let response = await fetch(`${url}/${userId}/${id}`, {
     method: 'PATCH',
@@ -49,17 +52,17 @@ async function updateObject(id, content, userId) {
       content: content,
     }),
   });
-  return (response.status);
+  return response.status;
 }
+
 async function deleteObject(id, userId) {
   fetch(`${url}/${userId}/${id}`, {
     method: 'DELETE',
   })
-  .then((res) => {
-  })
-  .catch((error) => {
-  });
+    .then((res) => {})
+    .catch((error) => {});
 }
+
 export default {
   fetchAllObjects,
   fetchObjectById,

@@ -1,6 +1,6 @@
-function signIn(){
-    console.log('signing in');
+function signIn() {
+  console.log('signing in');
 }
-function startRegister(){
-    console.log('registering');
+function startRegister() {
+  console.log('registering');
 }

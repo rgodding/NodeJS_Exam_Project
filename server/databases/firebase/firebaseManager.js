@@ -41,8 +41,6 @@ async function forgotPassword(email) {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
         resolve(false);
       });
   });
@@ -76,7 +74,7 @@ async function fetchDataById(type, id) {
   }
 }
 
-async function postData(type, data){
+async function postData(type, data) {
   addDoc(collection(database, type), data);
 }
 
@@ -91,12 +89,12 @@ async function deleteData(type, id) {
 }
 
 export default {
-    login,
-    register,
-    forgotPassword,
-    fetchAllData,
-    fetchDataById,
-    postData,
-    updateData,
-    deleteData,
-}
+  login,
+  register,
+  forgotPassword,
+  fetchAllData,
+  fetchDataById,
+  postData,
+  updateData,
+  deleteData,
+};

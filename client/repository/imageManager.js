@@ -1,5 +1,5 @@
 const url = 'http://localhost:8081/api/images';
-import fs from "fs";
+import fs from 'fs';
 
 async function fetchAllObjects(userId) {
   return new Promise((resolve, reject) => {
@@ -15,49 +15,45 @@ async function fetchAllObjects(userId) {
 }
 
 async function postObject(collection, name, description, fileName, userId) {
-    let response = await fetch(`${url}/${userId}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        collection: collection,
-        name: name,
-        description: description,
-        fileName: fileName,
-      }),
-    });
-    return (response.status);
+  let response = await fetch(`${url}/${userId}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      collection: collection,
+      name: name,
+      description: description,
+      fileName: fileName,
+    }),
+  });
+  return response.status;
 }
 
 async function deleteObject(id, userId) {
   fetch(`${url}/${userId}/${id}`, {
     method: 'DELETE',
   })
-  .then((res) => {
-  })
-  .catch((error) => {
-  });
+    .then((res) => {})
+    .catch((error) => {});
 }
 
-async function deleteImageFile(fileName){
+async function deleteImageFile(fileName) {
   try {
-    fs.unlink(`./public/images/uploads/${fileName}`, function (err){
-      if(err){
+    fs.unlink(`./public/images/uploads/${fileName}`, function (err) {
+      if (err) {
         console.error(err);
-      } else {
-        console.log('image was deleted');
       }
-    }) 
+    });
   } catch (err) {
     console.error(err);
   }
 }
 
 export default {
-    fetchAllObjects,
-    postObject,
-    deleteObject,
-    deleteImageFile,
-}
+  fetchAllObjects,
+  postObject,
+  deleteObject,
+  deleteImageFile,
+};

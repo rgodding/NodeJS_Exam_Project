@@ -17,11 +17,14 @@ export default function socketIo(io) {
     adminSocket(socket, io);
   });
 }
-function loginSocket(socket, io) {}
+
+function loginSocket(socket, io) {
+}
+
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
     const documents = await documentManager.fetchAllObjects(data.userId);
-    const result = documents.filter(object => object.collection === data.collection);
+    const result = documents.filter((object) => object.collection === data.collection);
     const table = constructDocumentTable(result);
     io.emit('a collection was chosen', {
       currentCollection: `<input id="current-collection-value" name="current-collection-value" value="${data.collection}" style="display: none;">`,
@@ -38,7 +41,7 @@ function documentsSocket(socket, io) {
   socket.on('a client creates a document', async (data) => {
     await documentManager.postObject(data.collection, data.content, data.userId);
     const documents = await documentManager.fetchAllObjects(data.userId);
-    const result = documents.filter(object => object.collection === data.collection);
+    const result = documents.filter((object) => object.collection === data.collection);
     const table = constructDocumentTable(result);
     io.emit('a document was created', {
       table: table,
@@ -57,7 +60,7 @@ function documentsSocket(socket, io) {
     const userId = data.userId;
     await documentManager.deleteObject(id, userId);
     const documents = await documentManager.fetchAllObjects(data.userId);
-    const result = documents.filter(object => object.collection === data.collection);
+    const result = documents.filter((object) => object.collection === data.collection);
     const table = constructDocumentTable(result);
     io.emit('a document was deleted', {
       table: table,
@@ -85,14 +88,18 @@ function documentsSocket(socket, io) {
   });
   //`<div class="container-fluid mt-3"><h3>Document was created</h3></div>`
 }
+
 function imagesSocket(socket, io) {
-  socket.on("a client deletes an image", async (data) => {
+  socket.on('a client deletes an image', async (data) => {
     await imageManager.deleteObject(data.id, data.userId);
     await imageManager.deleteImageFile(data.fileName);
     io.emit('an image was deleted');
-  })
+  });
 }
-function adminSocket(socket, io) {}
+
+function adminSocket(socket, io) {
+}
+
 function userSocket(socket, io) {
   socket.on('a client creates a collection category', (data) => {
     collectionCategoryManager.postObject(data.name, data.type, data.userId);

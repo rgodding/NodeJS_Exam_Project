@@ -1,7 +1,6 @@
 const url = 'http://localhost:8081/api/users';
 
 async function fetchAllObjects(userId) {
-  console.log(userId);
   return new Promise((resolve, reject) => {
     fetch(`${url}/${userId}`)
       .then((response) => response.json())
@@ -54,16 +53,14 @@ async function updateObject(id, content, userId) {
       content: content,
     }),
   });
-  return (response.status);
+  return response.status;
 }
 async function deleteObject(id, userId) {
   fetch(`${url}/${userId}/${id}`, {
     method: 'DELETE',
   })
-  .then((res) => {
-  })
-  .catch((error) => {
-  });
+    .then((res) => {})
+    .catch((error) => {});
 }
 export default {
   fetchAllObjects,

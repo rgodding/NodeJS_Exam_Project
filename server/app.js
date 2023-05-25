@@ -23,21 +23,13 @@ app.use((req, res, next) => {
   next();
 });
 
-
-import userRouter from "./routers/userRouter.js"
-import documentRouter from "./routers/documentRouter.js"
-import collectionRouter from "./routers/collectionRouter.js"
-import collectionCategoryRouter from "./routers/collectionCategoryRouter.js"
-import imageRouter from "./routers/imageRouter.js"
-import loginRouter from "./routers/loginRouter.js";
-const routers = [
-    loginRouter,
-    userRouter,
-    documentRouter,
-    collectionRouter,
-    collectionCategoryRouter,
-    imageRouter,
-]
+import userRouter from './routers/userRouter.js';
+import documentRouter from './routers/documentRouter.js';
+import collectionRouter from './routers/collectionRouter.js';
+import collectionCategoryRouter from './routers/collectionCategoryRouter.js';
+import imageRouter from './routers/imageRouter.js';
+import loginRouter from './routers/loginRouter.js';
+const routers = [loginRouter, userRouter, documentRouter, collectionRouter, collectionCategoryRouter, imageRouter];
 app.use(routers);
 
 const PORT = process.env.PORT || 8081;

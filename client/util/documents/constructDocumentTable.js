@@ -1,4 +1,4 @@
-import templateEngine from "../templateEngine.js";
+import templateEngine from '../templateEngine.js';
 
 export default function constructDocumentTable(documents) {
   let html = '';

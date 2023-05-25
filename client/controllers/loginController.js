@@ -3,7 +3,6 @@ import constructLoginPage from '../util/pages/constructLoginPage.js';
 import constructRegisterPage from '../util/pages/constructRegisterPage.js';
 import constructForgotPasswordPage from '../util/pages/constructForgotPasswordPage.js';
 
-
 export function showLogin(req, res) {
   try {
     const page = constructLoginPage(req.isUser);
@@ -30,13 +29,13 @@ export async function login(req, res) {
   }
 }
 export function showRegister(req, res) {
-    try {
-        const page = constructRegisterPage(req.isUser);
-        res.send(page);
-      } catch (err) {
-        console.error(err);
-        res.status(505).send('Internal Client Error');
-      }
+  try {
+    const page = constructRegisterPage(req.isUser);
+    res.send(page);
+  } catch (err) {
+    console.error(err);
+    res.status(505).send('Internal Client Error');
+  }
 }
 export async function register(req, res) {
   try {
@@ -69,10 +68,10 @@ export async function forgotPassword(req, res) {
   try {
     const email = req.body.email;
     const result = await loginManager.forgotPassword(email);
-    if(result){
-      res.redirect('/')
+    if (result) {
+      res.redirect('/');
     } else {
-      res.redirect('/forgot-password')
+      res.redirect('/forgot-password');
     }
   } catch (err) {
     console.error(err);

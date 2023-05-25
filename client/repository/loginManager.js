@@ -3,8 +3,8 @@ const register_url = 'http://localhost:8081/register';
 const forgot_password_url = 'http://localhost:8081/forgot-password';
 
 async function login(email, password) {
-  return new Promise((resolve, reject) => {
-    let response = fetch(login_url, {
+  try {
+    const response = await fetch(login_url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -14,21 +14,24 @@ async function login(email, password) {
         email: email,
         password: password,
       }),
-    })
-    .then((response) => response.json())
-    .then((object) => {
-        if (object.userId) {
-            resolve(object.userId)
-        } else {
-            resolve(false)
-        }
     });
-  });
+
+    const object = await response.json();
+
+    if (object.userId) {
+      return object.userId;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
-async function register(firstName, lastName, email, password){
-  return new Promise((resolve, reject) => {
-    let response = fetch(register_url, {
+async function register(firstName, lastName, email, password) {
+  try {
+    const response = await fetch(register_url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -40,20 +43,23 @@ async function register(firstName, lastName, email, password){
         email: email,
         password: password,
       }),
-    })
-    .then((response) => response.json())
-    .then((object) => {
-        if (object.userId) {
-            resolve(object.userId)
-        } else {
-            resolve(false)
-        }
     });
-  });
+
+    const object = await response.json();
+    if (object.userId) {
+      return object.userId;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
-async function forgotPassword(email){
-  return new Promise((resolve, reject) => {
-    let response = fetch(forgot_password_url, {
+
+async function forgotPassword(email) {
+  try {
+    const response = await fetch(forgot_password_url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -62,17 +68,21 @@ async function forgotPassword(email){
       body: JSON.stringify({
         email: email,
       }),
-    })
-    .then((response) => response.json())
-    .then((object) => {
-        if (object) {
-            resolve(object)
-        } else {
-            resolve(false)
-        }
     });
-  });
+
+    const object = await response.json();
+
+    if (object) {
+      return object;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
+
 export default {
   login,
   register,

@@ -44,12 +44,12 @@ async function postData(req, res) {
     const password = req.body.password;
     const userId = await firebaseManager.register(email, password);
     if (userId === false) {
-        res.send(false);
+      res.send(false);
     } else {
       const firstName = req.body.firstName;
       const lastName = req.body.lastName;
       const data = {
-        userId : userId,
+        userId: userId,
         firstName: firstName,
         lastName: lastName,
         email: email,

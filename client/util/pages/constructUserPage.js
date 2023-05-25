@@ -15,13 +15,15 @@ export default async function constructUserPage(isUser, userId) {
   });
   return page;
 }
-function generateCategoryOptions(categories){
+
+function generateCategoryOptions(categories) {
   let html = '';
   categories.forEach((category) => {
     html += `<option value="${category.type}">${category.name}</option>`;
   });
   return html;
 }
+
 function constructCollectionList(categories, collections) {
   let html = '';
   if (categories.length === 0) {
@@ -30,11 +32,9 @@ function constructCollectionList(categories, collections) {
     categories.forEach((category) => {
       const collection = collections.filter((object) => object.category === category.type);
       html += templateEngine.readPage('./views/partials/collections/types.html')
-      .replace('$COLLECTION_TYPE_NAME', category.name)
-      .replace('$COLLECTION_TYPE_ID', category.id)
+      .replace('$COLLECTION_TYPE_NAME', category.name).replace('$COLLECTION_TYPE_ID', category.id)
       .replace('$COLLECTION_TYPE_COLLECTIONS', generateCollectionTypesCollections(collection));
     });
-
     return html;
   }
 }
