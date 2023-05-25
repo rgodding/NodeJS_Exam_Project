@@ -5,10 +5,6 @@ import multer from 'multer';
 
 const router = Router();
 
-router.get('/images', requireUser, (req, res) => {
-  showImages(req, res);
-});
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'public/images/uploads/');
@@ -29,6 +25,10 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage });
+
+router.get('/images', requireUser, (req, res) => {
+  showImages(req, res);
+});
 
 router.post('/images', requireUser, upload.single('file'), (req, res) => {
   createImage(req, res);

@@ -3,7 +3,7 @@ import constructImagesPage from '../util/pages/constructImagesPage.js';
 
 export async function showImages(req, res) {
   try {
-    const page = await constructImagesPage(req.isUser, req.session.userId);
+    const page = await constructImagesPage(req.isUser, req.userId);
     res.send(page);
   } catch (err) {
     console.error(err);

@@ -7,8 +7,7 @@ export default async function constructImagesPage(isUser, userId) {
   const categories = await collectionCategoryManager.fetchAllObjects(userId);
   const collections = await collectionManager.fetchAllObjects(userId);
   const images = await imageManager.fetchAllObjects(userId);
-  const html = templateEngine
-    .readPage('./views/pages/images.html')
+  const html = templateEngine.readPage('./views/pages/images.html')
     .replace('$CREATE_IMAGES_TYPES_OPTIONS', generateCategoryOptions(categories, collections))
     .replace('$SHOW_IMAGES_LIST', await constructImageList(collections, images))
     .replace('$USER_ID', userId);
@@ -16,6 +15,7 @@ export default async function constructImagesPage(isUser, userId) {
     tabTitle: 'Images',
     cssLink: `<link rel="stylesheet" href="/css/images.css">`,
     isUser: isUser,
+    userId: userId,
   });
   return page;
 }
@@ -33,13 +33,14 @@ function generateCategoryOptions(categories, collections) {
   });
   return html;
 }
-
 async function constructImageList(collections, images) {
   let html = '';
   collections.forEach((collection) => {
     const tempImages = images.filter((object) => object.collection === collection.type);
     if (images.length != 0) {
-      html += templateEngine.readPage('./views/partials/images/imagelist.html').replace('$IMAGE_COLLECTION_NAME', collection.name).replace('$IMAGE_LIST', constructImageItems(tempImages));
+      html += templateEngine.readPage('./views/partials/images/imagelist.html')
+      .replace('$IMAGE_COLLECTION_NAME', collection.name)
+      .replace('$IMAGE_LIST', constructImageItems(tempImages));
     }
   });
   return html;
