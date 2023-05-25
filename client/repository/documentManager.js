@@ -1,4 +1,5 @@
-const url = 'http://localhost:8081/api/documents';
+import dotenv from "dotenv/config"
+const url = process.env.SERVER_URL + '/api/documents'
 
 async function fetchAllObjects(userId) {
   return new Promise((resolve, reject) => {

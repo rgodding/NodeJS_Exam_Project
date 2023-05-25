@@ -2,7 +2,7 @@ import fs from 'fs';
 import dotenv from 'dotenv/config';
 
 function renderPage(page, config = {}) {
-  const main = getMain(config)
+  const main = getMain()
     .replace('$CSS_LINK', config.cssLink || '')
     .replace('$PAGE_TITLE', config.tabTitle)
     .replace('$PAGE_HEADER', getNavbar(config))
@@ -11,7 +11,7 @@ function renderPage(page, config = {}) {
 }
 
 function renderPageWithSocket(page, config = {}) {
-  const main = getMainWithSocket(config)
+  const main = getMainWithSocket()
     .replace('$CSS_LINK', config.cssLink || '')
     .replace('$PAGE_TITLE', config.tabTitle)
     .replace('$PAGE_HEADER', getNavbar(config))
@@ -23,12 +23,12 @@ function readPage(pagePath) {
   return fs.readFileSync(pagePath).toString();
 }
 
-function getMain(config = {}) {
+function getMain() {
   const main = readPage('./views/layouts/main.html');
   return main;
 }
 
-function getMainWithSocket(config = {}) {
+function getMainWithSocket() {
   const main = readPage('./views/layouts/socket.html');
   return main;
 }

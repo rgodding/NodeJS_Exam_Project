@@ -10,6 +10,7 @@ export default async function constructShowImages(isUser, userId) {
   const renderedPage = templateEngine.renderPageWithSocket(page, {
     tabTitle: 'Image List',
     isUser: isUser,
+    userId: userId,
   });
   return renderedPage;
 }

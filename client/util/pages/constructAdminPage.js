@@ -6,6 +6,7 @@ export default async function constructAdminPage(isUser, userId) {
   const page = templateEngine.renderPageWithSocket(html, {
     tabTitle: 'Admin Page',
     isUser: isUser,
+    userId: userId,
   });
   return page;
 }
