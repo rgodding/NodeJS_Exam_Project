@@ -5,8 +5,6 @@ async function fetchAllObjects(userId) {
     fetch(`${url}/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log('here?');
-        console.log('DATA : ' + JSON.stringify(data));
         resolve(data);
       })
       .catch((error) => {
@@ -42,6 +40,18 @@ async function fetchObjectById(id, userId) {
       });
   });
 }
+async function fetchObjectByUserId(userId) {
+  return new Promise((resolve, reject) => {
+    fetch(`http://localhost:8081/api/find-user-by-user-id/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
 async function updateObject(id, content, userId) {
   let response = await fetch(`${url}/${userId}/${id}`, {
     method: 'PATCH',
@@ -65,6 +75,7 @@ async function deleteObject(id, userId) {
 export default {
   fetchAllObjects,
   fetchObjectById,
+  fetchObjectByUserId,
   postObject,
   updateObject,
   deleteObject,

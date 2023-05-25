@@ -1,17 +1,22 @@
 import collectionCategoryManager from '../../repository/collectionCategoryManager.js';
 import collectionManager from '../../repository/collectionManager.js';
+import userManager from '../../repository/userManager.js';
 import templateEngine from '../templateEngine.js';
 
 export default async function constructUserPage(isUser, userId) {
   const categories = await collectionCategoryManager.fetchAllObjects(userId);
   const collections = await collectionManager.fetchAllObjects(userId);
+  const user = await userManager.fetchObjectByUserId(userId);
   const html = templateEngine.readPage('./views/pages/user.html')
+  .replace('$USER_PAGE_FIRST_NAME', user.firstName)
+  .replace('$USER_PAGE_LAST_NAME', user.lastName)
   .replace('$USER_ID', userId)
   .replace('$CREATE_COLLECTION_TYPES_OPTIONS', generateCategoryOptions(categories))
   .replace('$COLLECTIONS_LIST', constructCollectionList(categories, collections));
   const page = templateEngine.renderPageWithSocket(html, {
     tabTitle: 'Front Page',
     isUser: isUser,
+    userId: userId,
   });
   return page;
 }

@@ -38,6 +38,22 @@ async function fetchDataById(req, res) {
   }
 }
 
+async function fetchDataByUserId(req, res) {
+  try {
+    const userId = req.params.userId;
+    const data = await firebaseManager.fetchDataByUserId(`${type}`, userId);
+    if (!data) {
+      res.send({});
+    } else {
+      const user = userModel(data.data, data.id);
+      res.send(user);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(505).send('Internal Server Error');
+  }
+}
+
 async function postData(req, res) {
   try {
     const email = req.body.email;
@@ -101,6 +117,7 @@ async function forgotPassword(req, res) {
 export default {
   fetchAllData,
   fetchDataById,
+  fetchDataByUserId,
   postData,
   putData,
   patchData,

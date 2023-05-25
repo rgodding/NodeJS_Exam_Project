@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
 import { database } from '../../config/firebase.js';
 import { getAuth } from 'firebase/auth';
 import { signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -45,7 +45,6 @@ async function forgotPassword(email) {
       });
   });
 }
-
 async function fetchAllData(type) {
   const reference = collection(database, type);
   const snapshot = await getDocs(reference);
@@ -59,7 +58,6 @@ async function fetchAllData(type) {
   });
   return _data;
 }
-
 async function fetchDataById(type, id) {
   const reference = doc(database, type, id);
   const snapshot = await getDoc(reference);
@@ -73,6 +71,22 @@ async function fetchDataById(type, id) {
     return null;
   }
 }
+
+async function fetchDataByUserId(type, userId) {
+  const collectionRef = collection(database, type);
+  const querySnapshot = await getDocs(query(collectionRef, where("userId", "==", userId)));
+  if (!querySnapshot.empty) {
+    const snapshot = querySnapshot.docs[0];
+    const data = {
+      id: snapshot.id,
+      data: snapshot.data(),
+    };
+    return data;
+  } else {
+    return null;
+  }
+}
+
 
 async function postData(type, data) {
   addDoc(collection(database, type), data);
@@ -94,6 +108,7 @@ export default {
   forgotPassword,
   fetchAllData,
   fetchDataById,
+  fetchDataByUserId,
   postData,
   updateData,
   deleteData,
