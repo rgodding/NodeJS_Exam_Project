@@ -4,8 +4,8 @@ import dotenv from 'dotenv/config';
 export async function showAdmin(req, res) {
   try {
     const userId = req.session.userId;
-    if (userId !== process.env.ADMIN_ID) {
-      page = await constructAdminPage(req.isUser, userId);
+    if (userId === process.env.ADMIN_ID) {
+      const page = await constructAdminPage(req.isUser, userId);
       res.send(page);
     } else {
       res.status(404).send('ERROR');

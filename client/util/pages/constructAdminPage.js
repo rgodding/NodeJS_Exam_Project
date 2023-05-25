@@ -14,8 +14,6 @@ async function constructUserList(userId) {
   const users = await userManager.fetchAllObjects(userId);
   let html = '';
   users.forEach((user) => {
-    console.log('a user');
-    console.log(JSON.stringify(user));
     html += templateEngine.readPage('./views/partials/admin/tableitem.html')
     .replace('$DOCUMENT_TABLE_ITEM_USER_ID', user.userId)
     .replace('$DOCUMENT_TABLE_ITEM_FIRST_NAME', user.firstName)
@@ -23,6 +21,5 @@ async function constructUserList(userId) {
     .replace('$DOCUMENT_TABLE_ITEM_EMAIL', user.email)
     .replace('$TABLE_ITEM_ID', user.id);
   });
-  console.log(html);
   return html;
 }
