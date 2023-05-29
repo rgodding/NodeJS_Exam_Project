@@ -76,7 +76,6 @@ function deleteData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-
 export default {
   fetchAllData,
   fetchDataById,

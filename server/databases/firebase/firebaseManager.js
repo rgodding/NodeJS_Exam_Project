@@ -68,7 +68,7 @@ async function fetchDataById(type, id) {
 }
 async function fetchAllDataByValue(type, searchQuery, value) {
   const collectionRef = collection(database, type);
-  const querySnapshot = await getDocs(query(collectionRef, where(searchQuery, "==", value)));
+  const querySnapshot = await getDocs(query(collectionRef, where(searchQuery, '==', value)));
   if (!querySnapshot.empty) {
     const data = querySnapshot.docs.map((doc) => ({
       id: doc.id,

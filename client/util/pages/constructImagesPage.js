@@ -33,6 +33,9 @@ function generateCategoryOptions(categories, collections) {
         .replace('$COLLECTION_NAME', object.name)
         .replace('$COLLECTION_ID', object.id)
       });
+    } else {
+      console.log('why this?');
+      html += templateEngine.renderPage(nocategoriesPath);
     }
   });
   return html;
