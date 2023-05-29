@@ -71,11 +71,17 @@ function deleteCategory(id) {
     });
   }
 }
-socket.on('a collection was deleted', (data) => {
+socket.on('a collection was deleted', () => {
   window.location.reload();
 });
-socket.on('a category was deleted', (data) => {
+socket.on('a collection with documents was tried to be deleted', (data) => {
+  alert('Please delete all documents in the collection to continue')
+});
+socket.on('a category was deleted', () => {
   window.location.reload();
+});
+socket.on('a category with collections was tried to be deleted', (data) => {
+  alert('Please delete all collections in the category to continue')
 });
 socket.on('a category had invalid values', (data) => {
   console.log('No values');

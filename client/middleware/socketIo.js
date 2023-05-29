@@ -87,7 +87,6 @@ function documentsSocket(socket, io) {
     });
   });
 }
-
 function imagesSocket(socket, io) {
   socket.on('a client deletes an image', async (data) => {
     await imageManager.deleteObject(data.id, data.userId);
@@ -95,7 +94,6 @@ function imagesSocket(socket, io) {
     io.emit('an image was deleted');
   });
 }
-
 function userSocket(socket, io) {
   socket.on('a client creates a category', (data) => {
     if (!data.name || !data.userId) {
@@ -119,13 +117,24 @@ function userSocket(socket, io) {
     }
   });
 
-  socket.on('a client deletes a category', (data) => {
-    categoryManager.deleteObject(data.id, data.userId);
-    io.emit('a category was deleted');
+  socket.on('a client deletes a category', async (data) => {
+    const collections = await collectionManager.fetchAllObjects(data.userId);
+    const matchingCollections = collections.filter((object) => object.category === data.id);
+    if (matchingCollections.length === 0) {
+      await categoryManager.deleteObject(data.id, data.userId);
+      io.emit('a category was deleted');
+    } else {
+      io.emit('a category with collections was tried to be deleted');
+    }
   });
-
-  socket.on('a client deletes a collection', (data) => {
-    collectionManager.deleteObject(data.id, data.userId);
-    io.emit('a collection was deleted');
+  socket.on('a client deletes a collection', async (data) => {
+    const documents = await documentManager.fetchAllObjects(data.userId);
+    const matchingDocuments = documents.filter((object) => object.collection === data.id);
+    if (matchingDocuments.length === 0) {
+      await collectionManager.deleteObject(data.id, data.userId);
+      io.emit('a collection was deleted');
+    } else {
+      io.emit('a collection with documents was tried to be deleted');
+    }
   });
 }
