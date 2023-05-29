@@ -6,14 +6,18 @@ const databaseName = 'categories';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllData(`${databaseName}::${userId}`);
+    const data = await firebaseManager.fetchAllDataByValue(databaseName, 'owner', userId);
     if (!data) {
       res.send([]);
     } else {
       const categories = [];
-      data.forEach((object) => {
-        categories.push(categoryModel(object.data, object.id));
-      });
+      if (Array.isArray(data)) {
+        data.forEach((object) => {
+          categories.push(categoryModel(object.data, object.id));
+        });
+      } else {
+        categories.push(categoryModel(data.data, data.id));
+      }
       res.send(categories);
     }
   } catch (err) {
@@ -24,7 +28,7 @@ async function fetchAllData(req, res) {
 async function fetchDataById(req, res) {
   try {
     const id = req.params.id;
-    const data = await firebaseManager.fetchDataById(`${databaseName}::${userId}`, id);
+    const data = await firebaseManager.fetchDataById(databaseName, id);
     if (!data) {
       res.send({});
     } else {
@@ -40,12 +44,11 @@ function postData(req, res) {
   try {
     const userId = req.params.userId;
     const name = req.body.name;
-    const type = req.body.type;
-    const category = categoryModel({
+    const category = {
       name: name,
-      type: type,
-    });
-    firebaseManager.postData(`${databaseName}::${userId}`, category);
+      owner: userId,
+    };
+    firebaseManager.postData(`${databaseName}`, category);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);
@@ -56,14 +59,13 @@ function deleteData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
-    firebaseManager.deleteData(`${databaseName}::${userId}`, id);
+    firebaseManager.deleteData(`${databaseName}`, id);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
   }
 }
-
 export default {
   fetchAllData,
   fetchDataById,

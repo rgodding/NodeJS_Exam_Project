@@ -1,8 +1,8 @@
 import templateEngine from '../templateEngine.js';
 
 import { userPagePath } from '../../constants/pagePaths.js';
-import { categoryPath, categoryoptionPath, collectionPath, nocategoriesPath, nocategoryoptionsPath } from '../../constants/partials/userPagePartialPaths.js';
 import { userPageTabTitle } from '../../constants/pageTitles.js';
+import { categoryPath, categoryoptionPath, collectionPath, nocategoriesPath, nocategoryoptionsPath } from '../../constants/partials/userPagePartialPaths.js';
 
 export default async function constructUserPage(isUser, userId, categories, collections) {
   const html = templateEngine.readPage(userPagePath)
@@ -24,7 +24,7 @@ function generateCategoryOptions(categories) {
     categories.forEach((category) => {
       html += templateEngine.readPage(categoryoptionPath)
       .replace('$CATEGORY_NAME', category.name)
-      .replace('$CATEGORY_TYPE', category.type);
+      .replace('$CATEGORY_ID', category.id);
     });
     return html;
   }
@@ -36,7 +36,7 @@ function constructCollectionList(categories, collections) {
     return html;
   } else {
     categories.forEach((category) => {
-      const collection = collections.filter((object) => object.category === category.type);
+      const collection = collections.filter((object) => object.category === category.id);
       html += templateEngine.readPage(categoryPath)
       .replace('$CATEGORY_NAME', category.name)
       .replace('$CATEGORY_ID', category.id)

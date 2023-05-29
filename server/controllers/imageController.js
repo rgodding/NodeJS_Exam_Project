@@ -5,7 +5,7 @@ const type = 'collectionimages';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllData(`${type}::${userId}`);
+    const data = await firebaseManager.fetchAllData(databaseName);
     if (!data) {
       res.send([]);
     } else {
@@ -41,7 +41,7 @@ function postData(req, res) {
       fileName: fileName,
     };
     const image = imageModel(data);
-    firebaseManager.postData(`${type}::${userId}`, image);
+    firebaseManager.postData(databaseName, image);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);
@@ -66,7 +66,7 @@ function deleteData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
-    firebaseManager.deleteData(`${type}::${userId}`, id);
+    firebaseManager.deleteData(databaseName, id);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);

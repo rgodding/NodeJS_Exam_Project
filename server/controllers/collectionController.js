@@ -5,7 +5,7 @@ const databaseName = 'collections';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllData(`${databaseName}::${userId}`);
+    const data = await firebaseManager.fetchAllData(databaseName);
     if (!data) {
       res.send([]);
     } else {
@@ -24,7 +24,7 @@ async function fetchDataById(req, res) {
   try {
     const id = req.params.id;
     const userId = req.session.userId;
-    const data = await firebaseManager.fetchDataById(`${databaseName}::${userId}`, id);
+    const data = await firebaseManager.fetchDataById(databaseName, id);
     if (!data) {
       res.send({});
     } else {
@@ -37,17 +37,17 @@ async function fetchDataById(req, res) {
 }
 function postData(req, res) {
   try {
+    const category = req.body.category;
     const name = req.body.name;
     const type = req.body.type;
-    const category = req.body.category;
     const userId = req.params.userId;
     const data = {
+      category: category,
       name: name,
       type: type,
-      category: category,
     };
     const collection = collectionModel(data);
-    firebaseManager.postData(`${databaseName}::${userId}`, collection);
+    firebaseManager.postData(databaseName, collection);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);
@@ -72,7 +72,7 @@ function deleteData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
-    firebaseManager.deleteData(`${databaseName}::${userId}`, id);
+    firebaseManager.deleteData(databaseName, id);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);

@@ -99,10 +99,17 @@ function imagesSocket(socket, io) {
 
 function userSocket(socket, io) {
   socket.on('a client creates a category', (data) => {
-    if (!data.name || !data.type || !data.userId) {
+    console.log('CREATING CATEGORY');
+    if (!data.name || !data.userId) {
       io.emit('a category had invalid values');
     } else {
-      categoryManager.postObject(data.name, data.type, data.userId);
+      try {
+        categoryManager.postObject(data.name, data.userId);
+      } catch (err) {
+        io.emit('an error occurred on the server')
+      }
+      
+
       io.emit('a category was created');
     }
   });

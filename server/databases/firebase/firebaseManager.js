@@ -66,15 +66,14 @@ async function fetchDataById(type, id) {
     return null;
   }
 }
-async function fetchDataByValue(type, searchQuery, value) {
+async function fetchAllDataByValue(type, searchQuery, value) {
   const collectionRef = collection(database, type);
   const querySnapshot = await getDocs(query(collectionRef, where(searchQuery, "==", value)));
   if (!querySnapshot.empty) {
-    const snapshot = querySnapshot.docs[0];
-    const data = {
-      id: snapshot.id,
-      data: snapshot.data(),
-    };
+    const data = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      data: doc.data(),
+    }));
     return data;
   } else {
     return null;
@@ -98,7 +97,7 @@ export default {
   forgotPassword,
   fetchAllData,
   fetchDataById,
-  fetchDataByValue,
+  fetchAllDataByValue,
   postData,
   updateData,
   deleteData,
