@@ -14,12 +14,6 @@ function uploadImage() {
   }
 }
 
-const imageSearcher = document.getElementById('image-name');
-imageSearcher.addEventListener('input', (e) => {
-  const text = imageSearcher.value;
-  // Add show/hide function if image name matches
-});
-
 function deleteImage(id, fileName) {
   if (confirm('Are you sure you want to delete the document')) {
     socket.emit('a client deletes an image', { id: id, fileName: fileName, userId: userId });
@@ -27,5 +21,6 @@ function deleteImage(id, fileName) {
 }
 
 socket.on('an image was deleted', (data) => {
+  console.log('deleted');
   window.location.reload();
 });

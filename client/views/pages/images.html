@@ -2,37 +2,26 @@
     <h1>Image Management</h1>
     <div class="col-3">
         <form action="/images" method="POST" enctype="multipart/form-data">
-            <div class="row row-cols-2">
-                <div class="row row-cols-1">
-                    <div class="col mb-3">
-                        <input class="form-control" name="file" type="file" accept="image/*" required>
-                    </div>
-                    <div class="col mb-3">
-                        <input class="form-control" name="name" placeholder="image name" required>
-                    </div>
-                    <div class="col mb-3">
-                        <input class="form-control" name="description" placeholder="short description" required>
-                    </div>
-                    <div class="col mb-3">
-                        <button type="submit" class="btn btn-primary" onclick="uploadImage()">Upload</button>
-                    </div>
+            <div class="row row-cols-1">
+                <div class="col mb-3">
+                    <input class="form-control" name="file" type="file" accept="image/*" required>
                 </div>
-                <div class="row row-cols-1">
-                    <div class="col mb-3">
-                        <select name="type" id="type" class="form-select" aria-label="Default select example">
-                            $CREATE_IMAGES_TYPES_OPTIONS
-                        </select>
-                    </div>
+                <div class="col mb-3">
+                    <input class="form-control" name="name" placeholder="image name" required>
+                </div>
+                <div class="col mb-3">
+                    <input class="form-control" name="description" placeholder="short description" required>
+                </div>
+                <div class="col mb-3">
+                    <select name="type" id="type" class="form-select" aria-label="Default select example">
+                        $CREATE_IMAGES_TYPES_OPTIONS
+                    </select>
+                </div>
+                <div class="col mb-3">
+                    <button type="submit" class="btn btn-primary" onclick="uploadImage()">Upload</button>
                 </div>
             </div>
         </form>
-        <div class="row">
-            <div class="input-group">
-                <span class="input-group-text" id="image-name-description">Image Name:</span>
-                <input id="image-name" name="image-name" type="text" class="form-control" placeholder="Name"
-                    aria-label="Name" aria-describedby="input-group-left">
-            </div>
-        </div>
     </div>
     <div class="col-8 border">
         <div class="row row-cols-2 p-3">
