@@ -4,9 +4,7 @@ import constructDocumentsPage from '../util/pages/constructDocumentsPage.js';
 
 export async function showDocuments(req, res) {
   try {
-    console.log('showing documnents');
     const userId = req.userId;
-    console.log('USER ID : ' + userId);
     const categories = await categoryManager.fetchAllObjects(userId);
     const collections = await collectionManager.fetchAllObjects(userId);
     const page = constructDocumentsPage(req.isUser, userId, categories, collections);
