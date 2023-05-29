@@ -47,3 +47,10 @@ socket.on('a collection was deleted', (data) => {
 socket.on('a collection category was deleted', (data) => {
   window.location.reload();
 });
+
+socket.on('a category was missing values', (data) => {
+  console.log('No values');
+})
+socket.on('a collection was missing values', (data) => {
+  console.log('No values');
+})

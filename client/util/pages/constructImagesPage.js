@@ -1,10 +1,10 @@
-import collectionCategoryManager from '../../repository/collectionCategoryManager.js';
+import categoryManager from '../../repository/categoryManager.js';
 import collectionManager from '../../repository/collectionManager.js';
 import imageManager from '../../repository/imageManager.js';
 import templateEngine from '../templateEngine.js';
 
 export default async function constructImagesPage(isUser, userId) {
-  const categories = await collectionCategoryManager.fetchAllObjects(userId);
+  const categories = await categoryManager.fetchAllObjects(userId);
   const collections = await collectionManager.fetchAllObjects(userId);
   const images = await imageManager.fetchAllObjects(userId);
   const html = templateEngine.readPage('./views/pages/images.html')

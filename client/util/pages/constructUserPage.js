@@ -1,15 +1,11 @@
-import collectionCategoryManager from '../../repository/collectionCategoryManager.js';
+import categoryManager from '../../repository/categoryManager.js';
 import collectionManager from '../../repository/collectionManager.js';
-import userManager from '../../repository/userManager.js';
 import templateEngine from '../templateEngine.js';
 
 export default async function constructUserPage(isUser, userId) {
-  const categories = await collectionCategoryManager.fetchAllObjects(userId);
+  const categories = await categoryManager.fetchAllObjects(userId);
   const collections = await collectionManager.fetchAllObjects(userId);
-  const user = await userManager.fetchObjectByUserId(userId);
   const html = templateEngine.readPage('./views/pages/user.html')
-  .replace('$USER_PAGE_FIRST_NAME', user.firstName)
-  .replace('$USER_PAGE_LAST_NAME', user.lastName)
   .replace('$USER_ID', userId)
   .replace('$CREATE_COLLECTION_TYPES_OPTIONS', generateCategoryOptions(categories))
   .replace('$COLLECTIONS_LIST', constructCollectionList(categories, collections));
@@ -20,15 +16,16 @@ export default async function constructUserPage(isUser, userId) {
   });
   return page;
 }
-
 function generateCategoryOptions(categories) {
+  if(categories.length === 0){
+    return `<option disabled>No categories found...</option>`
+  }
   let html = '';
   categories.forEach((category) => {
     html += `<option value="${category.type}">${category.name}</option>`;
   });
   return html;
 }
-
 function constructCollectionList(categories, collections) {
   let html = '';
   if (categories.length === 0) {
@@ -43,7 +40,6 @@ function constructCollectionList(categories, collections) {
     return html;
   }
 }
-
 function generateCollectionTypesCollections(collection) {
   let html = '';
   collection.forEach((collection) => {

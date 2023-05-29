@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import firebaseManager from '../databases/firebase/firebaseManager.js';
-import userController from '../controllers/userController.js';
+import loginController from '../controllers/loginController.js';
 const router = Router();
 
 router.post('/login', async (req, res) => {
+  loginController.login(req, res)
   let userId = await firebaseManager.login(req.body.email, req.body.password);
   if (userId === false) {
     res.status(401).send({ error: 'Unauthorized' });
@@ -14,11 +15,11 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  userController.postData(req, res);
+  loginController.register(req, res);
 });
 
 router.post('/forgot-password', async (req, res) => {
-  userController.forgotPassword(req, res);
+  loginController.forgotPassword(req, res);
 });
 
 router.post('/logout', async (req, res) => {

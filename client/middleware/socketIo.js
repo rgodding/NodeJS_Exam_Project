@@ -1,4 +1,4 @@
-import collectionCategoryManager from '../repository/collectionCategoryManager.js';
+import categoryManager from '../repository/categoryManager.js';
 import collectionManager from '../repository/collectionManager.js';
 import documentManager from '../repository/documentManager.js';
 import constructDocumentTable from '../util/documents/constructDocumentTable.js';
@@ -102,15 +102,24 @@ function adminSocket(socket, io) {
 
 function userSocket(socket, io) {
   socket.on('a client creates a collection category', (data) => {
-    collectionCategoryManager.postObject(data.name, data.type, data.userId);
-    io.emit('a collection category was created');
+    if(!data.name || !data.type || !data.userId ){
+      io.emit('a category was missing values')
+    } else {
+      categoryManager.postObject(data.name, data.type, data.userId);
+      io.emit('a collection category was created');
+    }
+    
   });
   socket.on('a client creates a collection', (data) => {
-    collectionManager.postObject(data.category, data.name, data.type, data.userId);
-    io.emit('a collection was created');
+    if (!data.category || !data.name || !data.type || !data.userId) {
+      io.emit('a collection was missing values')
+    } else {
+      collectionManager.postObject(data.category, data.name, data.type, data.userId);
+      io.emit('a collection was created');
+    }
   });
   socket.on('a client deletes a collection category', (data) => {
-    collectionCategoryManager.deleteObject(data.id, data.userId);
+    categoryManager.deleteObject(data.id, data.userId);
     io.emit('a collection category was deleted');
   });
   socket.on('a client deletes a collection', (data) => {

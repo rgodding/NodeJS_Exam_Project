@@ -1,7 +1,7 @@
 import firebaseManager from '../databases/firebase/firebaseManager.js';
-import collectionCategoryModel from '../models/collectionCategoryModel.js';
+import categoryModel from '../models/categoryModel.js';
 
-const databaseName = 'collection-categories';
+const databaseName = 'categories';
 
 async function fetchAllData(req, res) {
   try {
@@ -12,7 +12,7 @@ async function fetchAllData(req, res) {
     } else {
       const categories = [];
       data.forEach((object) => {
-        categories.push(collectionCategoryModel(object.data, object.id));
+        categories.push(categoryModel(object.data, object.id));
       });
       res.send(categories);
     }
@@ -21,7 +21,6 @@ async function fetchAllData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-
 async function fetchDataById(req, res) {
   try {
     const id = req.params.id;
@@ -29,7 +28,7 @@ async function fetchDataById(req, res) {
     if (!data) {
       res.send({});
     } else {
-      const category = collectionCategoryModel(data.data, id);
+      const category = categoryModel(data.data, id);
       res.send(category);
     }
   } catch (err) {
@@ -37,13 +36,12 @@ async function fetchDataById(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-
 function postData(req, res) {
   try {
     const userId = req.params.userId;
     const name = req.body.name;
     const type = req.body.type;
-    const category = collectionCategoryModel({
+    const category = categoryModel({
       name: name,
       type: type,
     });
@@ -54,25 +52,6 @@ function postData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-
-function putData(req, res) {
-  try {
-    res.status(200).send('OK');
-  } catch (err) {
-    console.error(err);
-    res.status(505).send('Internal Server Error');
-  }
-}
-
-function patchData(req, res) {
-  try {
-    res.status(200).send('OK');
-  } catch (err) {
-    console.error(err);
-    res.status(505).send('Internal Server Error');
-  }
-}
-
 function deleteData(req, res) {
   try {
     const id = req.params.id;
@@ -89,7 +68,5 @@ export default {
   fetchAllData,
   fetchDataById,
   postData,
-  putData,
-  patchData,
   deleteData,
 };

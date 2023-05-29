@@ -15,9 +15,7 @@ async function login(email, password) {
         password: password,
       }),
     });
-
     const object = await response.json();
-
     if (object.userId) {
       return object.userId;
     } else {
@@ -44,7 +42,6 @@ async function register(firstName, lastName, email, password) {
         password: password,
       }),
     });
-
     const object = await response.json();
     if (object.userId) {
       return object.userId;

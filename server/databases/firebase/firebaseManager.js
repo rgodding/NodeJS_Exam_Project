@@ -1,7 +1,7 @@
 import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
 import { database } from '../../config/firebase.js';
 import { getAuth } from 'firebase/auth';
-import { signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, createUserWithEmailAndPassword } from 'firebase/auth';
 const auth = getAuth();
 
 async function login(email, password) {
@@ -12,8 +12,6 @@ async function login(email, password) {
         resolve(user.uid);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         resolve(false);
       });
   });
@@ -26,8 +24,6 @@ async function register(email, password) {
         resolve(user.uid);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         resolve(false);
       });
   });
@@ -39,12 +35,11 @@ async function forgotPassword(email) {
         resolve(true);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         resolve(false);
       });
   });
 }
+
 async function fetchAllData(type) {
   const reference = collection(database, type);
   const snapshot = await getDocs(reference);
@@ -71,10 +66,9 @@ async function fetchDataById(type, id) {
     return null;
   }
 }
-
-async function fetchDataByUserId(type, userId) {
+async function fetchDataByValue(type, searchQuery, value) {
   const collectionRef = collection(database, type);
-  const querySnapshot = await getDocs(query(collectionRef, where("userId", "==", userId)));
+  const querySnapshot = await getDocs(query(collectionRef, where(searchQuery, "==", value)));
   if (!querySnapshot.empty) {
     const snapshot = querySnapshot.docs[0];
     const data = {
@@ -86,17 +80,13 @@ async function fetchDataByUserId(type, userId) {
     return null;
   }
 }
-
-
 async function postData(type, data) {
   addDoc(collection(database, type), data);
 }
-
 async function updateData(type, id, data) {
   const docRef = doc(database, type, id);
   updateDoc(docRef, data);
 }
-
 async function deleteData(type, id) {
   const docRef = doc(database, type, id);
   deleteDoc(docRef);
@@ -108,7 +98,7 @@ export default {
   forgotPassword,
   fetchAllData,
   fetchDataById,
-  fetchDataByUserId,
+  fetchDataByValue,
   postData,
   updateData,
   deleteData,

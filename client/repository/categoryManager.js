@@ -1,4 +1,4 @@
-const url = 'http://localhost:8081/api/collection-categories';
+const url = 'http://localhost:8081/api/categories';
 
 async function fetchAllObjects(userId) {
   return new Promise((resolve, reject) => {

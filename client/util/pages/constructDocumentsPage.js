@@ -1,9 +1,9 @@
-import collectionCategoryManager from '../../repository/collectionCategoryManager.js';
+import categoryManager from '../../repository/categoryManager.js';
 import collectionManager from '../../repository/collectionManager.js';
 import templateEngine from '../templateEngine.js';
 
 export default async function constructDocumentsPage(isUser, userId) {
-  const categories = await collectionCategoryManager.fetchAllObjects(userId);
+  const categories = await categoryManager.fetchAllObjects(userId);
   const collections = await collectionManager.fetchAllObjects(userId);
   const page = templateEngine.readPage('./views/pages/documents.html')
   .replace('$USER_ID', userId)
@@ -17,6 +17,9 @@ export default async function constructDocumentsPage(isUser, userId) {
   return renderedPage;
 }
 function constructMenu(categories, collections) {
+  if(categories.length === 0){
+    return 'No categories found...'
+  }
   let html = '';
   categories.forEach((category) => {
     const id = 'document-menu-offcanvas-' + category.type;
