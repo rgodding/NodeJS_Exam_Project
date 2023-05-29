@@ -1,30 +1,30 @@
-import categoryManager from '../../repository/categoryManager.js';
-import collectionManager from '../../repository/collectionManager.js';
 import templateEngine from '../templateEngine.js';
 
-export default async function constructDocumentsPage(isUser, userId) {
-  const categories = await categoryManager.fetchAllObjects(userId);
-  const collections = await collectionManager.fetchAllObjects(userId);
-  const page = templateEngine.readPage('./views/pages/documents.html')
+import { documentsPageCSS } from '../../constants/cssReferences.js';
+import { documentsPagePath } from '../../constants/pagePaths.js';
+import { documentsPageTabTitle } from '../../constants/pageTitles.js';
+import { menuPath, menuoptionPath, nomenuPath } from '../../constants/partials/documentsPagePartialPaths.js';
+
+export default function constructDocumentsPage(isUser, userId, categories, collections) {
+  const page = templateEngine.readPage(documentsPagePath)
   .replace('$USER_ID', userId)
   .replace('$DOCUMENT_MENU', constructMenu(categories, collections));
   const renderedPage = templateEngine.renderPageWithSocket(page, {
-    tabTitle: 'Front Page',
-    cssLink: `<link rel="stylesheet" href="/css/documents.css">`,
+    tabTitle: documentsPageTabTitle,
+    cssLink: documentsPageCSS,
     isUser: isUser,
-    userId: userId,
   });
   return renderedPage;
 }
 function constructMenu(categories, collections) {
-  if(categories.length === 0){
-    return 'No categories found...'
+  if (categories.length === 0) {
+    return nomenuPath;
   }
   let html = '';
   categories.forEach((category) => {
     const id = 'document-menu-offcanvas-' + category.type;
     const collection = collections.filter((object) => object.category === category.type);
-    html += templateEngine.readPage('./views/partials/documents/menu.html')
+    html += templateEngine.readPage(menuPath)
     .replace('$DOCUMENT_MENU_BUTTON_NAME', category.name)
     .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF1', id)
     .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF2', id)
@@ -37,9 +37,9 @@ function constructMenu(categories, collections) {
 function constructDocumentsPageMenuOptions(collection) {
   let html = '';
   collection.forEach((object) => {
-    html += templateEngine.readPage('./views/partials/documents/menuoption.html')
+    html += templateEngine.readPage(menuoptionPath)
     .replace('$MENU_OPTION_CATEGORY', object.category)
-    .replace('$MENU_OPTION_NAME', object.name)
+    .replace('$MENU_OPTION_NAME', object.name);
   });
   return html;
 }

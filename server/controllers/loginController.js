@@ -4,12 +4,14 @@ const type = 'users';
 
 async function login(req, res) {
   try {
-    const data = await firebaseManager.fetchDataByValue(`${type}`, userId);
-    if (!data) {
+    const email = req.body.email;
+    const password = req.body.password;
+    const userId = await firebaseManager.login(email, password);
+    if (!userId) {
       res.send({});
     } else {
-      const user = loginModel(data.data, data.id);
-      res.send(user);
+      req.session.userId = userId;
+      res.send({ userId: userId });
     }
   } catch (err) {
     console.error(err);

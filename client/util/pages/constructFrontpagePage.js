@@ -1,11 +1,13 @@
 import templateEngine from '../templateEngine.js';
 
-export default function constructFrontpagePage(isUser, userId) {
-  const html = templateEngine.readPage('./views/pages/frontpage.html');
+import { frontpagePageTabTitle } from "../../constants/pageTitles.js"
+import { frontpagePagePath } from '../../constants/pagePaths.js';
+
+export default function constructFrontpagePage(isUser) {
+  const html = templateEngine.readPage(frontpagePagePath);
   const page = templateEngine.renderPage(html, {
-    tabTitle: 'Front Page',
+    tabTitle: frontpagePageTabTitle,
     isUser: isUser,
-    userId: userId,
   });
   return page;
 }

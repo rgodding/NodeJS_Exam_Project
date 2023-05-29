@@ -1,3 +1,5 @@
+import templateEngine from '../util/templateEngine.js';
+
 import categoryManager from '../repository/categoryManager.js';
 import collectionManager from '../repository/collectionManager.js';
 import documentManager from '../repository/documentManager.js';
@@ -10,34 +12,32 @@ import imageManager from '../repository/imageManager.js';
 export default function socketIo(io) {
   io.on('connection', (socket) => {
     console.log('A client connected', socket.id);
-    loginSocket(socket, io);
     documentsSocket(socket, io);
     imagesSocket(socket, io);
     userSocket(socket, io);
-    adminSocket(socket, io);
   });
 }
 
-function loginSocket(socket, io) {
-}
-
+import { choosedocumentmessage, createddocumentmessage, currentcollection } from '../constants/partials/documentsPagePartialPaths.js';
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
     const documents = await documentManager.fetchAllObjects(data.userId);
     const result = documents.filter((object) => object.collection === data.collection);
     const table = constructDocumentTable(result);
     io.emit('a collection was chosen', {
-      currentCollection: `<input id="current-collection-value" name="current-collection-value" value="${data.collection}" style="display: none;">`,
+      currentCollection: templateEngine.readPage(currentcollection).replace('$CURRENT_COLLECTION', data.collection),
       table: table,
-      content: `<div class="container-fluid mt-3"><h3>choose a document</h3></div>`,
+      content: templateEngine.readPage(choosedocumentmessage),
     });
   });
+
   socket.on('a client choose create document', (data) => {
     const content = constructCreateDocument(data.collection);
     io.emit('a document is to be created', {
       content: content,
     });
   });
+
   socket.on('a client creates a document', async (data) => {
     await documentManager.postObject(data.collection, data.content, data.userId);
     const documents = await documentManager.fetchAllObjects(data.userId);
@@ -45,9 +45,10 @@ function documentsSocket(socket, io) {
     const table = constructDocumentTable(result);
     io.emit('a document was created', {
       table: table,
-      content: `<div class="container-fluid mt-3"><h3>Document was created</h3></div>`,
+      content: templateEngine.readPage(createddocumentmessage),
     });
   });
+
   socket.on('a client choose a document', async (data) => {
     const document = await documentManager.fetchObjectById(data.id, data.userId);
     const content = constructDocumentContent(data.id, document);
@@ -86,7 +87,6 @@ function documentsSocket(socket, io) {
       content: content,
     });
   });
-  //`<div class="container-fluid mt-3"><h3>Document was created</h3></div>`
 }
 
 function imagesSocket(socket, io) {
@@ -97,31 +97,30 @@ function imagesSocket(socket, io) {
   });
 }
 
-function adminSocket(socket, io) {
-}
-
 function userSocket(socket, io) {
-  socket.on('a client creates a collection category', (data) => {
-    if(!data.name || !data.type || !data.userId ){
-      io.emit('a category was missing values')
+  socket.on('a client creates a category', (data) => {
+    if (!data.name || !data.type || !data.userId) {
+      io.emit('a category had invalid values');
     } else {
       categoryManager.postObject(data.name, data.type, data.userId);
-      io.emit('a collection category was created');
+      io.emit('a category was created');
     }
-    
   });
+
   socket.on('a client creates a collection', (data) => {
     if (!data.category || !data.name || !data.type || !data.userId) {
-      io.emit('a collection was missing values')
+      io.emit('a collection had invalid values');
     } else {
       collectionManager.postObject(data.category, data.name, data.type, data.userId);
       io.emit('a collection was created');
     }
   });
-  socket.on('a client deletes a collection category', (data) => {
+
+  socket.on('a client deletes a category', (data) => {
     categoryManager.deleteObject(data.id, data.userId);
-    io.emit('a collection category was deleted');
+    io.emit('a category was deleted');
   });
+
   socket.on('a client deletes a collection', (data) => {
     collectionManager.deleteObject(data.id, data.userId);
     io.emit('a collection was deleted');

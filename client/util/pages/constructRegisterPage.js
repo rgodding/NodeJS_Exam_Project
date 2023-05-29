@@ -1,12 +1,15 @@
 import templateEngine from '../templateEngine.js';
 
-export default function constructRegisterPage(isUser, userId) {
-  const html = templateEngine.readPage('./views/pages/register.html');
+import { loginPageCSS } from '../../constants/cssReferences.js';
+import { registerPagePath } from '../../constants/pagePaths.js';
+import { registerPageTabTitle } from '../../constants/pageTitles.js';
+
+export default function constructRegisterPage(isUser) {
+  const html = templateEngine.readPage(registerPagePath);
   const page = templateEngine.renderPageWithSocket(html, {
-    tabTitle: 'Register Page',
-    cssLink: `<link rel="stylesheet" href="/css/login.css">`,
+    tabTitle: registerPageTabTitle,
+    cssLink: loginPageCSS,
     isUser: isUser,
-    userId: userId,
   });
   return page;
 }

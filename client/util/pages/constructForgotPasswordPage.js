@@ -1,11 +1,14 @@
 import templateEngine from '../templateEngine.js';
 
-export default function constructForgotPasswordPage(isUser, userId) {
-  const html = templateEngine.readPage('./views/pages/forgotpassword.html');
+import { forgotpasswordPagePath } from '../../constants/pagePaths.js';
+import { forgotpasswordPageTabTitle } from '../../constants/pageTitles.js';
+
+
+export default function constructForgotPasswordPage(isUser) {
+  const html = templateEngine.readPage(forgotpasswordPagePath);
   const page = templateEngine.renderPageWithSocket(html, {
-    tabTitle: 'Forgot Password',
+    tabTitle: forgotpasswordPageTabTitle,
     isUser: isUser,
-    userId: userId,
   });
   return page;
 }

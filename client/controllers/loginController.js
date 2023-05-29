@@ -21,6 +21,7 @@ export async function login(req, res) {
       req.session.userId = userId;
       res.redirect('/');
     } else {
+      console.log('wrong password?');
       res.redirect('/login');
     }
   } catch (err) {

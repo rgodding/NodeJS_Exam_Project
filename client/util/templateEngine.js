@@ -35,19 +35,15 @@ function getMainWithSocket() {
 function getNavbar(config = {}) {
   const navbar = readPage('./views/partials/navbar/navbar.html')
   .replace('$PAGE_NAME', 'My Website')
-  .replace('$NAVBAR_OPTIONS', getNavbarOptions(config.isUser, config.userId))
+  .replace('$NAVBAR_OPTIONS', getNavbarOptions(config.isUser))
   .replace('$NAVBAR_LOGIN_BUTTON', getNavbarLoginButton(config.isUser));
   return navbar;
 }
-function getNavbarOptions(isUser, userId) {
+function getNavbarOptions(isUser) {
   if (isUser) {
-    if(userId === process.env.ADMIN_ID){
-      return readPage('./views/partials/navbar/adminoptions.html')
-    } else {
-      return readPage('./views/partials/navbar/options.html')
-    }
+    return readPage('./views/partials/navbar/options.html');
   } else {
-    return readPage('./views/partials/navbar/anonoptions.html')
+    return readPage('./views/partials/navbar/anonoptions.html');
   }
 }
 function getNavbarLoginButton(isUser) {

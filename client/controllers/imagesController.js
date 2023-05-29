@@ -1,9 +1,15 @@
+import categoryManager from '../repository/categoryManager.js';
+import collectionManager from '../repository/collectionManager.js';
 import imageManager from '../repository/imageManager.js';
 import constructImagesPage from '../util/pages/constructImagesPage.js';
 
 export async function showImages(req, res) {
   try {
-    const page = await constructImagesPage(req.isUser, req.userId);
+    const userId = req.userId;
+    const categories = await categoryManager.fetchAllObjects(userId);
+    const collections = await collectionManager.fetchAllObjects(userId);
+    const images = await imageManager.fetchAllObjects(userId);
+    const page = constructImagesPage(req.isUser, userId, categories, collections, images);
     res.send(page);
   } catch (err) {
     console.error(err);

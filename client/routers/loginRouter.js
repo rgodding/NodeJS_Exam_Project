@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { showLogin, login } from '../controllers/loginController.js';
 import { showRegister, register, showForgotPassword, forgotPassword } from '../controllers/loginController.js';
-import checkUser from '../middleware/checkUser.js';
 import requireNoneUser from '../middleware/requireNoneUser.js';
 const router = Router();
 

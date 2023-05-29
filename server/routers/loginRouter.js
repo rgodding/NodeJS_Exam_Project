@@ -5,13 +5,6 @@ const router = Router();
 
 router.post('/login', async (req, res) => {
   loginController.login(req, res)
-  let userId = await firebaseManager.login(req.body.email, req.body.password);
-  if (userId === false) {
-    res.status(401).send({ error: 'Unauthorized' });
-  } else {
-    req.session.userId = userId;
-    res.send({ userId: userId });
-  }
 });
 
 router.post('/register', async (req, res) => {

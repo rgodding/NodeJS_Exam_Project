@@ -1,12 +1,19 @@
+import categoryManager from '../repository/categoryManager.js';
+import collectionManager from '../repository/collectionManager.js';
 import constructDocumentsPage from '../util/pages/constructDocumentsPage.js';
 
 export async function showDocuments(req, res) {
   try {
-    console.log('showing documents');
-    const page = await constructDocumentsPage(req.isUser, req.userId);
+    console.log('showing documnents');
+    const userId = req.userId;
+    console.log('USER ID : ' + userId);
+    const categories = await categoryManager.fetchAllObjects(userId);
+    const collections = await collectionManager.fetchAllObjects(userId);
+    const page = constructDocumentsPage(req.isUser, userId, categories, collections);
     res.send(page);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Client Error');
   }
 }
+//style="display: none;"

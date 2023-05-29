@@ -1,12 +1,16 @@
 import templateEngine from '../templateEngine.js';
 
-export default function constructLoginPage(isUser, userId) {
-  const html = templateEngine.readPage('./views/pages/login.html');
+import { loginPageCSS } from '../../constants/cssReferences.js';
+import { loginPagePath } from '../../constants/pagePaths.js';
+import { loginPageTabTitle } from '../../constants/pageTitles.js';
+
+
+export default function constructLoginPage(isUser) {
+  const html = templateEngine.readPage(loginPagePath);
   const page = templateEngine.renderPageWithSocket(html, {
-    tabTitle: 'Login Page',
-    cssLink: `<link rel="stylesheet" href="/css/login.css">`,
+    tabTitle: loginPageTabTitle,
+    cssLink: loginPageCSS,
     isUser: isUser,
-    userId: userId,
   });
   return page;
 }
