@@ -12,6 +12,7 @@ export function showLogin(req, res) {
     res.status(505).send('Internal Client Error');
   }
 }
+
 export async function login(req, res) {
   try {
     const email = req.body.email;
@@ -28,6 +29,7 @@ export async function login(req, res) {
     res.status(505).send('Internal Client Error');
   }
 }
+
 export function showRegister(req, res) {
   try {
     const page = constructRegisterPage(req.isUser);
@@ -37,6 +39,7 @@ export function showRegister(req, res) {
     res.status(505).send('Internal Client Error');
   }
 }
+
 export async function register(req, res) {
   try {
     const firstName = req.body.firstName;
@@ -55,6 +58,7 @@ export async function register(req, res) {
     res.status(505).send('Internal Client Error');
   }
 }
+
 export function showForgotPassword(req, res) {
   try {
     const page = constructForgotPasswordPage(req.isUser);
@@ -64,6 +68,7 @@ export function showForgotPassword(req, res) {
     res.status(505).send('Internal Client Error');
   }
 }
+
 export async function forgotPassword(req, res) {
   try {
     const email = req.body.email;

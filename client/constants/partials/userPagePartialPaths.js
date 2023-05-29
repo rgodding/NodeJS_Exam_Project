@@ -1,4 +1,4 @@
-const location = './views/partials/user'
+const location = './views/partials/user';
 
 export const categoryPath = location + '/category.html';
 export const collectionPath = location + '/collection.html';

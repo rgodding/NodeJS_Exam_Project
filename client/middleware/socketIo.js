@@ -18,7 +18,7 @@ export default function socketIo(io) {
   });
 }
 
-import { choosedocumentmessage, createddocumentmessage, currentcollection } from '../constants/partials/documentsPagePartialPaths.js';
+import { contentmessage, currentcollection } from '../constants/partials/documentsPagePartialPaths.js';
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
     const documents = await documentManager.fetchAllObjects(data.userId);
@@ -27,7 +27,7 @@ function documentsSocket(socket, io) {
     io.emit('a collection was chosen', {
       currentCollection: templateEngine.readPage(currentcollection).replace('$CURRENT_COLLECTION', data.collection),
       table: table,
-      content: templateEngine.readPage(choosedocumentmessage),
+      content: templateEngine.readPage(contentmessage).replace('$CONTENT_MESSAGE', 'Choose a document...'),
     });
   });
 
@@ -45,10 +45,9 @@ function documentsSocket(socket, io) {
     const table = constructDocumentTable(result);
     io.emit('a document was created', {
       table: table,
-      content: templateEngine.readPage(createddocumentmessage),
+      content: templateEngine.readPage(contentmessage).replace('$CONTENT_MESSAGE', 'A document was created...'),
     });
   });
-
   socket.on('a client choose a document', async (data) => {
     const document = await documentManager.fetchObjectById(data.id, data.userId);
     const content = constructDocumentContent(data.id, document);
@@ -105,7 +104,7 @@ function userSocket(socket, io) {
       try {
         categoryManager.postObject(data.name, data.userId);
       } catch (err) {
-        io.emit('an error occurred on the server')
+        io.emit('an error occurred on the server');
       }
       io.emit('a category was created');
     }

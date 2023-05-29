@@ -14,5 +14,3 @@ export async function showDocuments(req, res) {
     res.status(505).send('Internal Client Error');
   }
 }
-
-//style="display: none;"
