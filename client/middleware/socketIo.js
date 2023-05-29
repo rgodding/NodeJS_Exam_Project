@@ -99,7 +99,6 @@ function imagesSocket(socket, io) {
 
 function userSocket(socket, io) {
   socket.on('a client creates a category', (data) => {
-    console.log('CREATING CATEGORY');
     if (!data.name || !data.userId) {
       io.emit('a category had invalid values');
     } else {
@@ -108,17 +107,15 @@ function userSocket(socket, io) {
       } catch (err) {
         io.emit('an error occurred on the server')
       }
-      
-
       io.emit('a category was created');
     }
   });
 
   socket.on('a client creates a collection', (data) => {
-    if (!data.category || !data.name || !data.type || !data.userId) {
+    if (!data.category || !data.name || !data.userId) {
       io.emit('a collection had invalid values');
     } else {
-      collectionManager.postObject(data.category, data.name, data.type, data.userId);
+      collectionManager.postObject(data.category, data.name, data.userId);
       io.emit('a collection was created');
     }
   });

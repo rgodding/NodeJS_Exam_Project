@@ -3,7 +3,6 @@ const socket = io();
 var categoryNameInput = document.getElementById('categoryname');
 
 var collectionNameInput = document.getElementById('collectionname');
-var collectionTypeInput = document.getElementById('collectiontype');
 var collectionCategoryInput = document.getElementById('collectioncategory');
 
 var categoryCreateButton = document.getElementById('categoryCreateButton');
@@ -12,7 +11,6 @@ var collectionCreateButton = document.getElementById('collectionCreateButton');
 categoryNameInput.addEventListener('input', checkCategoryInputs);
 
 collectionNameInput.addEventListener('input', checkCollectionInputs);
-collectionTypeInput.addEventListener('input', checkCollectionInputs);
 collectionCategoryInput.addEventListener('input', checkCollectionInputs);
 
 function checkCategoryInputs() {
@@ -25,9 +23,8 @@ function checkCategoryInputs() {
 }
 function checkCollectionInputs(){
   var collectionNameValue = collectionNameInput.value;
-  var collectionTypeValue = collectionTypeInput.value;
   var collectionCategoryValue = collectionCategoryInput.value;
-  if (collectionNameValue !== '' && collectionTypeValue !== '' && collectionCategoryValue !== '') {
+  if (collectionNameValue !== '' && collectionCategoryValue !== '') {
     collectionCreateButton.disabled = false;
   } else {
     collectionCreateButton.disabled = true;
@@ -47,10 +44,9 @@ socket.on('a category had invalid values', (data) => {
 
 function createCollection() {
   const name = document.getElementById('collectionname').value;
-  const type = document.getElementById('collectiontype').value;
   const category = document.getElementById('collectioncategory').value;
   const userId = document.getElementById('userid').value;
-  socket.emit('a client creates a collection', { category: category, name: name, type: type, userId: userId });
+  socket.emit('a client creates a collection', { category: category, name: name, userId: userId });
 }
 socket.on('a collection was created', (data) => {
   window.location.reload();

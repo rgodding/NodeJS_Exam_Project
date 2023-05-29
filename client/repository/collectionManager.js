@@ -13,7 +13,7 @@ async function fetchAllObjects(userId) {
   });
 }
 
-async function postObject(category, name, type, userId) {
+async function postObject(category, name, userId) {
   let response = await fetch(`${url}/${userId}`, {
     method: 'POST',
     headers: {
@@ -23,7 +23,6 @@ async function postObject(category, name, type, userId) {
     body: JSON.stringify({
       category: category,
       name: name,
-      type: type,
     }),
   });
   return response.status;

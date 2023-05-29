@@ -39,15 +39,12 @@ function postData(req, res) {
   try {
     const category = req.body.category;
     const name = req.body.name;
-    const type = req.body.type;
     const userId = req.params.userId;
     const data = {
       category: category,
       name: name,
-      type: type,
     };
-    const collection = collectionModel(data);
-    firebaseManager.postData(databaseName, collection);
+    firebaseManager.postData(databaseName, data);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);
