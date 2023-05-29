@@ -20,11 +20,11 @@ export async function showImages(req, res) {
 export function createImage(req, res) {
   try {
     const userId = req.session.userId;
-    const type = req.body.type;
+    const collection = req.body.collection;
     const name = req.body.name;
     const description = req.body.description;
     const fileName = req.file.filename;
-    imageManager.postObject(type, name, description, fileName, userId);
+    imageManager.postObject(collection, name, description, fileName, userId);
     res.redirect('/images');
   } catch (err) {
     res.status(505).send('Internal Client Error');

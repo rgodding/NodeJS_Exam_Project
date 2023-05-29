@@ -24,14 +24,14 @@ function generateCategoryOptions(categories, collections) {
   }
   let html = '';
   categories.forEach((category) => {
-    const collection = collections.filter((object) => object.category === category.type);
+    const collection = collections.filter((object) => object.category === category.id);
     html += templateEngine.readPage(categoryoptionlabelPath)
     .replace('$CATEGORY_NAME', category.name)
     if (collection.length != 0) {
       collection.forEach((object) => {
         html += templateEngine.readPage(collectionoptionPath)
         .replace('$COLLECTION_NAME', object.name)
-        .replace('$COLLECTION_TYPE', object.type)
+        .replace('$COLLECTION_ID', object.id)
       });
     }
   });
@@ -40,11 +40,15 @@ function generateCategoryOptions(categories, collections) {
 function constructImageList(collections, images) {
   let html = '';
   collections.forEach((collection) => {
-    const tempImages = images.filter((object) => object.collection === collection.type);
+    const tempImages = images.filter((object) => object.collection === collection.id);
     if (images.length != 0) {
       html += templateEngine.readPage(imagelistPath)
       .replace('$IMAGE_COLLECTION_NAME', collection.name)
       .replace('$IMAGE_LIST', constructImageItems(tempImages));
+    } else {
+      html += templateEngine.readPage(imagelistPath)
+      .replace('$IMAGE_COLLECTION_NAME', collection.name)
+      .replace('$IMAGE_LIST', templateEngine.readPage(noimagelistPath))
     }
   });
   return html;
@@ -53,6 +57,7 @@ function constructImageItems(images) {
   let html = '';
   if (images.length == 0) {
     html += templateEngine.readPage(noimagelistPath);
+    console.log(html);
     return html;
   }
   if (images.length == 1) {

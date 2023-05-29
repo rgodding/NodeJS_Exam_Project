@@ -1,6 +1,6 @@
 import firebaseManager from '../databases/firebase/firebaseManager.js';
 import imageModel from '../models/imageModel.js';
-const databaseName = 'collectionimages';
+const databaseName = 'images';
 
 async function fetchAllData(req, res) {
   try {

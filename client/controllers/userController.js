@@ -1,5 +1,6 @@
 import categoryManager from '../repository/categoryManager.js';
 import collectionManager from '../repository/collectionManager.js';
+import documentManager from '../repository/documentManager.js';
 import constructUserPage from '../util/pages/constructUserPage.js';
 
 export async function showUser(req, res) {
@@ -7,7 +8,8 @@ export async function showUser(req, res) {
     const userId = req.userId;
     const categories = await categoryManager.fetchAllObjects(userId);
     const collections = await collectionManager.fetchAllObjects(userId);
-    const page = await constructUserPage(req.isUser, userId, categories, collections);
+    const documents = await documentManager.fetchAllObjects(userId);
+    const page = await constructUserPage(req.isUser, userId, categories, collections, documents);
     res.send(page);
   } catch (err) {
     console.error(err);

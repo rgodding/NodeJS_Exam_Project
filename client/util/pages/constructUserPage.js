@@ -4,11 +4,11 @@ import { userPagePath } from '../../constants/pagePaths.js';
 import { userPageTabTitle } from '../../constants/pageTitles.js';
 import { categoryPath, categoryoptionPath, collectionPath, nocategoriesPath, nocategoryoptionsPath } from '../../constants/partials/userPagePartialPaths.js';
 
-export default async function constructUserPage(isUser, userId, categories, collections) {
+export default async function constructUserPage(isUser, userId, categories, collections, documents) {
   const html = templateEngine.readPage(userPagePath)
   .replace('$USER_ID', userId)
   .replace('$CREATE_CATEGORY_OPTIONS', generateCategoryOptions(categories))
-  .replace('$COLLECTIONS_LIST', constructCollectionList(categories, collections));
+  .replace('$COLLECTIONS_LIST', constructCollectionList(categories, collections, documents));
   const page = templateEngine.renderPageWithSocket(html, {
     tabTitle: userPageTabTitle,
     isUser: isUser,
@@ -29,7 +29,7 @@ function generateCategoryOptions(categories) {
     return html;
   }
 }
-function constructCollectionList(categories, collections) {
+function constructCollectionList(categories, collections, documents) {
   let html = '';
   if (categories.length === 0) {
     html += templateEngine.readPage(nocategoriesPath);
@@ -40,17 +40,19 @@ function constructCollectionList(categories, collections) {
       html += templateEngine.readPage(categoryPath)
       .replace('$CATEGORY_NAME', category.name)
       .replace('$CATEGORY_ID', category.id)
-      .replace('$CATEGORY_COLLECTIONS', generateCategoryCollections(collection));
+      .replace('$CATEGORY_COLLECTIONS', generateCategoryCollections(collection, documents));
     });
     return html;
   }
 }
-function generateCategoryCollections(collection) {
+function generateCategoryCollections(collection, documents) {
   let html = '';
   collection.forEach((collection) => {
+    const foundDocuments = documents.filter(object => object.collection === collection.id);
     html += templateEngine.readPage(collectionPath)
     .replace('$COLLECTION_NAME', collection.name)
-    .replace('$COLLECTION_ID', collection.id);
+    .replace('$COLLECTION_ID', collection.id)
+    .replace('$COLLECTION_DOCUMENTS', foundDocuments.length)
   });
   return html;
 }

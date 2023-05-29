@@ -18,12 +18,12 @@ export default function constructDocumentsPage(isUser, userId, categories, colle
 }
 function constructMenu(categories, collections) {
   if (categories.length === 0) {
-    return nomenuPath;
+    return templateEngine.readPage(nomenuPath);
   }
   let html = '';
   categories.forEach((category) => {
-    const id = 'document-menu-offcanvas-' + category.type;
-    const collection = collections.filter((object) => object.category === category.type);
+    const id = 'document-menu-offcanvas-' + category.id;
+    const collection = collections.filter((object) => object.category === category.id);
     html += templateEngine.readPage(menuPath)
     .replace('$DOCUMENT_MENU_BUTTON_NAME', category.name)
     .replace('$DOCUMENT_MENU_OFFCANVAS_ID_REF1', id)
@@ -38,7 +38,7 @@ function constructDocumentsPageMenuOptions(collection) {
   let html = '';
   collection.forEach((object) => {
     html += templateEngine.readPage(menuoptionPath)
-    .replace('$MENU_OPTION_CATEGORY', object.category)
+    .replace('$MENU_OPTION_CATEGORY', object.id)
     .replace('$MENU_OPTION_NAME', object.name);
   });
   return html;
