@@ -7,18 +7,18 @@ export default function categoryModel(data, id) {
 }
 
 function constructCategoryModel(data, id) {
-  const collection = {
+  const category = {
     id: id,
     name: data.name,
-    type: data.type,
+    owner: data.owner,
   };
-  return collection;
+  return category;
 }
 
 function constructNewCategoryModel(data) {
-  const collection = {
+  const category = {
     name: data.name,
-    type: data.type,
+    owner: data.owner,
   };
-  return collection;
+  return category;
 }
