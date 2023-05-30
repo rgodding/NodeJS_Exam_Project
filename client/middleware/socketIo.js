@@ -22,6 +22,7 @@ import { contentmessage, currentcollection } from '../constants/partials/documen
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
     const documents = await documentManager.fetchAllObjects(data.userId);
+    const images = await imageManager.fetchAllObjects(data.userId);
     const result = documents.filter((object) => object.collection === data.collection);
     const table = constructDocumentTable(result);
     io.emit('a collection was chosen', {
@@ -129,8 +130,10 @@ function userSocket(socket, io) {
   });
   socket.on('a client deletes a collection', async (data) => {
     const documents = await documentManager.fetchAllObjects(data.userId);
+    const images = await imageManager.fetchAllObjects(data.userId);
     const matchingDocuments = documents.filter((object) => object.collection === data.id);
-    if (matchingDocuments.length === 0) {
+    const matchingImages = images.filter((object) => object.collection === data.id);
+    if (matchingDocuments.length === 0 && matchingImages.length === 0) {
       await collectionManager.deleteObject(data.id, data.userId);
       io.emit('a collection was deleted');
     } else {

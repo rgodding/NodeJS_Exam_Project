@@ -2,14 +2,14 @@ import templateEngine from '../templateEngine.js';
 
 import { imagesPagePath } from '../../constants/pagePaths.js';
 import { imagesPageTabTitle } from '../../constants/pageTitles.js';
-import { imagesPageCSS } from '../../constants/cssReferences.js'
+import { imagesPageCSS } from '../../constants/cssReferences.js';
 import { categoryoptionlabelPath, collectionoptionPath, imageitemPath, imagelistPath, nocategoriesPath, noimagelistPath } from '../../constants/partials/imagesPagePartialPaths.js';
 
 export default function constructImagesPage(isUser, userId, categories, collections, images) {
   const html = templateEngine.readPage(imagesPagePath)
-    .replace('$CREATE_IMAGES_TYPES_OPTIONS', generateCategoryOptions(categories, collections))
-    .replace('$SHOW_IMAGES_LIST', constructImageList(collections, images))
-    .replace('$USER_ID', userId);
+  .replace('$CREATE_IMAGES_TYPES_OPTIONS', generateCategoryOptions(categories, collections))
+  .replace('$SHOW_IMAGES_LIST', constructImageList(categories, collections, images))
+  .replace('$USER_ID', userId);
   const page = templateEngine.renderPageWithSocket(html, {
     tabTitle: imagesPageTabTitle,
     cssLink: imagesPageCSS,
@@ -19,40 +19,43 @@ export default function constructImagesPage(isUser, userId, categories, collecti
 }
 
 function generateCategoryOptions(categories, collections) {
-  if(categories.length == 0){
-    return templateEngine.readPage(nocategoriesPath)
+  if (categories.length == 0) {
+    return templateEngine.readPage(nocategoriesPath);
   }
   let html = '';
   categories.forEach((category) => {
     const collection = collections.filter((object) => object.category === category.id);
+    console.log('here - ' + category.name);
     html += templateEngine.readPage(categoryoptionlabelPath)
-    .replace('$CATEGORY_NAME', category.name)
+    .replace('$CATEGORY_NAME', category.name);
     if (collection.length != 0) {
       collection.forEach((object) => {
         html += templateEngine.readPage(collectionoptionPath)
         .replace('$COLLECTION_NAME', object.name)
-        .replace('$COLLECTION_ID', object.id)
+        .replace('$COLLECTION_ID', object.id);
       });
     } else {
-      console.log('why this?');
       html += templateEngine.renderPage(nocategoriesPath);
     }
   });
   return html;
 }
-function constructImageList(collections, images) {
+function constructImageList(categories, collections, images) {
   let html = '';
-  collections.forEach((collection) => {
-    const tempImages = images.filter((object) => object.collection === collection.id);
-    if (images.length != 0) {
-      html += templateEngine.readPage(imagelistPath)
-      .replace('$IMAGE_COLLECTION_NAME', collection.name)
-      .replace('$IMAGE_LIST', constructImageItems(tempImages));
-    } else {
-      html += templateEngine.readPage(imagelistPath)
-      .replace('$IMAGE_COLLECTION_NAME', collection.name)
-      .replace('$IMAGE_LIST', templateEngine.readPage(noimagelistPath))
-    }
+  categories.forEach((category) => {
+    const foundCollections = collections.filter((object) => object.category === category.id);
+    foundCollections.forEach((collection) => {
+      const foundImages = images.filter((object) => object.collection === collection.id);
+      if (foundImages.length != 0) {
+        html += templateEngine.readPage(imagelistPath)
+        .replace('$IMAGE_COLLECTION_NAME', collection.name)
+        .replace('$IMAGE_LIST', constructImageItems(foundImages));
+      } else {
+        html += templateEngine.readPage(imagelistPath)
+        .replace('$IMAGE_COLLECTION_NAME', collection.name)
+        .replace('$IMAGE_LIST', templateEngine.readPage(noimagelistPath));
+      }
+    });
   });
   return html;
 }
@@ -60,11 +63,11 @@ function constructImageItems(images) {
   let html = '';
   if (images.length == 0) {
     html += templateEngine.readPage(noimagelistPath);
-    console.log(html);
     return html;
   }
   if (images.length == 1) {
-    html += templateEngine.readPage(imageitemPath)
+    html += templateEngine
+      .readPage(imageitemPath)
       .replace('$IMAGE_NAME', images[0].name)
       .replace('$FILENAME', images[0].fileName)
       .replace('$FILEID_DELETE', images[0].id)
