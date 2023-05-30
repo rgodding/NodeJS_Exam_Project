@@ -20,8 +20,17 @@ async function fetchAllData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-function fetchDataById(req, res) {
+async function fetchDataById(req, res) {
   try {
+    const userId = req.params.userId;
+    const id = req.params.id;
+    const data = await firebaseManager.fetchDataById(databaseName, id);
+    if (!data) {
+      res.send({});
+    } else {
+      const document = imageModel(data.data, data.id);
+      res.send(document);
+    }
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
@@ -50,6 +59,16 @@ function postData(req, res) {
 }
 function putData(req, res) {
   try {
+    const userId = req.params.userId;
+    const id = req.params.id;
+    const data = req.body.image;
+    firebaseManager.updateData(databaseName, id, data)
+    if (!data) {
+      res.send({});
+    } else {
+      const document = documentModel(data.data, data.id);
+      res.send(document);
+    }
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');

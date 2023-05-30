@@ -44,10 +44,11 @@ function postData(req, res) {
   try {
     const userId = req.params.userId;
     const name = req.body.name;
-    const category = {
+    const data = {
       name: name,
       owner: userId,
     };
+    const category = categoryModel(data)
     firebaseManager.postData(`${databaseName}`, category);
     res.status(200).send('OK');
   } catch (err) {

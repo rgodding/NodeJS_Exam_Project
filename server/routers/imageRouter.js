@@ -8,7 +8,7 @@ router.get(`${routerUrl}`, async (req, res) => {
 });
 
 router.get(`${routerUrl}`, async (req, res) => {
-  res.send({ data: 'images : get by id' });
+  imageController.fetchDataById(req, res);
 });
 
 router.post(`${routerUrl}`, async (req, res) => {
@@ -16,11 +16,11 @@ router.post(`${routerUrl}`, async (req, res) => {
 });
 
 router.put(`${routerUrl}`, async (req, res) => {
-  res.send({ data: 'images : put' });
+  imageController.putData(req, res);
 });
 
 router.patch(`${routerUrl}`, async (req, res) => {
-  res.send({ data: 'images : patch' });
+  imageController.patchData(req, res);
 });
 
 router.delete(`${routerUrl}/:id`, async (req, res) => {
