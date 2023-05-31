@@ -1,3 +1,4 @@
+import { collection } from 'firebase/firestore';
 import firebaseManager from '../databases/firebase/firebaseManager.js';
 import imageModel from '../models/imageModel.js';
 const databaseName = 'images';
@@ -5,7 +6,7 @@ const databaseName = 'images';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllData(databaseName);
+    const data = await firebaseManager.fetchAllDataByValue(databaseName, 'owner', userId);
     if (!data) {
       res.send([]);
     } else {
@@ -45,6 +46,7 @@ function postData(req, res) {
     const fileName = req.body.fileName;
     const data = {
       collection: collection,
+      owner: userId,
       name: name,
       description: description,
       fileName: fileName,
@@ -57,35 +59,16 @@ function postData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-function putData(req, res) {
-  try {
-    const userId = req.params.userId;
-    const id = req.params.id;
-    const data = req.body.image;
-    firebaseManager.updateData(databaseName, id, data)
-    if (!data) {
-      res.send({});
-    } else {
-      const document = documentModel(data.data, data.id);
-      res.send(document);
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(505).send('Internal Server Error');
-  }
-}
-function patchData(req, res) {
-  try {
-  } catch (err) {
-    console.error(err);
-    res.status(505).send('Internal Server Error');
-  }
-}
-function deleteData(req, res) {
+async function deleteData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
-    firebaseManager.deleteData(databaseName, id);
+    const image = await firebaseManager.fetchDataById(databaseName, id);
+    const categories = await firebaseManager.fetchAllDataByValue('categories', 'owner', userId);
+    console.log('testing this');
+    console.log(JSON.stringify(categories));
+
+    // firebaseManager.deleteData(databaseName, id);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);
@@ -97,7 +80,5 @@ export default {
   fetchAllData,
   fetchDataById,
   postData,
-  putData,
-  patchData,
   deleteData,
 };

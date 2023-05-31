@@ -9,16 +9,16 @@ export default function categoryModel(data, id) {
 function constructCategoryModel(data, id) {
   const category = {
     id: id,
-    name: data.name,
     owner: data.owner,
+    name: data.name
   };
   return category;
 }
 
 function constructNewCategoryModel(data) {
   const category = {
-    name: data.name,
     owner: data.owner,
+    name: data.name
   };
   return category;
 }

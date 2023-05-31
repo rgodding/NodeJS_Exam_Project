@@ -9,9 +9,10 @@ export default function imageModel(data, id) {
 function constructImageModel(data, id) {
   const image = {
     id: id,
+    collection: data.collection,
+    owner: data.owner,
     name: data.name,
     description: data.description,
-    collection: data.collection,
     fileName: data.fileName,
   };
   return image;
@@ -19,9 +20,10 @@ function constructImageModel(data, id) {
 
 function constructNewImageModel(data) {
   const image = {
+    collection: data.collection,
+    owner: data.owner,
     name: data.name,
     description: data.description,
-    collection: data.collection,
     fileName: data.fileName,
   };
   return image;

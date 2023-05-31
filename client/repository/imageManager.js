@@ -40,6 +40,8 @@ async function deleteObject(id, userId) {
 }
 
 async function deleteImageFile(fileName) {
+  console.log('deleting the file');
+  /*
   try {
     fs.unlink(`./public/images/uploads/${fileName}`, function (err) {
       if (err) {
@@ -49,6 +51,7 @@ async function deleteImageFile(fileName) {
   } catch (err) {
     console.error(err);
   }
+  */
 }
 
 export default {

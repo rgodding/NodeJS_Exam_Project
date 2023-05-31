@@ -6,18 +6,15 @@ const databaseName = 'categories';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllDataByValue(databaseName, 'owner', userId);
+    console.log(userId);
+    const data = await firebaseManager.fetchAllUserData(databaseName, userId)
     if (!data) {
       res.send([]);
     } else {
       const categories = [];
-      if (Array.isArray(data)) {
-        data.forEach((object) => {
-          categories.push(categoryModel(object.data, object.id));
-        });
-      } else {
-        categories.push(categoryModel(data.data, data.id));
-      }
+      data.forEach((object) => {
+        categories.push(categoryModel(object.data, object.id));
+      });
       res.send(categories);
     }
   } catch (err) {
@@ -27,8 +24,9 @@ async function fetchAllData(req, res) {
 }
 async function fetchDataById(req, res) {
   try {
+    const userId = req.params.userId;
     const id = req.params.id;
-    const data = await firebaseManager.fetchDataById(databaseName, id);
+    const data = await firebaseManager.fetchUserDataById(databaseName, id, userId)
     if (!data) {
       res.send({});
     } else {
@@ -40,28 +38,28 @@ async function fetchDataById(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-function postData(req, res) {
+async function postData(req, res) {
   try {
     const userId = req.params.userId;
     const name = req.body.name;
     const data = {
-      name: name,
       owner: userId,
+      name: name,
     };
     const category = categoryModel(data)
-    firebaseManager.postData(`${databaseName}`, category);
-    res.status(200).send('OK');
+    const result = await firebaseManager.postData(`${databaseName}`, category);
+    res.status(200).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
   }
 }
-function deleteData(req, res) {
+async function deleteData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
-    firebaseManager.deleteData(`${databaseName}`, id);
-    res.status(200).send('OK');
+    const result = await firebaseManager.deleteUserData(databaseName, id, userId);
+    res.status(200).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');

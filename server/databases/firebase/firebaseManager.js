@@ -39,7 +39,6 @@ async function forgotPassword(email) {
       });
   });
 }
-
 async function fetchAllData(type) {
   const reference = collection(database, type);
   const snapshot = await getDocs(reference);
@@ -66,6 +65,7 @@ async function fetchDataById(type, id) {
     return null;
   }
 }
+
 async function fetchAllDataByValue(type, searchQuery, value) {
   const collectionRef = collection(database, type);
   const querySnapshot = await getDocs(query(collectionRef, where(searchQuery, '==', value)));
@@ -79,6 +79,57 @@ async function fetchAllDataByValue(type, searchQuery, value) {
     return null;
   }
 }
+async function fetchAllUserData(type, userId){
+  const collectionRef = collection(database, type);
+  const querySnapshot = await getDocs(query(collectionRef, where('owner', '==', userId)));
+  if (!querySnapshot.empty) {
+    const data = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      data: doc.data(),
+    }));
+    return data;
+  } else {
+    return null;
+  }
+}
+async function fetchUserDataById(type, id, userId) {
+  const reference = doc(database, type, id);
+  const snapshot = await getDoc(reference);
+  if (snapshot.exists()) {
+    if (snapshot.data().owner == userId) {
+      const data = {
+        id: snapshot.id,
+        data: snapshot.data(),
+      };
+      return data;
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+async function updateUserData(type, id, data, userId){
+  const objectToUpdate = await fetchUserDataById(type, id, userId);
+  if(objectToUpdate.data.owner == userId){
+    const docRef = doc(database, type, id);
+    updateDoc(docRef, data);
+    return objectToUpdate;
+  } else {
+    return false;
+  }
+}
+async function deleteUserData(type, id, userId){
+  const objectToDelete = await fetchUserDataById(type, id, userId);
+  if(objectToDelete.data.owner == userId){
+    const docRef = doc(database, type, id);
+    deleteDoc(docRef);
+    return objectToDelete;
+  } else {
+    return false;
+  }
+}
+
 async function postData(type, data) {
   addDoc(collection(database, type), data);
 }
@@ -92,12 +143,19 @@ async function deleteData(type, id) {
 }
 
 export default {
+  // Login Functions
   login,
   register,
   forgotPassword,
   fetchAllData,
   fetchDataById,
   fetchAllDataByValue,
+
+  fetchAllUserData,
+  fetchUserDataById,
+  updateUserData,
+  deleteUserData,
+
   postData,
   updateData,
   deleteData,

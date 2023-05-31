@@ -9,18 +9,22 @@ export default function collectionModel(data, id) {
 function constructCollectionModel(data, id) {
   const collection = {
     id: id,
+    category: data.category,
+    owner: data.owner,
     name: data.name,
     type: data.type,
-    category: data.category,
+    
   };
   return collection;
 }
 
 function constructNewCollectionModel(data) {
   const collection = {
+    category: data.category,
+    owner: data.owner,
     name: data.name,
     type: data.type,
-    category: data.category,
+    
   };
   return collection;
 }

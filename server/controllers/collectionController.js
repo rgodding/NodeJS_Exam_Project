@@ -5,7 +5,7 @@ const databaseName = 'collections';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllData(databaseName);
+    const data = await firebaseManager.fetchAllDataByValue(databaseName, 'owner', userId);
     if (!data) {
       res.send([]);
     } else {
@@ -24,7 +24,7 @@ async function fetchDataById(req, res) {
   try {
     const id = req.params.id;
     const userId = req.session.userId;
-    const data = await firebaseManager.fetchDataById(databaseName, id);
+    const data = await firebaseManager.fetchUserDataById(databaseName, id, userId);
     if (!data) {
       res.send({});
     } else {
@@ -35,24 +35,18 @@ async function fetchDataById(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-function postData(req, res) {
+async function postData(req, res) {
   try {
+    const userId = req.params.userId;
     const category = req.body.category;
     const name = req.body.name;
-    const userId = req.params.userId;
     const data = {
       category: category,
+      owner: userId,
       name: name,
     };
-    firebaseManager.postData(databaseName, data);
-    res.status(200).send('OK');
-  } catch (err) {
-    console.error(err);
-    res.status(505).send('Internal Server Error');
-  }
-}
-function putData(req, res) {
-  try {
+    const result = await firebaseManager.postData(databaseName, data);
+    res.status(200).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
@@ -60,6 +54,13 @@ function putData(req, res) {
 }
 function patchData(req, res) {
   try {
+    const id = req.params.id;
+    const userId = req.params.userId;
+    const category = req.body.category;
+    const name = req.body.name;
+    const data = {
+      
+    }
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
@@ -80,7 +81,6 @@ export default {
   fetchAllData,
   fetchDataById,
   postData,
-  putData,
   patchData,
   deleteData,
 };

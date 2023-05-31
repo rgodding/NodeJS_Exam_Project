@@ -9,39 +9,37 @@ export default function documentModel(data, id) {
 function constructDocumentModel(data, id) {
   const document = {
     id: id,
-    name: constructDocumentName(data.content),
     collection: data.collection,
+    owner: data.owner,
+    name: constructDocumentName(data.content),
     content: data.content,
     date: data.date,
     time: data.time,
   };
   return document;
 }
-
 function constructNewDocumentModel(data) {
   const time = new Date();
   const document = {
-    content: data.content,
     collection: data.collection,
+    owner: data.owner,
+    content: data.content,
     date: getCurrentDate(time),
     time: getCurrentTime(time),
   };
   return document;
 }
-
 function getCurrentTime(timeStamp) {
-  return timeStamp.toLocaleDateString([], {
+  return timeStamp.toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
     hour12: false,
-  });
+  }).replaceAll('.', ':');
 }
-
 function getCurrentDate(timeStamp) {
   return timeStamp.toLocaleDateString();
 }
-
 function constructDocumentName(content) {
   content = content.split('\n');
   let result = content[0];

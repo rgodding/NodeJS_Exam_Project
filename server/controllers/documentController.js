@@ -5,7 +5,7 @@ const databaseName = 'documents';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllData(databaseName);
+    const data = await firebaseManager.fetchAllDataByValue(databaseName, 'owner', userId);
     if (!data) {
       res.send([]);
     } else {
@@ -24,7 +24,7 @@ async function fetchDataById(req, res) {
   try {
     const userId = req.params.userId;
     const id = req.params.id;
-    const data = await firebaseManager.fetchDataById(databaseName, id);
+    const data = await firebaseManager.fetchUserDataById(databaseName, id, userId);
     if (!data) {
       res.send({});
     } else {
@@ -36,31 +36,25 @@ async function fetchDataById(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
-function postData(req, res) {
+async function postData(req, res) {
   try {
     const userId = req.params.userId;
     const collection = req.body.collection;
     const content = req.body.content;
     const data = {
       collection: collection,
+      owner: userId,
       content: content,
     };
     const document = documentModel(data);
-    firebaseManager.postData(databaseName, document);
-    res.status(202).send('OK');
+    const result = await firebaseManager.postData(databaseName, document);
+    res.status(202).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
   }
 }
-function putData(req, res) {
-  try {
-  } catch (err) {
-    console.error(err);
-    res.status(505).send('Internal Server Error');
-  }
-}
-function patchData(req, res) {
+async function patchData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
@@ -68,19 +62,19 @@ function patchData(req, res) {
     const data = {
       content: content,
     };
-    firebaseManager.updateData(databaseName, id, data);
-    res.status(200).send('OK');
+    const result = await firebaseManager.updateUserData(databaseName, id, data, userId);
+    res.status(200).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
   }
 }
-function deleteData(req, res) {
+async function deleteData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
-    firebaseManager.deleteData(databaseName, id);
-    res.status(200).send('OK');
+    const result = await firebaseManager.deleteUserData(databaseName, id, userId)
+    res.status(200).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
@@ -90,7 +84,6 @@ export default {
   fetchAllData,
   fetchDataById,
   postData,
-  putData,
   patchData,
   deleteData,
 };
