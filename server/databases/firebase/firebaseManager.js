@@ -79,7 +79,7 @@ async function fetchAllDataByValue(type, searchQuery, value) {
     return null;
   }
 }
-async function fetchAllUserData(type, userId){
+async function fetchAllUserData(type, userId) {
   const collectionRef = collection(database, type);
   const querySnapshot = await getDocs(query(collectionRef, where('owner', '==', userId)));
   if (!querySnapshot.empty) {
@@ -109,9 +109,9 @@ async function fetchUserDataById(type, id, userId) {
     return null;
   }
 }
-async function updateUserData(type, id, data, userId){
+async function updateUserData(type, id, data, userId) {
   const objectToUpdate = await fetchUserDataById(type, id, userId);
-  if(objectToUpdate.data.owner == userId){
+  if (objectToUpdate.data.owner == userId) {
     const docRef = doc(database, type, id);
     updateDoc(docRef, data);
     return objectToUpdate;
@@ -119,9 +119,9 @@ async function updateUserData(type, id, data, userId){
     return false;
   }
 }
-async function deleteUserData(type, id, userId){
+async function deleteUserData(type, id, userId) {
   const objectToDelete = await fetchUserDataById(type, id, userId);
-  if(objectToDelete.data.owner == userId){
+  if (objectToDelete.data.owner == userId) {
     const docRef = doc(database, type, id);
     deleteDoc(docRef);
     return objectToDelete;
@@ -129,13 +129,20 @@ async function deleteUserData(type, id, userId){
     return false;
   }
 }
-
 async function postData(type, data) {
-  addDoc(collection(database, type), data);
+  const docRef = await addDoc(collection(database, type), data);
+  const docSnapshot = await getDoc(docRef);
+  const createdId = docSnapshot.id;
+  const createdData = docSnapshot.data();
+  const result = {
+    id: createdId,
+    data: createdData,
+  };
+  return result;
 }
 async function updateData(type, id, data) {
   const docRef = doc(database, type, id);
-  updateDoc(docRef, data);
+  updateDoc(docRef, data.data);
 }
 async function deleteData(type, id) {
   const docRef = doc(database, type, id);
@@ -143,7 +150,6 @@ async function deleteData(type, id) {
 }
 
 export default {
-  // Login Functions
   login,
   register,
   forgotPassword,

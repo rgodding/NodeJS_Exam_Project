@@ -54,31 +54,32 @@ function deleteDocument(collection, id) {
   if (confirm('Are you sure you want to delete the document')) {
     socket.emit('a client choose delete document', {
       id: id,
-      collection: collection,
       userId: userId,
+      collection: collection,
     });
   }
 }
 socket.on('a document was deleted', (data) => {
   documentTable.innerHTML = data.table;
-  documentContent.innerHTML = `<div class="container-fluid mt-3"><h3>Document was deleted</h3></div>`;
+  documentContent.innerHTML = data.content;
 });
-function updateDocument(id) {
+function updateDocument(collection, id) {
   socket.emit('a client choose update document', {
     id: id,
     userId: userId,
-    collection: documentCollection.value,
+    collection: collection,
   });
 }
 socket.on('a document was chosen to be updated', (data) => {
   documentContent.innerHTML = data.content;
 });
-function postUpdateDocument(id) {
+function postUpdateDocument(id, collection) {
   const content = document.getElementById('documentinput').value;
   socket.emit('a client updates a document', {
     id: id,
-    content: content,
     userId: userId,
+    content: content,
+    collection: collection,
   });
 }
 socket.on('a document was updated', (data) => {

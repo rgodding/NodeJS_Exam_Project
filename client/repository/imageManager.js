@@ -1,4 +1,5 @@
-const url = 'http://localhost:8081/api/images';
+import dotenv from 'dotenv/config';
+const url = `${process.env.SERVER_URL}/api/images`;
 import fs from 'fs';
 
 async function fetchAllObjects(userId) {
@@ -28,20 +29,27 @@ async function postObject(collection, name, description, fileName, userId) {
       fileName: fileName,
     }),
   });
-  return response.status;
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    return response.status;
+  }
 }
 
 async function deleteObject(id, userId) {
-  fetch(`${url}/${userId}/${id}`, {
+  let response = await fetch(`${url}/${userId}/${id}`, {
     method: 'DELETE',
-  })
-    .then((res) => {})
-    .catch((error) => {});
+  });
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    return response.status;
+  }
 }
 
 async function deleteImageFile(fileName) {
-  console.log('deleting the file');
-  /*
   try {
     fs.unlink(`./public/images/uploads/${fileName}`, function (err) {
       if (err) {
@@ -51,7 +59,6 @@ async function deleteImageFile(fileName) {
   } catch (err) {
     console.error(err);
   }
-  */
 }
 
 export default {

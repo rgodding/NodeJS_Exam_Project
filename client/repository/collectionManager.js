@@ -1,4 +1,5 @@
-const url = 'http://localhost:8081/api/collections';
+import dotenv from 'dotenv/config';
+const url = `${process.env.SERVER_URL}/api/collections`;
 
 async function fetchAllObjects(userId) {
   return new Promise((resolve, reject) => {
@@ -25,15 +26,24 @@ async function postObject(category, name, userId) {
       name: name,
     }),
   });
-  return response.status;
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    return response.status;
+  }
 }
 
 async function deleteObject(id, userId) {
-  fetch(`${url}/${userId}/${id}`, {
+  let response = await fetch(`${url}/${userId}/${id}`, {
     method: 'DELETE',
-  })
-    .then((res) => {})
-    .catch((error) => {});
+  });
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    return response.status;
+  }
 }
 
 export default {

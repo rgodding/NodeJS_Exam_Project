@@ -1,6 +1,7 @@
-const login_url = 'http://localhost:8081/login';
-const register_url = 'http://localhost:8081/register';
-const forgot_password_url = 'http://localhost:8081/forgot-password';
+import dotenv from 'dotenv/config';
+const login_url = `${process.env.SERVER_URL}/login`;
+const register_url = `${process.env.SERVER_URL}/register`;
+const forgot_password_url = `${process.env.SERVER_URL}/forgot-password`;
 
 async function login(email, password) {
   return new Promise((resolve, reject) => {

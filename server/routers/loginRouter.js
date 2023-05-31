@@ -3,7 +3,7 @@ import loginController from '../controllers/loginController.js';
 const router = Router();
 
 router.post('/login', async (req, res) => {
-  loginController.login(req, res)
+  loginController.login(req, res);
 });
 
 router.post('/register', async (req, res) => {

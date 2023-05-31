@@ -12,8 +12,6 @@ function constructCollectionModel(data, id) {
     category: data.category,
     owner: data.owner,
     name: data.name,
-    type: data.type,
-    
   };
   return collection;
 }
@@ -23,8 +21,6 @@ function constructNewCollectionModel(data) {
     category: data.category,
     owner: data.owner,
     name: data.name,
-    type: data.type,
-    
   };
   return collection;
 }

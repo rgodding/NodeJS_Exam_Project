@@ -10,7 +10,7 @@ function constructCategoryModel(data, id) {
   const category = {
     id: id,
     owner: data.owner,
-    name: data.name
+    name: data.name,
   };
   return category;
 }
@@ -18,7 +18,7 @@ function constructCategoryModel(data, id) {
 function constructNewCategoryModel(data) {
   const category = {
     owner: data.owner,
-    name: data.name
+    name: data.name,
   };
   return category;
 }

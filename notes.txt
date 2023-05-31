@@ -1,3 +1,0 @@
-To Be Fixed:
-- Delete Document : Wait reloading page till document is deleted
-- Display Image : Show the name and Description of the image

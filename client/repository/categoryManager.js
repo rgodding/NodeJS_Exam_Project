@@ -1,4 +1,5 @@
-const url = 'http://localhost:8081/api/categories';
+import dotenv from 'dotenv/config';
+const url = `${process.env.SERVER_URL}/api/categories`;
 
 async function fetchAllObjects(userId) {
   return new Promise((resolve, reject) => {
@@ -24,15 +25,24 @@ async function postObject(name, userId) {
       name: name,
     }),
   });
-  return response.status;
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    return response.status;
+  }
 }
 
 async function deleteObject(id, userId) {
-  fetch(`${url}/${userId}/${id}`, {
+  let response = await fetch(`${url}/${userId}/${id}`, {
     method: 'DELETE',
-  })
-    .then((res) => {})
-    .catch((error) => {});
+  });
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    return response.status;
+  }
 }
 
 export default {

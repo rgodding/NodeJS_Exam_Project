@@ -46,9 +46,10 @@ async function postData(req, res) {
       owner: userId,
       content: content,
     };
-    const document = documentModel(data);
-    const result = await firebaseManager.postData(databaseName, document);
-    res.status(202).send(result);
+    const dataToPost = documentModel(data);
+    const result = await firebaseManager.postData(databaseName, dataToPost);
+    const document = documentModel(result.data, result.id);
+    res.status(202).send(document);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
@@ -63,7 +64,8 @@ async function patchData(req, res) {
       content: content,
     };
     const result = await firebaseManager.updateUserData(databaseName, id, data, userId);
-    res.status(200).send(result);
+    const document = documentModel(result.data, result.id);
+    res.status(200).send(document);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
@@ -74,7 +76,8 @@ async function deleteData(req, res) {
     const id = req.params.id;
     const userId = req.params.userId;
     const result = await firebaseManager.deleteUserData(databaseName, id, userId);
-    res.status(200).send(result);
+    const document = documentModel(result.data, result.id);
+    res.status(200).send(document);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');

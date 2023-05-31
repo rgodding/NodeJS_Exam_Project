@@ -1,6 +1,6 @@
 import templateEngine from '../templateEngine.js';
 
-import { frontpagePageTabTitle } from "../../constants/pageTitles.js"
+import { frontpagePageTabTitle } from '../../constants/pageTitles.js';
 import { frontpagePagePath } from '../../constants/pagePaths.js';
 
 export default function constructFrontpagePage(isUser) {

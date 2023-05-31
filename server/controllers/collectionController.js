@@ -60,7 +60,7 @@ async function patchData(req, res) {
     const name = req.body.name;
     const data = {
       name: name,
-    }
+    };
     const result = await firebaseManager.updateUserData(databaseName, id, data, userId);
     res.status(200).send(result);
   } catch (err) {
@@ -73,7 +73,8 @@ async function deleteData(req, res) {
     const userId = req.params.userId;
     const id = req.params.id;
     const result = await firebaseManager.deleteUserData(databaseName, id, userId);
-    res.status(200).send('OK');
+    const collection = collectionModel(result.data, result.id)
+    res.status(200).send(collection);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');

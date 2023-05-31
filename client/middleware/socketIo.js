@@ -17,127 +17,210 @@ export default function socketIo(io) {
     userSocket(socket, io);
   });
 }
-
 import { contentmessage, currentcollection } from '../constants/partials/documentsPagePartialPaths.js';
+import constructDeletedDocumentContent from '../util/documents/constructDeletedDocumentContent.js';
+
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
-    const documents = await documentManager.fetchAllObjects(data.userId);
-    const images = await imageManager.fetchAllObjects(data.userId);
-    const result = documents.filter((object) => object.collection === data.collection);
+    const userId = data.userId;
+    const collection = data.collection;
+    const documents = await documentManager.fetchAllObjects(userId);
+    const result = documents.filter((object) => object.collection === collection);
     const table = constructDocumentTable(result);
     io.emit('a collection was chosen', {
-      currentCollection: templateEngine.readPage(currentcollection).replace('$CURRENT_COLLECTION', data.collection),
+      currentCollection: templateEngine.readPage(currentcollection).replace('$CURRENT_COLLECTION', collection),
       table: table,
       content: templateEngine.readPage(contentmessage).replace('$CONTENT_MESSAGE', 'Choose a document...'),
     });
   });
-
+  socket.on('a client choose a document', async (data) => {
+    const userId = data.userId;
+    const id = data.id;
+    const document = await documentManager.fetchObjectById(id, userId);
+    const content = constructDocumentContent(document);
+    io.emit('a document was chosen', {
+      content: content,
+    });
+  });
   socket.on('a client choose create document', (data) => {
-    const content = constructCreateDocument(data.collection);
+    const collection = data.collection;
+    const content = constructCreateDocument(collection);
     io.emit('a document is to be created', {
       content: content,
     });
   });
-
   socket.on('a client creates a document', async (data) => {
-    await documentManager.postObject(data.collection, data.content, data.userId);
-    const documents = await documentManager.fetchAllObjects(data.userId);
-    const result = documents.filter((object) => object.collection === data.collection);
-    const table = constructDocumentTable(result);
-    io.emit('a document was created', {
-      table: table,
-      content: templateEngine.readPage(contentmessage).replace('$CONTENT_MESSAGE', 'A document was created...'),
-    });
-  });
-  socket.on('a client choose a document', async (data) => {
-    const document = await documentManager.fetchObjectById(data.id, data.userId);
-    const content = constructDocumentContent(data.id, document);
-    io.emit('a document was chosen', {
-      content: content,
+    const userId = data.userId;
+    const collection = data.collection;
+    const content = data.content;
+    const postedDocument = await documentManager.postObject(collection, content, userId);
+    const documents = await documentManager.fetchAllObjects(userId);
+    postDocument(postedDocument).then(() => {
+      const result = documents.filter((object) => object.collection === collection);
+      const table = constructDocumentTable(result);
+      const content = constructDocumentContent(postedDocument);
+      io.emit('a document was created', {
+        table: table,
+        content: content,
+      });
     });
   });
   socket.on('a client choose delete document', async (data) => {
     const id = data.id;
     const userId = data.userId;
-    await documentManager.deleteObject(id, userId);
-    const documents = await documentManager.fetchAllObjects(data.userId);
-    const result = documents.filter((object) => object.collection === data.collection);
-    const table = constructDocumentTable(result);
-    io.emit('a document was deleted', {
-      table: table,
+    const collection = data.collection;
+    const deletedDocument = await documentManager.deleteObject(id, userId);
+    const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
+    deleteDocument(deletedDocument).then(() => {
+      const filteredDocuments = documents.filter((object) => object.id !== id);
+      const table = constructDocumentTable(filteredDocuments);
+      const content = constructDeletedDocumentContent(deletedDocument);
+      io.emit('a document was deleted', {
+        table: table,
+        content: content,
+      });
     });
   });
   socket.on('a client choose update document', async (data) => {
     const id = data.id;
     const userId = data.userId;
     const document = await documentManager.fetchObjectById(id, userId);
-    const content = constructUpdateContent(id, document);
+    const content = constructUpdateContent(document);
     io.emit('a document was chosen to be updated', {
       content: content,
     });
   });
   socket.on('a client updates a document', async (data) => {
-    await documentManager.updateObject(data.id, data.content, data.userId);
-    const documents = await documentManager.fetchAllObjects(data.userId);
-    const document = await documentManager.fetchObjectById(data.id, data.userId);
-    const table = constructDocumentTable(documents);
-    const content = constructDocumentContent(data.id, document);
-    io.emit('a document was updated', {
-      table: table,
-      content: content,
+    const id = data.id;
+    const userId = data.userId;
+    const content = data.content;
+    const collection = data.collection;
+    const updatedDocument = await documentManager.updateObject(id, content, userId);
+    const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
+    const document = await documentManager.fetchObjectById(id, userId);
+    updateDocument(updatedDocument).then(() => {
+      const tableHtml = constructDocumentTable(documents);
+      const contentHtml = constructDocumentContent(document);
+      io.emit('a document was updated', {
+        table: tableHtml,
+        content: contentHtml,
+      });
     });
   });
 }
 function imagesSocket(socket, io) {
   socket.on('a client deletes an image', async (data) => {
-    await imageManager.deleteObject(data.id, data.userId);
-    await imageManager.deleteImageFile(data.fileName);
+    const userId = data.userId;
+    const id = data.id;
+    const deletedImage = await imageManager.deleteObject(id, userId);
+    deleteImage(deletedImage).then(() => {
+      imageManager.deleteImageFile(data.fileName);
+    });
     io.emit('an image was deleted');
   });
 }
 function userSocket(socket, io) {
-  socket.on('a client creates a category', (data) => {
-    if (!data.name || !data.userId) {
+  socket.on('a client creates a category', async (data) => {
+    const userId = data.userId;
+    const name = data.name;
+    if (!name || !userId) {
       io.emit('a category had invalid values');
     } else {
       try {
-        categoryManager.postObject(data.name, data.userId);
+        const postedCategory = await categoryManager.postObject(name, userId);
+        postCategory(postedCategory).then(() => {
+          io.emit('a category was created');
+        });
       } catch (err) {
         io.emit('an error occurred on the server');
       }
-      io.emit('a category was created');
     }
   });
-
-  socket.on('a client creates a collection', (data) => {
-    if (!data.category || !data.name || !data.userId) {
-      io.emit('a collection had invalid values');
-    } else {
-      collectionManager.postObject(data.category, data.name, data.userId);
-      io.emit('a collection was created');
-    }
-  });
-
   socket.on('a client deletes a category', async (data) => {
-    const collections = await collectionManager.fetchAllObjects(data.userId);
-    const matchingCollections = collections.filter((object) => object.category === data.id);
+    const userId = data.userId;
+    const id = data.id;
+    const collections = await collectionManager.fetchAllObjects(userId);
+    const matchingCollections = collections.filter((object) => object.category === id);
     if (matchingCollections.length === 0) {
-      await categoryManager.deleteObject(data.id, data.userId);
-      io.emit('a category was deleted');
+      const deletedCategory = await categoryManager.deleteObject(id, userId);
+      deleteCategory(deletedCategory).then(() => {
+        io.emit('a category was deleted');
+      });
     } else {
       io.emit('a category with collections was tried to be deleted');
     }
   });
-  socket.on('a client deletes a collection', async (data) => {
-    const documents = await documentManager.fetchAllObjects(data.userId);
-    const images = await imageManager.fetchAllObjects(data.userId);
-    const matchingDocuments = documents.filter((object) => object.collection === data.id);
-    const matchingImages = images.filter((object) => object.collection === data.id);
-    if (matchingDocuments.length === 0 && matchingImages.length === 0) {
-      await collectionManager.deleteObject(data.id, data.userId);
-      io.emit('a collection was deleted');
+  socket.on('a client creates a collection', async (data) => {
+    const userId = data.userId;
+    const category = data.category;
+    const name = data.name;
+    if (!category || !name || !userId) {
+      io.emit('a collection had invalid values');
     } else {
-      io.emit('a collection with documents was tried to be deleted');
+      const postedCollection = await collectionManager.postObject(data.category, data.name, data.userId);
+      postCollection(postedCollection).then(() => {
+        io.emit('a collection was created');
+      });
+    }
+  });
+  socket.on('a client deletes a collection', async (data) => {
+    const userId = data.userId;
+    const id = data.id;
+    const documents = await documentManager.fetchAllObjects(userId);
+    const images = await imageManager.fetchAllObjects(userId);
+    const matchingDocuments = documents.filter((object) => object.collection === id);
+    const matchingImages = images.filter((object) => object.collection === id);
+    if (matchingDocuments.length === 0 && matchingImages.length === 0) {
+      const deletedCollection = await collectionManager.deleteObject(id, userId);
+      deleteCollection(deletedCollection).then(() => {
+        io.emit('a collection was deleted');
+      });
+    } else {
+      io.emit('a collection with documents was tried to be deleted', {
+        images: matchingImages.length,
+        documents: matchingDocuments.length,
+      });
     }
   });
 }
+function postDocument(object) {
+  return new Promise((resolve) => {
+    resolve(true);
+  });
+}
+function updateDocument(object) {
+  return new Promise((resolve) => {
+    resolve(true);
+  });
+}
+function deleteDocument(object) {
+  return new Promise((resolve) => {
+    resolve(true);
+  });
+}
+function deleteImage(object){
+  return new Promise((resolve) => {
+    resolve(true);
+  });
+}
+function postCategory(object) {
+  return new Promise((resolve) => {
+    resolve(true);
+  });
+}
+function deleteCategory(object) {
+  return new Promise((resolve) => {
+    resolve(true);
+  });
+}
+function postCollection(object) {
+  return new Promise((resolve) => {
+    resolve(true);
+  });
+}
+function deleteCollection(object) {
+  return new Promise((resolve) => {
+    resolve(true);
+  });
+}
+

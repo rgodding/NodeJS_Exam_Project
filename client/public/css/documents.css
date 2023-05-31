@@ -8,9 +8,6 @@
     max-height: calc(50vh - 28px);
     overflow-y: scroll;
 }
-.test{
-    padding: 5px;
-}
 #document-menu button {
     font-size: 1vw;
 }

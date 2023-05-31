@@ -21,6 +21,5 @@ function deleteImage(id, fileName) {
 }
 
 socket.on('an image was deleted', (data) => {
-  console.log('deleted');
   window.location.reload();
 });

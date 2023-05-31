@@ -46,12 +46,17 @@ export async function register(req, res) {
     const lastName = req.body.lastName;
     const email = req.body.email;
     const password = req.body.password;
-    const userId = await loginManager.register(firstName, lastName, email, password);
-    if (userId) {
-      req.session.userId = userId;
-      res.redirect('/');
-    } else {
+    const passwordConfirm = req.body.passwordConfirm;
+    if (password !== passwordConfirm) {
       res.redirect('/register');
+    } else {
+      const userId = await loginManager.register(firstName, lastName, email, password);
+      if (userId) {
+        req.session.userId = userId;
+        res.redirect('/');
+      } else {
+        res.redirect('/register');
+      }
     }
   } catch (err) {
     console.error(err);

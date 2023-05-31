@@ -30,12 +30,14 @@ function constructNewDocumentModel(data) {
   return document;
 }
 function getCurrentTime(timeStamp) {
-  return timeStamp.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  }).replaceAll('.', ':');
+  return timeStamp
+    .toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    })
+    .replaceAll('.', ':');
 }
 function getCurrentDate(timeStamp) {
   return timeStamp.toLocaleDateString();

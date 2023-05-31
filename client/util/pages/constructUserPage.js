@@ -18,7 +18,7 @@ export default async function constructUserPage(isUser, userId, categories, coll
 function generateCategoryOptions(categories) {
   let html = '';
   if (categories.length === 0) {
-    let html = templateEngine.readPage(nocategoryoptionsPath)
+    let html = templateEngine.readPage(nocategoryoptionsPath);
     return html;
   } else {
     categories.forEach((category) => {
@@ -48,11 +48,11 @@ function constructCollectionList(categories, collections, documents) {
 function generateCategoryCollections(collection, documents) {
   let html = '';
   collection.forEach((collection) => {
-    const foundDocuments = documents.filter(object => object.collection === collection.id);
+    const foundDocuments = documents.filter((object) => object.collection === collection.id);
     html += templateEngine.readPage(collectionPath)
     .replace('$COLLECTION_NAME', collection.name)
     .replace('$COLLECTION_ID', collection.id)
-    .replace('$COLLECTION_DOCUMENTS', foundDocuments.length)
+    .replace('$COLLECTION_DOCUMENTS', foundDocuments.length);
   });
   return html;
 }

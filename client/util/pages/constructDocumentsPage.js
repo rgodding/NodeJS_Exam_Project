@@ -16,6 +16,7 @@ export default function constructDocumentsPage(isUser, userId, categories, colle
   });
   return renderedPage;
 }
+
 function constructMenu(categories, collections) {
   if (categories.length === 0) {
     return templateEngine.readPage(nomenuPath);
@@ -34,6 +35,7 @@ function constructMenu(categories, collections) {
   });
   return html;
 }
+
 function constructDocumentsPageMenuOptions(collection) {
   let html = '';
   collection.forEach((object) => {

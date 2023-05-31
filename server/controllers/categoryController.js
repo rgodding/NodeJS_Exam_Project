@@ -6,7 +6,7 @@ const databaseName = 'categories';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllUserData(databaseName, userId)
+    const data = await firebaseManager.fetchAllUserData(databaseName, userId);
     if (!data) {
       res.send([]);
     } else {
@@ -25,7 +25,7 @@ async function fetchDataById(req, res) {
   try {
     const userId = req.params.userId;
     const id = req.params.id;
-    const data = await firebaseManager.fetchUserDataById(databaseName, id, userId)
+    const data = await firebaseManager.fetchUserDataById(databaseName, id, userId);
     if (!data) {
       res.send({});
     } else {
@@ -45,7 +45,7 @@ async function postData(req, res) {
       owner: userId,
       name: name,
     };
-    const category = categoryModel(data)
+    const category = categoryModel(data);
     const result = await firebaseManager.postData(`${databaseName}`, category);
     res.status(200).send(result);
   } catch (err) {
