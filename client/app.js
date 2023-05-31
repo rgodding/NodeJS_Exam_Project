@@ -27,16 +27,7 @@ import userRouter from './routers/userRouter.js';
 import documentsRouter from './routers/documentsRouter.js';
 import imagesRouter from './routers/imagesRouter.js';
 import errorRouter from './routers/errorRouter.js';
-const routers = [
-  frontpageRouter, 
-  loginRouter, 
-  userRouter, 
-  documentsRouter, 
-  imagesRouter,
-
-  errorRouter,
-];
-
+const routers = [frontpageRouter, loginRouter, userRouter, documentsRouter, imagesRouter, errorRouter];
 
 app.use(routers);
 const PORT = process.env.PORT || 8075;
