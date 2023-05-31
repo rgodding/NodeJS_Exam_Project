@@ -6,7 +6,7 @@ const databaseName = 'images';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllDataByValue(databaseName, 'owner', userId);
+    const data = await firebaseManager.fetchAllUserData(databaseName, userId);
     if (!data) {
       res.send([]);
     } else {
@@ -25,7 +25,7 @@ async function fetchDataById(req, res) {
   try {
     const userId = req.params.userId;
     const id = req.params.id;
-    const data = await firebaseManager.fetchDataById(databaseName, id);
+    const data = await firebaseManager.fetchUserDataById(databaseName, id, userId);
     if (!data) {
       res.send({});
     } else {
@@ -59,17 +59,29 @@ function postData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+async function patchData(req, res) {
+  try {
+    const id = req.params.id;
+    const userId = req.params.userId;
+    const name = req.body.name;
+    const description = req.body.description;
+    const data = {
+      name: name,
+      description: description,
+    };
+    const result = await firebaseManager.updateUserData(databaseName, id, data, userId);
+    res.status(200).send(result);
+  } catch (err) {
+    console.error(err);
+    res.status(505).send('Internal Server Error');
+  }
+}
 async function deleteData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
-    const image = await firebaseManager.fetchDataById(databaseName, id);
-    const categories = await firebaseManager.fetchAllDataByValue('categories', 'owner', userId);
-    console.log('testing this');
-    console.log(JSON.stringify(categories));
-
-    // firebaseManager.deleteData(databaseName, id);
-    res.status(200).send('OK');
+    const result = await firebaseManager.deleteUserData(databaseName, id, userId);
+    res.status(200).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');

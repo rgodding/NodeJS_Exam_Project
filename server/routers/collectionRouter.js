@@ -15,10 +15,6 @@ router.post(`${routerUrl}`, async (req, res) => {
   collectionController.postData(req, res);
 });
 
-router.put(`${routerUrl}/:id`, async (req, res) => {
-  collectionController.putData(req, res);
-});
-
 router.patch(`${routerUrl}/:id`, async (req, res) => {
   collectionController.patchData(req, res);
 });

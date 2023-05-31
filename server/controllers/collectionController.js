@@ -5,7 +5,7 @@ const databaseName = 'collections';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllDataByValue(databaseName, 'owner', userId);
+    const data = await firebaseManager.fetchAllUserData(databaseName, userId);
     if (!data) {
       res.send([]);
     } else {
@@ -22,8 +22,8 @@ async function fetchAllData(req, res) {
 }
 async function fetchDataById(req, res) {
   try {
+    const userId = req.params.userId;
     const id = req.params.id;
-    const userId = req.session.userId;
     const data = await firebaseManager.fetchUserDataById(databaseName, id, userId);
     if (!data) {
       res.send({});
@@ -45,32 +45,34 @@ async function postData(req, res) {
       owner: userId,
       name: name,
     };
-    const result = await firebaseManager.postData(databaseName, data);
+    const collection = collectionModel(data);
+    const result = await firebaseManager.postData(databaseName, collection);
     res.status(200).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
   }
 }
-function patchData(req, res) {
+async function patchData(req, res) {
   try {
-    const id = req.params.id;
     const userId = req.params.userId;
-    const category = req.body.category;
+    const id = req.params.id;
     const name = req.body.name;
     const data = {
-      
+      name: name,
     }
+    const result = await firebaseManager.updateUserData(databaseName, id, data, userId);
+    res.status(200).send(result);
   } catch (err) {
     console.error(err);
     res.status(505).send('Internal Server Error');
   }
 }
-function deleteData(req, res) {
+async function deleteData(req, res) {
   try {
-    const id = req.params.id;
     const userId = req.params.userId;
-    firebaseManager.deleteData(databaseName, id);
+    const id = req.params.id;
+    const result = await firebaseManager.deleteUserData(databaseName, id, userId);
     res.status(200).send('OK');
   } catch (err) {
     console.error(err);

@@ -15,10 +15,6 @@ router.post(`${routerUrl}`, async (req, res) => {
   categoryController.postData(req, res);
 });
 
-router.put(`${routerUrl}`, async (req, res) => {
-  categoryController.putData(req, res);
-});
-
 router.patch(`${routerUrl}/:id`, async (req, res) => {
   categoryController.patchData(req, res);
 });

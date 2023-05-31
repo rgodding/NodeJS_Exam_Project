@@ -15,11 +15,7 @@ router.post(`${routerUrl}`, async (req, res) => {
   imageController.postData(req, res);
 });
 
-router.put(`${routerUrl}`, async (req, res) => {
-  imageController.putData(req, res);
-});
-
-router.patch(`${routerUrl}`, async (req, res) => {
+router.patch(`${routerUrl}/:id`, async (req, res) => {
   imageController.patchData(req, res);
 });
 

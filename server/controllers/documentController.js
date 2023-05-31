@@ -5,7 +5,7 @@ const databaseName = 'documents';
 async function fetchAllData(req, res) {
   try {
     const userId = req.params.userId;
-    const data = await firebaseManager.fetchAllDataByValue(databaseName, 'owner', userId);
+    const data = await firebaseManager.fetchAllUserData(databaseName, userId);
     if (!data) {
       res.send([]);
     } else {
@@ -73,7 +73,7 @@ async function deleteData(req, res) {
   try {
     const id = req.params.id;
     const userId = req.params.userId;
-    const result = await firebaseManager.deleteUserData(databaseName, id, userId)
+    const result = await firebaseManager.deleteUserData(databaseName, id, userId);
     res.status(200).send(result);
   } catch (err) {
     console.error(err);
