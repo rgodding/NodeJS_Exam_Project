@@ -32,6 +32,7 @@ function checkCollectionInputs() {
 }
 
 function createCategory() {
+  loading();
   const name = document.getElementById('categoryname').value;
   const userId = document.getElementById('userid').value;
   socket.emit('a client creates a category', { name: name, userId: userId });
@@ -44,6 +45,7 @@ socket.on('a category had invalid values', (data) => {
 });
 
 function createCollection() {
+  loading();
   const name = document.getElementById('collectionname').value;
   const category = document.getElementById('collectioncategory').value;
   const userId = document.getElementById('userid').value;
@@ -58,6 +60,7 @@ socket.on('a collection had invalid values', (data) => {
 
 function deleteCollection(id) {
   if (confirm('Are you sure you want to delete the collection?')) {
+    loading();
     const userId = document.getElementById('userid').value;
     socket.emit('a client deletes a collection', { id: id, userId: userId });
   }
@@ -74,6 +77,7 @@ socket.on('a collection with documents was tried to be deleted', (data) => {
 
 function deleteCategory(id) {
   if (confirm('Are you sure you want to delete the category?')) {
+    loading();
     const userId = document.getElementById('userid').value;
     socket.emit('a client deletes a category', {
       id: id,
@@ -89,15 +93,6 @@ socket.on('a category with collections was tried to be deleted', () => {
 });
 socket.on('a category had invalid values', () => {
   alert('Invalid values');
-});
-
-
-
-const buttons = document.querySelectorAll('button');
-buttons.forEach(button => {
-  button.addEventListener('click', e => {
-    loading();
-  });
 });
 
 function loading() {
