@@ -18,6 +18,7 @@ socket.on('a collection was chosen', (data) => {
   documentCreateButton.classList.remove('disabled');
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
+  highLightCode();
 });
 function pickCreateDocument() {
   const collection = document.getElementById('current-collection-value').value;
@@ -40,6 +41,7 @@ function postCreateDocument() {
 socket.on('a document was created', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
+  highLightCode();
 });
 function pickDocument(id) {
   socket.emit('a client choose a document', {
@@ -49,6 +51,7 @@ function pickDocument(id) {
 }
 socket.on('a document was chosen', (data) => {
   documentContent.innerHTML = data.content;
+  highLightCode();
 });
 function deleteDocument(collection, id) {
   if (confirm('Are you sure you want to delete the document')) {
@@ -85,4 +88,11 @@ function postUpdateDocument(id, collection) {
 socket.on('a document was updated', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
+  highLightCode();
 });
+
+function highLightCode(){
+  setTimeout(() => {
+    Prism.highlightAll();
+  }, 1)
+}
