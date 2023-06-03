@@ -54,10 +54,9 @@ function documentsSocket(socket, io) {
     const collection = data.collection;
     const content = data.content;
     const postedDocument = await documentManager.postObject(collection, content, userId);
-    const documents = await documentManager.fetchAllObjects(userId);
-    postDocument(postedDocument).then(() => {
-      const result = documents.filter((object) => object.collection === collection);
-      const table = constructDocumentTable(result);
+    postDocument(postedDocument).then(async () => {
+      const documents = await documentManager.fetchAllObjects(userId);
+      const table = constructDocumentTable(documents);
       const content = constructDocumentContent(postedDocument);
       io.emit('a document was created', {
         table: table,
@@ -70,10 +69,9 @@ function documentsSocket(socket, io) {
     const userId = data.userId;
     const collection = data.collection;
     const deletedDocument = await documentManager.deleteObject(id, userId);
-    const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
-    deleteDocument(deletedDocument).then(() => {
-      const filteredDocuments = documents.filter((object) => object.id !== id);
-      const table = constructDocumentTable(filteredDocuments);
+    deleteDocument(deletedDocument).then(async () => {
+      const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
+      const table = constructDocumentTable(documents);
       const content = constructDeletedDocumentContent(deletedDocument);
       io.emit('a document was deleted', {
         table: table,
@@ -96,9 +94,9 @@ function documentsSocket(socket, io) {
     const content = data.content;
     const collection = data.collection;
     const updatedDocument = await documentManager.updateObject(id, content, userId);
-    const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
-    const document = await documentManager.fetchObjectById(id, userId);
-    updateDocument(updatedDocument).then(() => {
+    updateDocument(updatedDocument).then(async () => {
+      const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
+      const document = await documentManager.fetchObjectById(id, userId);
       const tableHtml = constructDocumentTable(documents);
       const contentHtml = constructDocumentContent(document);
       io.emit('a document was updated', {
@@ -143,8 +141,9 @@ function userSocket(socket, io) {
     const matchingCollections = collections.filter((object) => object.category === id);
     if (matchingCollections.length === 0) {
       const deletedCategory = await categoryManager.deleteObject(id, userId);
-      deleteCategory(deletedCategory).then(() => {
-        io.emit('a category was deleted');
+      deleteCategory(deletedCategory).then(async () => {
+        const categories = await categoryManager.fetchAllObjects(userId);
+        io.emit('a category was deleted', { categories: categories});
       });
     } else {
       io.emit('a category with collections was tried to be deleted');
