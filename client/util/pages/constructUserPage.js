@@ -3,6 +3,7 @@ import templateEngine from '../templateEngine.js';
 import { userPagePath } from '../../constants/pagePaths.js';
 import { userPageTabTitle } from '../../constants/pageTitles.js';
 import { categoryPath, categoryoptionPath, collectionPath, nocategoriesPath, nocategoryoptionsPath } from '../../constants/partials/userPagePartialPaths.js';
+import { usersPageCSS } from '../../constants/cssReferences.js';
 
 export default async function constructUserPage(isUser, userId, categories, collections, documents) {
   const html = templateEngine.readPage(userPagePath)
@@ -12,6 +13,7 @@ export default async function constructUserPage(isUser, userId, categories, coll
   const page = templateEngine.renderPageWithSocket(html, {
     tabTitle: userPageTabTitle,
     isUser: isUser,
+    cssLink: usersPageCSS,
   });
   return page;
 }
