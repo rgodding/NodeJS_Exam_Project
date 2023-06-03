@@ -90,3 +90,17 @@ socket.on('a category with collections was tried to be deleted', () => {
 socket.on('a category had invalid values', () => {
   alert('Invalid values');
 });
+
+
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => {
+  button.addEventListener('click', e => {
+    loading();
+  });
+});
+
+function loading() {
+  var loadingOverlay = document.getElementById('loading-overlay');
+  loadingOverlay.style.display = 'flex';
+}
