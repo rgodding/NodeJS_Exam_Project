@@ -65,7 +65,6 @@ async function fetchDataById(type, id) {
     return null;
   }
 }
-
 async function fetchAllDataByValue(type, searchQuery, value) {
   const collectionRef = collection(database, type);
   const querySnapshot = await getDocs(query(collectionRef, where(searchQuery, '==', value)));
@@ -111,7 +110,9 @@ async function fetchUserDataById(type, id, userId) {
 }
 async function updateUserData(type, id, data, userId) {
   const objectToUpdate = await fetchUserDataById(type, id, userId);
-  if (objectToUpdate.data.owner == userId) {
+  if(objectToUpdate === null){
+    return false;
+  } else if (objectToUpdate.data.owner == userId) {
     const docRef = doc(database, type, id);
     updateDoc(docRef, data);
     return objectToUpdate;
@@ -121,7 +122,9 @@ async function updateUserData(type, id, data, userId) {
 }
 async function deleteUserData(type, id, userId) {
   const objectToDelete = await fetchUserDataById(type, id, userId);
-  if (objectToDelete.data.owner == userId) {
+  if(objectToDelete === null){
+    return false;
+  } else if (objectToDelete.data.owner == userId) {
     const docRef = doc(database, type, id);
     deleteDoc(docRef);
     return objectToDelete;
