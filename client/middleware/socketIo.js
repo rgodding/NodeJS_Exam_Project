@@ -56,7 +56,8 @@ function documentsSocket(socket, io) {
     const postedDocument = await documentManager.postObject(collection, content, userId);
     postDocument(postedDocument).then(async () => {
       const documents = await documentManager.fetchAllObjects(userId);
-      const table = constructDocumentTable(documents);
+      const filteredDocuments = documents.filter((object) => object.collection === collection)
+      const table = constructDocumentTable(filteredDocuments);
       const content = constructDocumentContent(postedDocument);
       io.emit('a document was created', {
         table: table,
