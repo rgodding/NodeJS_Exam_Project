@@ -22,7 +22,7 @@ function checkCategoryInputs() {
 function checkCollectionInputs() {
   var collectionNameValue = collectionNameInput.value;
   var collectionCategoryValue = collectionCategoryInput.value;
-  if (collectionNameValue !== '' && collectionCategoryValue !== '') {
+  if (collectionNameValue !== '' || collectionCategoryValue !== '') {
     collectionCreateButton.disabled = false;
   } else {
     collectionCreateButton.disabled = true;
@@ -38,6 +38,7 @@ socket.on('a category was created', (data) => {
   categoryOptions.innerHTML = data.categoryOptions;
   categoryList.innerHTML = data.categoryList;
   categoryNameInput.value = '';
+  categoryCreateButton.disabled = true;
   finishLoading();
 });
 socket.on('a category had invalid values', () => {
@@ -54,6 +55,8 @@ async function createCollection() {
 socket.on('a collection was created', (data) => {
   categoryOptions.innerHTML = data.categoryOptions;
   categoryList.innerHTML = data.categoryList;
+  collectionNameInput.value = '';
+  collectionCreateButton.disabled = true;
   finishLoading();
 });
 socket.on('a collection had invalid values', () => {

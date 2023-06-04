@@ -63,10 +63,6 @@ function documentsSocket(socket, io) {
   });
   socket.on('a client choose create document', (data) => {
     const collection = data.collection;
-    if (!userId) {
-      io.emit('a client is not logged in');
-      return;
-    }
     try {
       const content = constructCreateDocument(collection);
       io.emit('a document is to be created', {
@@ -111,7 +107,8 @@ function documentsSocket(socket, io) {
     try {
       const deletedDocument = await documentManager.deleteObject(id, userId);
       const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
-      const table = constructDocumentTable(documents);
+      const filteredDocuments = documents.filter((object) => object.id != id);
+      const table = constructDocumentTable(filteredDocuments);
       const content = constructDeletedDocumentContent(deletedDocument);
       io.emit('a document was deleted', {
         table: table,
@@ -151,8 +148,8 @@ function documentsSocket(socket, io) {
     }
     try {
       const updatedDocument = await documentManager.updateObject(id, content, userId);
-      const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
       const document = await documentManager.fetchObjectById(id, userId);
+      const documents = await documentManager.fetchAllObjectsByCollection(userId, collection);
       const tableHtml = constructDocumentTable(documents);
       const contentHtml = constructDocumentContent(document);
       io.emit('a document was updated', {
