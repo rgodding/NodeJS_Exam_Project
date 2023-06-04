@@ -19,7 +19,6 @@ export default function socketIo(io) {
 }
 import { contentmessage, currentcollection } from '../constants/partials/documentsPagePartialPaths.js';
 import constructDeletedDocumentContent from '../util/documents/constructDeletedDocumentContent.js';
-import session from 'express-session';
 
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
@@ -123,22 +122,28 @@ function userSocket(socket, io) {
   socket.on('a client creates a category', async (data) => {
     const userId = data.userId;
     const name = data.name;
-    if (!name || !userId) {
+    if (!userId) {
+      io.emit('a client is not logged in');
+    } else if (!name) {
       io.emit('a category had invalid values');
     } else {
       try {
         const postedCategory = await categoryManager.postObject(name, userId);
-        postCategory(postedCategory).then(() => {
-          io.emit('a category was created');
-        });
-      } catch (err) {
-        io.emit('an error occurred on the server');
+        io.emit('a category was created');
+      } catch(err){
+        console.error('ERROR:', err);
+        io.emit('an error occurred during category creation');
       }
+      
     }
   });
+
   socket.on('a client deletes a category', async (data) => {
     const userId = data.userId;
     const id = data.id;
+    if(!userId){
+      io.emit('a client is not logged in');
+    }
     const collections = await collectionManager.fetchAllObjects(userId);
     const matchingCollections = collections.filter((object) => object.category === id);
     if (matchingCollections.length === 0) {
@@ -182,45 +187,5 @@ function userSocket(socket, io) {
         documents: matchingDocuments.length,
       });
     }
-  });
-}
-function postDocument(object) {
-  return new Promise((resolve) => {
-    resolve(true);
-  });
-}
-function updateDocument(object) {
-  return new Promise((resolve) => {
-    resolve(true);
-  });
-}
-function deleteDocument(object) {
-  return new Promise((resolve) => {
-    resolve(true);
-  });
-}
-function deleteImage(object){
-  return new Promise((resolve) => {
-    resolve(true);
-  });
-}
-function postCategory(object) {
-  return new Promise((resolve) => {
-    resolve(true);
-  });
-}
-function deleteCategory(object) {
-  return new Promise((resolve) => {
-    resolve(true);
-  });
-}
-function postCollection(object) {
-  return new Promise((resolve) => {
-    resolve(true);
-  });
-}
-function deleteCollection(object) {
-  return new Promise((resolve) => {
-    resolve(true);
   });
 }

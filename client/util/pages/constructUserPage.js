@@ -5,9 +5,8 @@ import { userPageTabTitle } from '../../constants/pageTitles.js';
 import { categoryPath, categoryoptionPath, collectionPath, nocategoriesPath, nocategoryoptionsPath } from '../../constants/partials/userPagePartialPaths.js';
 import { usersPageCSS } from '../../constants/cssReferences.js';
 
-export default async function constructUserPage(isUser, userId, categories, collections, documents) {
+export default async function constructUserPage(isUser, categories, collections, documents) {
   const html = templateEngine.readPage(userPagePath)
-  .replace('$USER_ID', userId)
   .replace('$CREATE_CATEGORY_OPTIONS', generateCategoryOptions(categories))
   .replace('$COLLECTIONS_LIST', constructCollectionList(categories, collections, documents));
   const page = templateEngine.renderPageWithSocket(html, {
@@ -17,6 +16,7 @@ export default async function constructUserPage(isUser, userId, categories, coll
   });
   return page;
 }
+
 function generateCategoryOptions(categories) {
   let html = '';
   if (categories.length === 0) {
@@ -31,6 +31,7 @@ function generateCategoryOptions(categories) {
     return html;
   }
 }
+
 function constructCollectionList(categories, collections, documents) {
   let html = '';
   if (categories.length === 0) {
@@ -47,6 +48,7 @@ function constructCollectionList(categories, collections, documents) {
     return html;
   }
 }
+
 function generateCategoryCollections(collection, documents) {
   let html = '';
   collection.forEach((collection) => {

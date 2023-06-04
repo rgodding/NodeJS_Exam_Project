@@ -7,7 +7,7 @@ export async function showDocuments(req, res) {
     const userId = req.userId;
     const categories = await categoryManager.fetchAllObjects(userId);
     const collections = await collectionManager.fetchAllObjects(userId);
-    const page = constructDocumentsPage(req.isUser, userId, categories, collections);
+    const page = constructDocumentsPage(req.isUser, categories, collections);
     res.send(page);
   } catch (err) {
     console.error(err);

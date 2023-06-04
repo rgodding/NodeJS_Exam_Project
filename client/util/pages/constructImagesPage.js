@@ -5,11 +5,10 @@ import { imagesPageTabTitle } from '../../constants/pageTitles.js';
 import { imagesPageCSS } from '../../constants/cssReferences.js';
 import { categoryoptionlabelPath, collectionoptionPath, imageitemPath, imagelistPath, nocategoriesPath, noimagelistPath } from '../../constants/partials/imagesPagePartialPaths.js';
 
-export default function constructImagesPage(isUser, userId, categories, collections, images) {
+export default function constructImagesPage(isUser, categories, collections, images) {
   const html = templateEngine.readPage(imagesPagePath)
   .replace('$CREATE_IMAGES_TYPES_OPTIONS', generateCategoryOptions(categories, collections))
-  .replace('$SHOW_IMAGES_LIST', constructImageList(categories, collections, images))
-  .replace('$USER_ID', userId);
+  .replace('$SHOW_IMAGES_LIST', constructImageList(collections, images));
   const page = templateEngine.renderPageWithSocket(html, {
     tabTitle: imagesPageTabTitle,
     cssLink: imagesPageCSS,
@@ -42,7 +41,7 @@ function generateCategoryOptions(categories, collections) {
   return html;
 }
 
-function constructImageList(categories, collections, images) {
+function constructImageList(collections, images) {
   let html = '';
   collections.forEach((collection) => {
     const foundImages = images.filter((object) => object.collection === collection.id);

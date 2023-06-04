@@ -5,9 +5,8 @@ import { documentsPagePath } from '../../constants/pagePaths.js';
 import { documentsPageTabTitle } from '../../constants/pageTitles.js';
 import { menuPath, menuoptionPath, nomenuPath } from '../../constants/partials/documentsPagePartialPaths.js';
 
-export default function constructDocumentsPage(isUser, userId, categories, collections) {
+export default function constructDocumentsPage(isUser, categories, collections) {
   const page = templateEngine.readPage(documentsPagePath)
-  .replace('$USER_ID', userId)
   .replace('$DOCUMENT_MENU', constructMenu(categories, collections));
   const renderedPage = templateEngine.renderPageWithSocket(page, {
     tabTitle: documentsPageTabTitle,

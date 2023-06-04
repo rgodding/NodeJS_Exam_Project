@@ -9,7 +9,7 @@ export async function showImages(req, res) {
     const categories = await categoryManager.fetchAllObjects(userId);
     const collections = await collectionManager.fetchAllObjects(userId);
     const images = await imageManager.fetchAllObjects(userId);
-    const page = constructImagesPage(req.isUser, userId, categories, collections, images);
+    const page = constructImagesPage(req.isUser, categories, collections, images);
     res.send(page);
   } catch (err) {
     console.error(err);
