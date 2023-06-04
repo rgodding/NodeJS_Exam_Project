@@ -8,6 +8,9 @@ var collectionCreateButton = document.getElementById('collectionCreateButton');
 categoryNameInput.addEventListener('input', checkCategoryInputs);
 collectionNameInput.addEventListener('input', checkCollectionInputs);
 collectionCategoryInput.addEventListener('input', checkCollectionInputs);
+
+const categoryOptions = document.getElementById('collectioncategory');
+const categoryList = document.getElementById('collections-list');
 function checkCategoryInputs() {
   var categoryNameValue = categoryNameInput.value;
   if (categoryNameValue !== '') {
@@ -31,8 +34,11 @@ async function createCategory() {
   const name = document.getElementById('categoryname').value;
   socket.emit('a client creates a category', { name: name, userId: userId });
 }
-socket.on('a category was created', () => {
-  window.location.reload();
+socket.on('a category was created', (data) => {
+  categoryOptions.innerHTML = data.categoryOptions;
+  categoryList.innerHTML = data.categoryList;
+  categoryNameInput.value = '';
+  finishLoading();
 });
 socket.on('a category had invalid values', () => {
   alert('Invalid values');
@@ -46,12 +52,15 @@ async function createCollection() {
   socket.emit('a client creates a collection', { category: category, name: name, userId: userId });
 }
 socket.on('a collection was created', (data) => {
-  window.location.reload();
+  categoryOptions.innerHTML = data.categoryOptions;
+  categoryList.innerHTML = data.categoryList;
+  finishLoading();
 });
-socket.on('a collection had invalid values', (data) => {
+socket.on('a collection had invalid values', () => {
   alert('Invalid values');
   finishLoading();
 });
+// DELETE COLLECTION
 async function deleteCollection(id) {
   if (confirm('Are you sure you want to delete the collection?')) {
     loading();
@@ -63,13 +72,16 @@ socket.on('a collection had invalid values', () => {
   alert('Invalid values');
   finishLoading();
 });
-socket.on('a collection was deleted', () => {
-  window.location.reload();
+socket.on('a collection was deleted', (data) => {
+  categoryOptions.innerHTML = data.categoryOptions;
+  categoryList.innerHTML = data.categoryList;
+  finishLoading();
 });
 socket.on('a collection with documents was tried to be deleted', (data) => {
   alert(`Please delete all documents and images in the collection to continue - Documents (${data.documents}), Images (${data.images})`);
   finishLoading();
 });
+// DELETE CATEGORY
 async function deleteCategory(id) {
   if (confirm('Are you sure you want to delete the category?')) {
     loading();
@@ -79,8 +91,10 @@ async function deleteCategory(id) {
     });
   }
 }
-socket.on('a category was deleted', () => {
-  window.location.reload();
+socket.on('a category was deleted', (data) => {
+  categoryOptions.innerHTML = data.categoryOptions;
+  categoryList.innerHTML = data.categoryList;
+  finishLoading();
 });
 socket.on('a category with collections was tried to be deleted', () => {
   alert('Please delete all collections in the category to continue');
@@ -90,10 +104,6 @@ socket.on('a category had invalid values', () => {
   alert('Invalid Values');
   finishLoading();
 });
-socket.on('a client is not logged in', () => {
-  alert('You were logged out, please login again')
-  window.location.href = "/login"
-})
 
 function loading() {
   var loadingOverlay = document.getElementById('loading-overlay');
@@ -103,3 +113,8 @@ function finishLoading() {
   var loadingOverlay = document.getElementById('loading-overlay');
   loadingOverlay.style.display = 'none';
 }
+// NOT LOGGED IN
+socket.on('a client is not logged in', () => {
+  alert('You were logged out, please login again');
+  window.location.href = '/login';
+});

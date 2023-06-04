@@ -1,5 +1,4 @@
 const socket = io();
-const userId = document.getElementById('userid').value;
 
 function uploadImage() {
   var fileInput = document.getElementsByName('file')[0];
@@ -14,8 +13,9 @@ function uploadImage() {
   }
 }
 
-function deleteImage(id, fileName) {
+async function deleteImage(id, fileName) {
   if (confirm('Are you sure you want to delete the document')) {
+    const userId = await fetchUserId();
     socket.emit('a client deletes an image', { id: id, fileName: fileName, userId: userId });
   }
 }

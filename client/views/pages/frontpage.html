@@ -1,18 +1,3 @@
 <div class="container-fluid">
-    <h1>Welcome to the frontpage</h1>
-    <button class="btn" onclick="getUserId()">Get UserId</button>
+  <h1>Welcome to the frontpage</h1>
 </div>
-
-<script>
-    function getUserId() {
-      fetch('/session-data')
-        .then(response => response.json())
-        .then(sessionData => {
-          const userId = sessionData.userId;
-          console.log('User ID:', userId);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    }
-  </script>

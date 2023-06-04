@@ -17,7 +17,7 @@ export default async function constructUserPage(isUser, categories, collections,
   return page;
 }
 
-function generateCategoryOptions(categories) {
+export function generateCategoryOptions(categories) {
   let html = '';
   if (categories.length === 0) {
     let html = templateEngine.readPage(nocategoryoptionsPath);
@@ -32,7 +32,7 @@ function generateCategoryOptions(categories) {
   }
 }
 
-function constructCollectionList(categories, collections, documents) {
+export function constructCollectionList(categories, collections, documents) {
   let html = '';
   if (categories.length === 0) {
     html += templateEngine.readPage(nocategoriesPath);

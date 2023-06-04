@@ -1,5 +1,4 @@
 const socket = io();
-const userId = document.getElementById('userid').value;
 const documentPicker = document.getElementById('document-picker');
 const documentName = document.getElementById('documents-table-name');
 const documentTable = document.getElementById('documents-table-items-field');
@@ -7,7 +6,9 @@ const documentContent = document.getElementById('documents-content-field');
 const documentCreateButton = document.getElementById('document-create-button');
 const documentCollection = document.getElementById('current-collection');
 
-function pickCollection(collection) {
+async function pickCollection(collection) {
+  loading();
+  const userId = await fetchUserId();
   socket.emit('a client choose a collection', {
     collection: collection,
     userId: userId,
@@ -19,8 +20,10 @@ socket.on('a collection was chosen', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
   highLightCode();
+  finishLoading();
 });
 function pickCreateDocument() {
+  loading();
   const collection = document.getElementById('current-collection-value').value;
   socket.emit('a client choose create document', {
     collection: collection,
@@ -28,8 +31,11 @@ function pickCreateDocument() {
 }
 socket.on('a document is to be created', (data) => {
   documentContent.innerHTML = data.content;
+  finishLoading();
 });
-function postCreateDocument() {
+async function postCreateDocument() {
+  loading();
+  const userId = await fetchUserId();
   const collection = document.getElementById('documenttype').value;
   const content = document.getElementById('documentinput').value;
   socket.emit('a client creates a document', {
@@ -42,8 +48,11 @@ socket.on('a document was created', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
   highLightCode();
+  finishLoading();
 });
-function pickDocument(id) {
+async function pickDocument(id) {
+  loading();
+  const userId = await fetchUserId();
   socket.emit('a client choose a document', {
     id: id,
     userId: userId,
@@ -52,12 +61,15 @@ function pickDocument(id) {
 socket.on('a document was chosen', (data) => {
   documentContent.innerHTML = data.content;
   highLightCode();
+  finishLoading();
 });
-function deleteDocument(collection, id) {
+async function deleteDocument(collection, id) {
   if (confirm('Are you sure you want to delete the document')) {
+    loading();
+    const userId = await fetchUserId();
     socket.emit('a client choose delete document', {
-      id: id,
       userId: userId,
+      id: id,
       collection: collection,
     });
   }
@@ -65,18 +77,24 @@ function deleteDocument(collection, id) {
 socket.on('a document was deleted', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
+  finishLoading();
 });
-function updateDocument(collection, id) {
+async function updateDocument(collection, id) {
+  loading();
+  const userId = await fetchUserId();
   socket.emit('a client choose update document', {
-    id: id,
     userId: userId,
+    id: id,
     collection: collection,
   });
 }
 socket.on('a document was chosen to be updated', (data) => {
   documentContent.innerHTML = data.content;
+  finishLoading();
 });
-function postUpdateDocument(id, collection) {
+async function postUpdateDocument(id, collection) {
+  loading();
+  const userId = await fetchUserId();
   const content = document.getElementById('documentinput').value;
   socket.emit('a client updates a document', {
     id: id,
@@ -89,10 +107,26 @@ socket.on('a document was updated', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
   highLightCode();
+  finishLoading();
 });
 
-function highLightCode(){
+function loading() {
+  var loadingOverlay = document.getElementById('loading-overlay');
+  loadingOverlay.style.display = 'flex';
+}
+function finishLoading() {
+  var loadingOverlay = document.getElementById('loading-overlay');
+  loadingOverlay.style.display = 'none';
+}
+
+function highLightCode() {
   setTimeout(() => {
     Prism.highlightAll();
-  }, 1)
+  }, 1);
 }
+
+// NOT LOGGED IN
+socket.on('a client is not logged in', () => {
+  alert('You were logged out, please login again');
+  window.location.href = '/login';
+});
