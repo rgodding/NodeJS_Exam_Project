@@ -8,9 +8,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: 'secret-key',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    cookie: { secure: false }
   })
 );
 
@@ -27,7 +28,8 @@ import userRouter from './routers/userRouter.js';
 import documentsRouter from './routers/documentsRouter.js';
 import imagesRouter from './routers/imagesRouter.js';
 import errorRouter from './routers/errorRouter.js';
-const routers = [frontpageRouter, loginRouter, userRouter, documentsRouter, imagesRouter, errorRouter];
+import sessionRouter from './routers/sessionRouter.js';
+const routers = [frontpageRouter, loginRouter, userRouter, documentsRouter, imagesRouter, sessionRouter, errorRouter];
 
 app.use(routers);
 const PORT = process.env.PORT || 8075;

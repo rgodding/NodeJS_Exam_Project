@@ -19,6 +19,7 @@ export default function socketIo(io) {
 }
 import { contentmessage, currentcollection } from '../constants/partials/documentsPagePartialPaths.js';
 import constructDeletedDocumentContent from '../util/documents/constructDeletedDocumentContent.js';
+import session from 'express-session';
 
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
@@ -223,4 +224,3 @@ function deleteCollection(object) {
     resolve(true);
   });
 }
-

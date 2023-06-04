@@ -51,9 +51,11 @@ function constructImageList(categories, collections, images) {
       .replace('$IMAGE_COLLECTION_NAME', collection.name)
       .replace('$IMAGE_LIST', constructImageItems(foundImages));
     } else {
+      /* Create empty collection fields
       html += templateEngine.readPage(imagelistPath)
       .replace('$IMAGE_COLLECTION_NAME', collection.name)
       .replace('$IMAGE_LIST', templateEngine.readPage(noimagelistPath));
+      */
     }
   });
   return html;
@@ -63,10 +65,11 @@ function constructImageItems(images) {
   let html = '';
   if (images.length == 0) {
     html += templateEngine.readPage(noimagelistPath);
-    return html;
+    return 'html';
   }
   if (images.length == 1) {
     html += templateEngine.readPage(imageitemPath)
+      .replace('$IMAGE_CONTAINER_ID', images[0].name)
       .replace('$IMAGE_NAME', images[0].name)
       .replace('$FILENAME', images[0].fileName)
       .replace('$FILEID_DELETE', images[0].id)
@@ -84,6 +87,7 @@ function constructImageItems(images) {
   } else {
     images.forEach((image) => {
       html += templateEngine.readPage(imageitemPath)
+        .replace('$IMAGE_CONTAINER_ID', image.name)
         .replace('$IMAGE_NAME', image.name)
         .replace('$FILENAME', image.fileName)
         .replace('$FILEID_DELETE', image.id)

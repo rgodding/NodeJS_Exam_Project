@@ -20,6 +20,12 @@
                 <div class="col mb-3">
                     <button type="submit" class="btn btn-primary" onclick="uploadImage()">Upload</button>
                 </div>
+                <div class="col mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">Search image:</span>
+                        <input type="text" id="image-search-field" class="form-control" placeholder="Image name..." aria-label="Image Name" aria-describedby="input-group-left">
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -31,6 +37,21 @@
 </div>
 <input type="text" id="userid" name="userid" value="$USER_ID" style="display: none;" />
 <script src="/js/images.js"></script>
+
+<script>
+    const imageSearcher = document.getElementById('image-search-field');
+    const images = document.querySelectorAll('.image-container');
+    imageSearcher.addEventListener('input', e => {
+        const searchInput = imageSearcher.value.toLowerCase();
+        images.forEach(image => {
+            if(image.id.toLocaleLowerCase().includes(searchInput)){
+                image.style.display = 'flex';
+            } else {
+                image.style.display = 'none';
+            }
+        })
+    })
+</script>
 
 <script>
     function copyImageUrl(fileName) {
