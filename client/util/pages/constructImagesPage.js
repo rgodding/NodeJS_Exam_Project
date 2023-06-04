@@ -14,6 +14,7 @@ export default function constructImagesPage(isUser, userId, categories, collecti
     tabTitle: imagesPageTabTitle,
     cssLink: imagesPageCSS,
     isUser: isUser,
+    privateImages: true,
   });
   return page;
 }

@@ -1,13 +1,14 @@
 import fs from 'fs';
 import dotenv from 'dotenv/config';
+import generateImages from './generateImages.js';
 
 function renderPage(page, config = {}) {
   const main = getMain()
-    .replace('$CSS_LINK', config.cssLink || '')
-    .replace('$PAGE_TITLE', config.tabTitle)
-    .replace('$PAGE_HEADER', getNavbar(config))
-    .replace('$PAGE_MAIN', page);
-  return main;
+  .replace('$CSS_LINK', config.cssLink || '')
+  .replace('$PAGE_TITLE', config.tabTitle)
+  .replace('$PAGE_HEADER', getNavbar(config))
+  .replace('$PAGE_MAIN', page);
+  return generateImages(config.privateImages, main);
 }
 
 function renderPageWithSocket(page, config = {}) {
@@ -16,7 +17,7 @@ function renderPageWithSocket(page, config = {}) {
     .replace('$PAGE_TITLE', config.tabTitle)
     .replace('$PAGE_HEADER', getNavbar(config))
     .replace('$PAGE_MAIN', page);
-  return main;
+  return generateImages(config.privateImages, main);
 }
 
 function readPage(pagePath) {

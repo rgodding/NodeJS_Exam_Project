@@ -6,7 +6,7 @@ import multer from 'multer';
 const router = Router();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/images/uploads/');
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
     const filenameParts = file.originalname.split('.');

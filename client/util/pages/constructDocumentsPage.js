@@ -13,6 +13,7 @@ export default function constructDocumentsPage(isUser, userId, categories, colle
     tabTitle: documentsPageTabTitle,
     cssLink: documentsPageCSS,
     isUser: isUser,
+    privateImages: true,
   });
   return renderedPage;
 }
