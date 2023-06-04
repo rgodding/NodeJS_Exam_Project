@@ -18,6 +18,7 @@ async function login(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 async function register(req, res) {
   try {
     const email = req.body.email;
@@ -44,6 +45,7 @@ async function register(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 function deleteData(req, res) {
   try {
     const id = req.session.userid;
@@ -54,6 +56,7 @@ function deleteData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 async function forgotPassword(req, res) {
   try {
     const email = req.body.email;
@@ -64,6 +67,7 @@ async function forgotPassword(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 export default {
   login,
   register,

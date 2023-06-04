@@ -4,10 +4,10 @@ import generateImages from './generateImages.js';
 
 function renderPage(page, config = {}) {
   const main = getMain()
-  .replace('$CSS_LINK', config.cssLink || '')
-  .replace('$PAGE_TITLE', config.tabTitle)
-  .replace('$PAGE_HEADER', getNavbar(config))
-  .replace('$PAGE_MAIN', page);
+    .replace('$CSS_LINK', config.cssLink || '')
+    .replace('$PAGE_TITLE', config.tabTitle)
+    .replace('$PAGE_HEADER', getNavbar(config))
+    .replace('$PAGE_MAIN', page);
   return generateImages(config.privateImages, main);
 }
 

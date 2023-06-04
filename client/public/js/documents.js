@@ -14,6 +14,7 @@ async function pickCollection(collection) {
     userId: userId,
   });
 }
+
 socket.on('a collection was chosen', (data) => {
   documentCollection.innerHTML = data.currentCollection;
   documentCreateButton.classList.remove('disabled');
@@ -22,6 +23,7 @@ socket.on('a collection was chosen', (data) => {
   highLightCode();
   finishLoading();
 });
+
 function pickCreateDocument() {
   loading();
   const collection = document.getElementById('current-collection-value').value;
@@ -29,10 +31,12 @@ function pickCreateDocument() {
     collection: collection,
   });
 }
+
 socket.on('a document is to be created', (data) => {
   documentContent.innerHTML = data.content;
   finishLoading();
 });
+
 async function postCreateDocument() {
   loading();
   const userId = await fetchUserId();
@@ -44,12 +48,14 @@ async function postCreateDocument() {
     userId: userId,
   });
 }
+
 socket.on('a document was created', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
   highLightCode();
   finishLoading();
 });
+
 async function pickDocument(id) {
   loading();
   const userId = await fetchUserId();
@@ -58,11 +64,13 @@ async function pickDocument(id) {
     userId: userId,
   });
 }
+
 socket.on('a document was chosen', (data) => {
   documentContent.innerHTML = data.content;
   highLightCode();
   finishLoading();
 });
+
 async function deleteDocument(collection, id) {
   if (confirm('Are you sure you want to delete the document')) {
     loading();
@@ -74,11 +82,13 @@ async function deleteDocument(collection, id) {
     });
   }
 }
+
 socket.on('a document was deleted', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
   finishLoading();
 });
+
 async function updateDocument(collection, id) {
   loading();
   const userId = await fetchUserId();
@@ -88,10 +98,12 @@ async function updateDocument(collection, id) {
     collection: collection,
   });
 }
+
 socket.on('a document was chosen to be updated', (data) => {
   documentContent.innerHTML = data.content;
   finishLoading();
 });
+
 async function postUpdateDocument(id, collection) {
   loading();
   const userId = await fetchUserId();
@@ -103,6 +115,7 @@ async function postUpdateDocument(id, collection) {
     collection: collection,
   });
 }
+
 socket.on('a document was updated', (data) => {
   documentTable.innerHTML = data.table;
   documentContent.innerHTML = data.content;
@@ -114,6 +127,7 @@ function loading() {
   var loadingOverlay = document.getElementById('loading-overlay');
   loadingOverlay.style.display = 'flex';
 }
+
 function finishLoading() {
   var loadingOverlay = document.getElementById('loading-overlay');
   loadingOverlay.style.display = 'none';
@@ -125,7 +139,6 @@ function highLightCode() {
   }, 1);
 }
 
-// NOT LOGGED IN
 socket.on('a client is not logged in', () => {
   alert('You were logged out, please login again');
   window.location.href = '/login';

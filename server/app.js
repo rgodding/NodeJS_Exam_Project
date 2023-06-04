@@ -5,23 +5,13 @@ const app = express();
 
 app.use(
   session({
-    secret: 'secret key',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
 );
 
 app.use(express.json());
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8075');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
 
 import documentRouter from './routers/documentRouter.js';
 import collectionRouter from './routers/collectionRouter.js';
@@ -36,5 +26,5 @@ app.listen(PORT, (error) => {
   if (error) {
     console.log(error);
   }
-  console.log('Server running on port - ', PORT);
+  console.log('Server running on port -', PORT);
 });

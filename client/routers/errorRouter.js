@@ -6,7 +6,7 @@ const router = Router();
 router.use(checkUser, (req, res, next) => {
   const invalidEndpointPage = templateEngine.readPage('./views/pages/invalidendpoint.html');
   const invalidEndpointRenderedPage = templateEngine.renderPage(invalidEndpointPage, {
-    tabTitle: 'IEEE',
+    tabTitle: 'Invalid Endpoint',
     isUser: req.isUser,
   });
   res.status(404).send(invalidEndpointRenderedPage);

@@ -25,7 +25,7 @@ function generateCategoryOptions(categories, collections) {
   let html = '';
   categories.forEach((category) => {
     const categoryLabel = templateEngine.readPage(categoryoptionlabelPath)
-    .replace('$CATEGORY_NAME', category.name)
+    .replace('$CATEGORY_NAME', category.name);
     html += categoryLabel;
     const collection = collections.filter((object) => object.category === category.id);
     if (collection.length != 0) {
@@ -49,12 +49,6 @@ function constructImageList(collections, images) {
       html += templateEngine.readPage(imagelistPath)
       .replace('$IMAGE_COLLECTION_NAME', collection.name)
       .replace('$IMAGE_LIST', constructImageItems(foundImages));
-    } else {
-      /* Create empty collection fields
-      html += templateEngine.readPage(imagelistPath)
-      .replace('$IMAGE_COLLECTION_NAME', collection.name)
-      .replace('$IMAGE_LIST', templateEngine.readPage(noimagelistPath));
-      */
     }
   });
   return html;
@@ -67,7 +61,8 @@ function constructImageItems(images) {
     return 'html';
   }
   if (images.length == 1) {
-    html += templateEngine.readPage(imageitemPath)
+    html += templateEngine
+      .readPage(imageitemPath)
       .replace('$IMAGE_CONTAINER_ID', images[0].name)
       .replace('$IMAGE_NAME', images[0].name)
       .replace('$FILENAME', images[0].fileName)
@@ -82,10 +77,10 @@ function constructImageItems(images) {
       .replace('$IMAGE_MODAL_NAME', images[0].name)
       .replace('$IMAGE_MODAL_DESCRIPTION', images[0].description)
       .replace('$FILENAME_MODAL', images[0].fileName);
-      
   } else {
     images.forEach((image) => {
-      html += templateEngine.readPage(imageitemPath)
+      html += templateEngine
+        .readPage(imageitemPath)
         .replace('$IMAGE_CONTAINER_ID', image.name)
         .replace('$IMAGE_NAME', image.name)
         .replace('$FILENAME', image.fileName)

@@ -20,6 +20,7 @@ async function fetchAllData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 async function fetchDataById(req, res) {
   try {
     const userId = req.params.userId;
@@ -36,6 +37,7 @@ async function fetchDataById(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 async function postData(req, res) {
   try {
     const userId = req.params.userId;
@@ -55,6 +57,7 @@ async function postData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 async function patchData(req, res) {
   try {
     const id = req.params.id;
@@ -71,6 +74,7 @@ async function patchData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 async function deleteData(req, res) {
   try {
     const id = req.params.id;
@@ -83,6 +87,7 @@ async function deleteData(req, res) {
     res.status(505).send('Internal Server Error');
   }
 }
+
 export default {
   fetchAllData,
   fetchDataById,

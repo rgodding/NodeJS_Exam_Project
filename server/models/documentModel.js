@@ -18,6 +18,7 @@ function constructDocumentModel(data, id) {
   };
   return document;
 }
+
 function constructNewDocumentModel(data) {
   const time = new Date();
   const document = {

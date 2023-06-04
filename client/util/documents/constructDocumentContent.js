@@ -9,6 +9,6 @@ export default function constructDocumentContent(document) {
   .replace('$DOCUMENT_CONTENT_COLLECTION_UPDATE', document.collection)
   .replace('$DOCUMENT_CONTENT_ID_DELETE', document.id)
   .replace('$DOCUMENT_CONTENT_COLLECTION_DELETE', document.collection);
-  const result = generateImages(true, html)
+  const result = generateImages(true, html);
   return result;
 }

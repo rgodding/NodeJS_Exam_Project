@@ -110,7 +110,7 @@ async function fetchUserDataById(type, id, userId) {
 }
 async function updateUserData(type, id, data, userId) {
   const objectToUpdate = await fetchUserDataById(type, id, userId);
-  if(objectToUpdate === null){
+  if (objectToUpdate === null) {
     return false;
   } else if (objectToUpdate.data.owner == userId) {
     const docRef = doc(database, type, id);
@@ -122,7 +122,7 @@ async function updateUserData(type, id, data, userId) {
 }
 async function deleteUserData(type, id, userId) {
   const objectToDelete = await fetchUserDataById(type, id, userId);
-  if(objectToDelete === null){
+  if (objectToDelete === null) {
     return false;
   } else if (objectToDelete.data.owner == userId) {
     const docRef = doc(database, type, id);

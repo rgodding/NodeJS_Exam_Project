@@ -17,10 +17,10 @@ export default function socketIo(io) {
     userSocket(socket, io);
   });
 }
+
 import { contentmessage, currentcollection } from '../constants/partials/documentsPagePartialPaths.js';
 import constructDeletedDocumentContent from '../util/documents/constructDeletedDocumentContent.js';
 import { constructCollectionList, generateCategoryOptions } from '../util/pages/constructUserPage.js';
-
 function documentsSocket(socket, io) {
   socket.on('a client choose a collection', async (data) => {
     const userId = data.userId;
@@ -162,6 +162,7 @@ function documentsSocket(socket, io) {
     }
   });
 }
+
 function imagesSocket(socket, io) {
   socket.on('a client deletes an image', async (data) => {
     const userId = data.userId;
@@ -180,6 +181,7 @@ function imagesSocket(socket, io) {
     }
   });
 }
+
 function userSocket(socket, io) {
   async function updateHtml(userId) {
     const categories = await categoryManager.fetchAllObjects(userId);
