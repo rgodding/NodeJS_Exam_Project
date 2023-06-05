@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: 'secret-kea-key',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
