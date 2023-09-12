@@ -32,7 +32,7 @@ import sessionRouter from './routers/sessionRouter.js';
 const routers = [frontpageRouter, loginRouter, userRouter, documentsRouter, imagesRouter, sessionRouter, errorRouter];
 
 app.use(routers);
-const PORT = process.env.PORT || 8075;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, (error) => {
   if (error) {
     console.log(error);
